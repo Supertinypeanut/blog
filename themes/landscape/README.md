@@ -9,7 +9,7 @@ A brand new default theme for [Hexo].
 ### Install
 
 ``` bash
-git clone https://github.com/hexojs/hexo-theme-landscape.git themes/landscape
+$ git clone https://github.com/hexojs/hexo-theme-landscape.git themes/landscape
 ```
 
 **Landscape requires Hexo 2.4 and above.** If you would like to enable the RSS, the [hexo-generate-feed] plugin is also required.
@@ -71,8 +71,9 @@ google_plus:
 
 Landscape uses [Fancybox] to showcase your photos. You can use Markdown syntax or fancybox tag plugin to add your photos.
 
-```bash
+```
 ![img caption](img url)
+
 {% fancybox img_url [img_thumbnail] [img_caption] %}
 ```
 
