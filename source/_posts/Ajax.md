@@ -94,7 +94,7 @@ function ajaxJsonp(str) {
     str = '&' + str;
   }
   // 将回调函数与请求参数添加到请求路径背后
-  defaults.url += '?' + defaults.json + '=' + defaults.jsonCallBack + str;
+  defaults.url += '?' + defaults.jsonp + '=' + defaults.jsonCallBack + str;
   // 应为服务器传回的数据是文本格式，但只要传回的文本格式是js解析的文本便会执行
   // 创建script标签
   const script = document.createElement('script');
