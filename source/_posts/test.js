@@ -55,3 +55,33 @@ function transformHump(params) {
   return params
 }
 console.log(transformHump('get-element-by-id')) //getElementById
+
+
+
+/**
+ * 有这样一个 URL: http://item.taobao.com/item.htm?a=1&b=2&c=&d=xxx&e，
+ * 请写一 段 JS 程序提取 URL 中的各个 GET 参数(参数名和参数个数不确定)，将其按
+ *  key-value 形式返回到一个 json ，如{a:’1′, b:’2′, c:”, d:’xxx’
+ * e:undefined}。
+ */
+
+
+function transformQuery(url) {
+  // 判断是否有添加请求
+  if (/\?.*$/.test(url)) {
+    const query = {}
+      // 获取请求参数数组
+    const queryArr = url.slice(url.indexOf('?') + 1).split('&')
+      // 遍历queryArr,并解析
+    queryArr.forEach(item => {
+      item = item.split('=')
+      console.log(item[1])
+        //   存入query对象
+      query[item[0]] = `${item[1]}`
+    })
+    return JSON.stringify(query)
+  }
+  return JSON.stringify(null)
+}
+
+console.log(transformQuery('http://item.taobao.com/item.htm?a=1&b=2&c=&d=xxx&e')) //{"a":"1","b":"2","c":"","d":"xxx","e":"undefined"}
