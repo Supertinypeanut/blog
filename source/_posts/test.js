@@ -19,3 +19,17 @@ function ribArr(arr) {
   //   排序
   return arr.sort((a, b) => b - a)
 }
+
+/**
+ * 用 js 实现随机选取 10–100 之间的 10 个数字，存入一个数组，并排序。
+ * @param { number } num 
+ * @param { number } max 
+ * @param { number } min 
+ */
+function getRandomArr(num, max, min) {
+  const arr = [];
+  while (num--) {
+    arr.push(Math.round(Math.random() * (max - min)) + min)
+  }
+  return arr.sort((a, b) => a - b)
+}
