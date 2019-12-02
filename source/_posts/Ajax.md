@@ -79,7 +79,7 @@ function ajaxFa() {
     xhr.setRequestHeader('Content-Type', 'applocation/x-www-form-urlencoded');
     parme = str;
   }
-  //   发送请求   
+  //   发送请求
   xhr.send(parme);
   //   当转变为2时直接触发onreadystatechange
 }
@@ -106,4 +106,3 @@ function ajaxJsonp(str) {
   head.appendChild(script);
 }
 ```
-
