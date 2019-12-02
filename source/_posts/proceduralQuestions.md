@@ -1,3 +1,8 @@
+---
+title: 程序题
+---
+
+```js
 /**
  * 写出代码对下列数组去重并从大到小排列
  */
@@ -85,3 +90,5 @@ function transformQuery(url) {
 }
 
 console.log(transformQuery('http://item.taobao.com/item.htm?a=1&b=2&c=&d=xxx&e')) //{"a":"1","b":"2","c":"","d":"xxx","e":"undefined"}
+```
+
