@@ -90,5 +90,42 @@ function transformQuery(url) {
 }
 
 console.log(transformQuery('http://item.taobao.com/item.htm?a=1&b=2&c=&d=xxx&e')) //{"a":"1","b":"2","c":"","d":"xxx","e":"undefined"}
-```
 
+
+/**
+ * 判断一个字符串中出现次数最多的字符，统计这个次数
+ */
+
+function getAppearMaxChar(str) {
+  let appearMaxArr = [];
+  for (let index = 0; index < str.length; index++) {
+    const params = str.match(new RegExp(str[index], 'g'));
+    if (appearMaxArr.length < params.length) appearMaxArr = params
+  }
+  return { char: appearMaxArr[0], count: appearMaxArr.length }
+}
+
+console.log(getAppearMaxChar('hjbjhbio888joi78g8f7f6rdr98hu')) //{ char: '8', count: 6 }
+
+
+/**
+ * 将数字 12345678 转化成 RMB 形式 如: 12,345,678
+ */
+
+function transformRMB(num) {
+  const str = String(num)
+  let transformStr = ''
+    //   获取首部字符串，单独处理
+  const fristStr = str.substr(0, str.length % 3 || 3)
+    //   对非首部字符串进行拼接
+  for (let index = str.length - 3; index > 0; index -= 3) {
+    transformStr = ',' + str.substr(index, 3) + transformStr
+  }
+  //   拼接整个字符床
+  transformStr = fristStr + transformStr
+  return transformStr
+}
+
+transformRMB(123456789)  //123,456,789
+
+```
