@@ -172,3 +172,56 @@ const p = new Proxy(data, {
 })
 ```
 
+
+
+### Proxy深度代理
+
+```js
+const obj = {
+  name: 'jin',
+  age: 18,
+  skill: {
+    swim: true,
+    run: true
+  }
+}
+
+// 注意代理对象数据修改和删除不会影响被代理对象
+const proxy = observer(obj)
+
+//  给proxy设置代理
+function observer(obj) {
+  // 非对象不需要代理
+  if (!obj || typeof obj !== 'object') {
+    return
+  }
+
+  // 获取代理对象
+  const proxy = new Proxy(obj, {
+    get(target, property) {
+      console.log('访问了')
+      console.log(target, property)
+      return target[property]
+    },
+    set(target, property, value) {
+      console.log('设置了')
+      console.log(target, property, value)
+
+      //  设置需要判断是因为有可能赋值的是对象，所以需要将赋值的对象转化为代理对象
+      target[property] = observer(value) || value
+    }
+  })
+
+  // 遍历对象key
+  Object.keys(obj).forEach(key => {
+    //   如果属性是对象的话，需要进一步代理
+    if (typeof obj[key] === 'object') {
+      obj[key] = observer(obj[key])
+    }
+  })
+
+  //   返回代理对象
+  return proxy
+}
+```
+
