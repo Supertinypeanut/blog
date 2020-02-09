@@ -102,7 +102,7 @@ console.log(truck);
 
 实现一个观察者模式至少要包含2个角色如下图UML图中所示：Subject和Observer对象 。
 
-![img](designModel.assets/640.jpeg)
+![img](640.jpeg)
 
 下面我们使用JavaScript来实现上图的观察者模式。
 
