@@ -1,7 +1,7 @@
 ---
 title: 实现跨域存储
 date: 2020-02-09 15:30:56
-tags: js
+tags: JavaScript
 ---
 
 ##### 本地存储受同源策略限制
