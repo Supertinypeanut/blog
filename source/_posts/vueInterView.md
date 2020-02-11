@@ -177,7 +177,7 @@ Vue 实例有一个完整的生命周期，也就是从开始创建、初始化�
 
 **（3）生命周期示意图**
 
-![img](vueInterView.assets/640.jpeg)
+![img](vueInterView/640.jpeg)
 
 **8、Vue 的父组件和子组件生命周期钩子函数执行顺序？**
 
@@ -466,7 +466,7 @@ MVVM 源自于经典的 Model–View–Controller（MVC）模式 ，MVVM 的出�
 
 如下图所示：
 
-![img](vueInterView.assets/640-20200212012544052.jpeg)
+![img](vueInterView/640-20200212012544052.jpeg)
 
 **（1）View 层**
 
@@ -541,7 +541,7 @@ var app = new Vue({
 
 Vue 数据双向绑定主要是指：数据变化更新视图，视图变化更新数据，如下图所示：
 
-![img](vueInterView.assets/640-20200212012544079.jpeg)
+![img](vueInterView/640-20200212012544079.jpeg)
 
 即：
 
@@ -562,7 +562,7 @@ Vue 主要通过以下 4 个步骤来实现数据双向绑定的：
 
 以上四个步骤的流程图表示如下，如果有同学理解不大清晰的，可以查看作者专门介绍数据双向绑定的文章《0 到 1 掌握：Vue 核心之数据双向绑定》，有进行详细的讲解、以及代码 demo 示例。
 
-![img](vueInterView.assets/640-20200212012544051.jpeg)
+![img](vueInterView/640-20200212012544051.jpeg)
 
 ## 22、Vue 框架怎么实现对象和数组的监听？
 
