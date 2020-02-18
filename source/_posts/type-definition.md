@@ -238,7 +238,7 @@ class Application {
 }
 ```
 
-![keyof](https://static.tasaid.com/blogs/2094b0e190bf5c66045488f3c2cab5e5.png)
+![img](type-definition/2094b0e190bf5c66045488f3c2cab5e5.png)
 
 ## import 导入和 export 导出
 
@@ -439,7 +439,7 @@ import { default as App } from 'demo/app'
 
 发布到 `@types organizatio` 的包可以通过 [TypeSearch](https://tasaid.com/link?url=https%3A%2F%2Fmicrosoft.github.io%2FTypeSearch%2F) 搜索检索，使用 `npm install --save-dev @types/xxxx` 安装：
 
-![@types](https://static.tasaid.com/blogs/26a7416bf2b8b2eebb74a32d2015eed3.png)
+![img](type-definition/26a7416bf2b8b2eebb74a32d2015eed3.png)
 
 更多细节请参阅 [DefinitelyTyped](https://tasaid.com/link?url=https%3A%2F%2Fgithub.com%2FDefinitelyTyped%2FDefinitelyTyped)。
 
@@ -481,7 +481,7 @@ types
 └── user.d.ts
 ```
 
-![img](https://static.tasaid.com/blogs/b53c668059b6fc2f87dda190536d04f6.png)
+![img](type-definition/b53c668059b6fc2f87dda190536d04f6.png)
 
 入口模块主要做这些事情：
 
