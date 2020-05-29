@@ -6,7 +6,11 @@
     "build": "hexo generate",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
-    "server": "hexo server"
+    "server": "hexo server",
+    "commit":"git-cz"
+  },
+  "config":{
+    "commitizen":{"path":"node_modules/cz-conventional-changelog"}
   },
   "hexo": {
     "version": "4.0.0"
@@ -22,5 +26,9 @@
     "hexo-renderer-marked": "^2.0.0",
     "hexo-renderer-stylus": "^1.1.0",
     "hexo-server": "^1.0.0"
+  },
+  "devDependencies": {
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^3.1.0"
   }
 }
