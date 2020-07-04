@@ -7,16 +7,18 @@
     "clean": "hexo clean",
     "deploy": "hexo deploy",
     "server": "hexo server",
-    "commit":"git-cz"
+    "commit": "git-cz"
   },
-  "config":{
-    "commitizen":{"path":"node_modules/cz-conventional-changelog"}
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
   },
   "hexo": {
     "version": "4.0.0"
   },
   "dependencies": {
-    "hexo": "^4.0.0",
+    "hexo": "^4.2.1",
     "hexo-asset-image": "git+https://github.com/CodeFalling/hexo-asset-image.git",
     "hexo-generator-archive": "^1.0.0",
     "hexo-generator-category": "^1.0.0",
@@ -28,7 +30,7 @@
     "hexo-server": "^1.0.0"
   },
   "devDependencies": {
-    "commitizen": "^4.0.3",
-    "cz-conventional-changelog": "^3.1.0"
+    "commitizen": "^4.1.2",
+    "cz-conventional-changelog": "^3.2.0"
   }
 }
