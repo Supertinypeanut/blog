@@ -38,13 +38,24 @@ argsArray: 一个数组或者类数组对象，其中的数组元素将作为单
 #### bind
 
 ```js
+// ES5
 Function.prototype.myBind = function() {
     var _this = this;
-    var context = [].shift.call(arguments);// 保存需要绑定的this上下文
-    var args = [].slice.call(arguments); //剩下参数转为数组
-    console.log(_this, context, args);
+    var context = [].shift.call(arguments) || window// 保存需要绑定的this上下文
+    var args = [].slice.call(arguments); //剩下参数转为数组,预设参数
+  
     return function() {
+      //预设参数与传入参数拼接
         return _this.apply(context, [].concat.call(args, [].slice.call(arguments)));
+    }
+};
+
+// ES6
+Function.prototype.myBind = function(ctx, ...args) {
+  	const _this = this
+    const context = ctx || window // 保存需要绑定的this上下文
+    return function() {
+      return _this.apply(context, [].concat.call(args, Array.from(arguments))
     }
 };
 ```
@@ -52,10 +63,14 @@ Function.prototype.myBind = function() {
 #### call
 
 ```js
-Function.prototype.myCall = function(context = window) {
+// ES5
+Function.prototype.myCall = function() {
+  	var context = [].shift.call(arguments);// 保存需要绑定的this上下文
+    var args = [].slice.call(arguments); //剩下参数转为数组
     context.fn = this  // 保存外部的函数fn
-    context.fn()  // 隐式绑定 调用的外部的fn
+    var result = context.fn(...args)  // 隐式绑定 调用的外部的fn
     delete context.fn // 删除新增属性fn
+  	return result
 }
 
 var a = 1
@@ -68,30 +83,52 @@ var obj = {
 }
 // 调用自己的call2方法
 fn.myCall(obj)
+
+// ES6
+Function.prototype.myCall = function(ctx, ...args) {
+	const context = ctx || window
+  context.fn = this
+  const result = context.fn(...args)
+  delete context.fn
+  return result
+};
 ```
 
 #### apply
 
 ```js
 /**
+ * ES5
  * apply函数传入的是this指向和参数数组
  */
-Function.prototype.myApply = function(context = window, arr) {
-    var context = context ;
+Function.prototype.myApply = function(ctx, arr) {
+    var context = ctx || window;
     context.fn = this;
-    var result;
-    if (!arr) {
-        result = context.fn(); //直接执行
-    } else {
-        var args = [];
-        for (var i=0,len=arr.length;i<len;i++) {
-            args.push("arr[" + i + "]");
-        }
-        result = eval("context.fn([" + args.toString() + "])");
+    if (arr instanceof Array) {
+        return new Error('第二个参数需要是数组')
     }
+    var args = [];
+    for (var i=0,len=arr.length;i<len;i++) {
+        args.push("arr[" + i + "]");
+    }
+    var result = eval("context.fn(" + args.toString() + ")");
+
     //将this指向销毁
     delete context.fn;
     return result;
+}
+
+// ES6
+Function.prototype.myApply = function(ctx, arr) {
+	const context = ctx || window
+  const context.fn = this
+  if(Object.prototype.toString.call(arr) !== '[object Array]'){
+		return new Error('第二个参数需要是数组')
+	}
+  
+  const result = context.fn(...arr)
+  delete context.fn
+  return result
 }
 ```
 
