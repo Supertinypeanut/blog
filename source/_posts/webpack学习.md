@@ -154,3 +154,33 @@ Webpack 4 新增了一个工作模式的用法，这种用法大大简化了 Web
 这个函数执行到最后调用了 require 函数，传入的模块 id 为 0，开始加载模块。模块 id 实际上就是模块数组的元素下标，也就是说这里开始加载源代码中所谓的入口模块。
 
 为了更好的理解 bundle.js 的执行过程，可以把它运行到浏览器中，然后通过 Chrome 的 Devtools 单步调试一下。
+
+#####Webpack 运行机制
+
+**Webpack 核心工作过程中的关键环节**：
+
++ Webpack CLI 启动打包流程；
++ 载入 Webpack 核心模块，创建 Compiler 对象；
+  + webpack核心模块会根据配置选项去构建compiler对象，可分多路打包和单路打包。
+  + 多路打包相当与再次调用webpack函数，通过MultiCompiler类获得compiler对象；单路打包会解析配置选项覆盖默认选项，接着通过Compiler类获得compiler对象，将解析好的options配置对象挂载到compiler上。
+  + 紧接着注册已配置的插件，调用环境变量钩子和注册内置的插件
+  + 最后返回compiler对象
++ 使用 Compiler 对象开始编译整个项目；
+  + 执行compiler对象的run方法，会先触发beforeRun和run钩子，再执行compile方法（也就是Compiler类的compile方法），开始真正的编译。
+  + 触发beforeCompile和compile钩子，创建compilation上下文对象，再触发make钩子，开始`make`阶段。
++ 从入口文件开始，解析模块依赖，形成依赖关系树；
++ 递归依赖树，将每个模块交给对应的 Loader 处理；
++ 合并 Loader 处理完的结果，将打包结果输出到 dist 目录。
+
+
+
+**对于 make 阶段后续的基本流程**：
+
+- SingleEntryPlugin 中调用了 Compilation 对象的 addEntry 方法，开始解析入口；
+- addEntry 方法中又调用了 _addModuleChain 方法，将入口模块添加到模块依赖列表中；
+- 紧接着通过 Compilation 对象的 buildModule 方法进行模块构建；
+- buildModule 方法中执行具体的 Loader，处理特殊资源加载；
+- build 完成过后，通过 acorn 库生成模块代码的 AST 语法树；
+- 根据语法树分析这个模块是否还有依赖的模块，如果有则继续循环 build 每个依赖；
+- 所有依赖解析完成，build 阶段结束；
+- 最后合并生成需要输出的 bundle.js 写入 dist 目录。
