@@ -184,3 +184,80 @@ Webpack 4 新增了一个工作模式的用法，这种用法大大简化了 Web
 - 根据语法树分析这个模块是否还有依赖的模块，如果有则继续循环 build 每个依赖；
 - 所有依赖解析完成，build 阶段结束；
 - 最后合并生成需要输出的 bundle.js 写入 dist 目录。
+
+#####DevServer提高开发效率
+
+我们在开发过程中需要时时的看我们的编写结果，我们比较原始的方式就是以 watch 模式工作`修改代码 → Webpack 自动打包 → 手动刷新浏览器(http-serve) → 预览运行结果`，或者使用BrowserSync工具替换 serve 工具，启动 HTTP 服务，这里还需要同时监听 dist 目录下文件的变化，具体命令如下：
+
+```bash
+# 可以先通过 npm 全局安装 browser-sync 模块，然后再使用这个模块
+$ npm install browser-sync --global
+$ browser-sync dist --watch
+
+# 或者也可以使用 npx 直接使用远端模块
+$ npx browser-sync dist --watch
+
+```
+
+它的原理就是 Webpack 监视源代码变化，自动打包源代码到 dist 中，而 dist 中文件的变化又被 BrowserSync 监听了，从而实现自动编译并且自动刷新浏览器的功能，整个过程由两个工具分别监视不同的内容。
+
+这种 watch 模式 + BrowserSync 虽然也实现了我们的需求，但是这种方法有很多弊端：
+
++ 操作烦琐，我们需要同时使用两个工具，那么需要了解的内容就会更多，学习成本大大提高；
+
++ 效率低下，因为整个过程中， Webpack 会将文件写入磁盘，BrowserSync 再进行读取。过程中涉及大量磁盘读写操作，必然会导致效率低下。
+  所以这只能算是“曲线救国”，并不完美，我们仍然需要继续改善。
+
+所以我们可以使用`webpack-dev-server `，它 Webpack 官方推出的一款开发工具，根据它的名字我们就应该知道，它提供了一个开发服务器，并且将自动编译和自动刷新浏览器等一系列对开发友好的功能全部集成在了一起。
+
+```bash
+# 安装 webpack-dev-server
+$ npm install webpack-dev-server --save-dev
+# 运行 webpack-dev-server
+$ npx webpack-dev-server
+```
+
+![image-20200708160621592](webpack学习.assets/image-20200708160621592.png)webpack-dev-server 为了提高工作速率，它并没有将打包结果写入到磁盘中，而是暂时存放在内存中，内部的 HTTP Server 也是从`内存`中读取这些文件的。这样一来，就会减少很多不必要的磁盘读写操作，大大提高了整体的构建效率。
+
+Webpack 配置对象中可以有一个叫作 devServer 的属性，专门用来为 webpack-dev-server 提供配置，具体如下：
+
+```js
+// ./webpack.config.js
+const path = require('path')
+
+module.exports = {
+  // ...
+  devServer: {
+    contentBase: 'pulic', // 指定额外的静态资源路径
+    compress: true, // 开启压缩
+    port: 9000, // 指定端口，默认8080
+    // ...
+    // 详细配置文档：https://webpack.js.org/configuration/dev-server/
+  }
+}
+
+```
+
+*Proxy 代理解决开发跨域*
+
+```js
+// ./webpack.config.js
+module.exports = {
+  // ...
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'https://api.github.com', // 目标地址
+        pathRewrite: {
+          '^/api': '' // 替换掉代理地址中的 /api
+        },
+        changeOrigin: true // 确保请求 GitHub 的主机名就是：api.github.com
+      }
+    }
+  }
+}
+```
+
++ pathRewrite ：最终会以正则的方式来替换请求路径，如果不像上文配置，那此时我们请求 http://localhost:8080/api/users ，就相当于请求了 https://api.github.com/api/users
++ changeOrigin ：属性设置为 true，就会以实际代理请求地址中的主机名去请求
+
