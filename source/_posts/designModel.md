@@ -1,6 +1,8 @@
 ---
 title: 常见javascript设计模式
 date: 2020-02-08 15:53:00
+tags: 
+    - JavaScript
 ---
 
 ##### 模块设计模式

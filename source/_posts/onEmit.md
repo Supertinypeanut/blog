@@ -1,6 +1,9 @@
 ---
 title: 理解Vue事件通信原理 
 date: 2019-12-02 10:10:10
+tags: 
+    - JavaScript
+    - Vue
 ---
 
 ```js

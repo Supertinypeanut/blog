@@ -1,6 +1,8 @@
 ---
 title: JavaScript单例模式
 date: 2020-01-28 10:10:10
+tags: 
+    - JavaScript
 ---
 
 #####  工厂函数：创建单例模式
