@@ -1,6 +1,8 @@
 ---
 title: 程序题
 date: 2019-11-30 10:10:10
+tags: 
+    - JavaScript
 ---
 
 ```js

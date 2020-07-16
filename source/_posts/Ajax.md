@@ -2,7 +2,6 @@
 title: 模仿jQuery分装Ajax方法
 date: 2019-11-20 10:10:10
 tags: JavaScript
-
 ---
 
 ###原生封装

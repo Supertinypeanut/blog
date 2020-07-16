@@ -1,6 +1,8 @@
 ---
 title: 复习数组所有方法
 date: 2019-11-28 10:10:10
+tags: 
+    - JavaScript
 ---
 
 ```js

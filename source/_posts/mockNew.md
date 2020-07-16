@@ -1,6 +1,8 @@
 ---
 title: 封装函数模拟关键字new实现
 date: 2019-11-22 10:10:10
+tags: 
+    - JavaScript
 ---
 
 ```js

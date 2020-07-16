@@ -1,6 +1,9 @@
 ---
 title: React组件封装方法
 data: 2019-12-02 10:10:10
+tags: 
+    - JavaScript
+    - React
 ---
 
 ##### 普通类组件实现

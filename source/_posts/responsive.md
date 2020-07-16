@@ -1,6 +1,9 @@
 ---
 title: Vue响应式原理
 date: 2019-12-10 10:10:10
+tags: 
+    - JavaScript
+    - Vue
 ---
 
 ### Object.defineproperty实现
