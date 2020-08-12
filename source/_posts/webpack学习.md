@@ -78,7 +78,6 @@ import { Configuration } from 'webpack' // 一定记得运行 Webpack 前先注�
      entry: './src/index.js',
      output: {
      filename: 'bundle.js'
-     }
    }
 
 module.exports = config
