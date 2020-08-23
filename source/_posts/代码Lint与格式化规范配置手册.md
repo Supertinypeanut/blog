@@ -4,11 +4,11 @@ date: 2020-08-13 10:10:10
 tags: Lint
 ---
 
-##代码 Lint 与格式化规范配置手册
+## 代码 Lint 与格式化规范配置手册
 
-###如何在项目中使用
+### 如何在项目中使用
 
-####npm 安装依赖
+#### npm 安装依赖
 
 > Lint 规则参考 https://alloyteam.github.io/eslint-config-alloy/
 
@@ -16,7 +16,7 @@ tags: Lint
 npm i -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-config-alloy eslint-config-prettier eslint-plugin-prettier eslint-plugin-vue husky lint-staged prettier
 ```
 
-####package.json 中增加
+#### package.json 中增加
 
 ```json
 "husky": {
@@ -32,7 +32,7 @@ npm i -D eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslin
 }
 ```
 
-####添加.eslintrc.js 文件
+#### 添加.eslintrc.js 文件
 
 ```js
 module.exports = {
@@ -54,7 +54,7 @@ module.exports = {
 };
 ```
 
-####增加 .editorconfig 文件
+#### 增加 .editorconfig 文件
 
 ```
 [*.{js,jsx,ts,tsx,vue}]
@@ -69,7 +69,7 @@ trim_trailing_whitespace = true
 
 ```
 
-####增加 .prettierrc.js 文件
+#### 增加 .prettierrc.js 文件
 
 ```js
 module.exports = {
@@ -80,11 +80,11 @@ module.exports = {
 };
 ```
 
-###IDE 设置
+### IDE 设置
 
 IDEA / Web Storm
 
-####**安装相关插件**
+#### **安装相关插件**
 
 1. Prettier
 
