@@ -1,16 +1,15 @@
+---
 title: XSS 的攻防
 date: 2020-08-16 17:10:10
 tags:
-
-- web 安全
-
-#XSS 的攻防
+  - web 安全
+---
 
 > 随着互联网的高速发展，web 应用在互联网中占据的位置也越来越重要，web 安全问题也自然成为了企业最关注的焦点之一。目前，针对 web 的攻击手段层出不穷（比如 SQL 注入、CSRF、XSS 等），虽然浏览器本身也在不断引入 CORS、CSP、Same-Site Cookies 等技术来增强安全性，但是仍存在很多潜在的威胁，需要技术人员不断进行“查漏补缺”。
 
 > 在上述的威胁中，XSS（Crossing-Site Scripting，跨站脚本攻击）是困扰 Web 安全多年的一种常见攻击方式。我们本次主要针对 XSS 的原理和防御方案进行介绍
 
-##介绍
+## 介绍
 
 XSS 是 Crossing-Site Scripting（跨站脚本）的英文首字母缩写，因为和 CSS（Cascading Style Sheets 层叠样式表）重名了，所以将 C 改成 X 以区分。
 
@@ -38,7 +37,7 @@ XSS 触发的条件包括：
 
 ![image-20200823161141603](XSS的攻防.assets/image-20200823161141603.png)
 
-###由来
+### 由来
 
 介绍完 XSS 的基本概念后，我们来聊一聊 XSS 的历史。XSS 的由来已久，最早可以追溯到上个世纪 90 年代。
 
@@ -50,7 +49,7 @@ XSS 触发的条件包括：
 
 ![image-20200823161309934](XSS的攻防.assets/image-20200823161309934.png)
 
-###案例
+### 案例
 
 由于 XSS 漏洞很容易被开发忽略，互联网上已经爆发了多起恶劣攻击事件：
 
@@ -76,13 +75,13 @@ XSS 触发的条件包括：
 | **存储型** | 攻击者将恶意代码提交到目标网站的数据库中用户登陆后，访问相关页面 URL 服务端从数据库中取出恶意代码，拼接在 HTML 中返回浏览器用户浏览器收到响应后解析执行混入其中的恶意代码窃取敏感信息/冒充用户行为，完成 XSS 攻击   | 带有用户保存数据的网站功能，比如论坛发帖、商品评价、用户私信等等。                            | 持久型 xss，攻击者的数据会存储在服务端，攻击行为将伴随着攻击数据一直存在。恶意代码存在数据库经过后端，经过数据库     |
 | **DOM 型** | 前端 JavaScript 取出 URL 中的恶意代码并执行窃取敏感信息/冒充用户行为，完成 XSS 攻击                                                                                                                                 | 页面 JS 获取数据后不做甄别，直接操作 DOM。一般见于从 URL、cookie、LocalStorage 中取内容的场景 | 取出和执行恶意代码由浏览器端完成，属于前端 JavaScript 自身的安全漏洞                                                 |
 
-##如何防御
+## 如何防御
 
-###针对反射和存储型 XSS
+### 针对反射和存储型 XSS
 
 存储型和反射型 XSS 都是在后端取出恶意代码后，插入到响应 HTML 里的，预防这种漏洞主要是关注后端的处理。
 
-####**后端设置白名单，净化数据**
+#### **后端设置白名单，净化数据**
 
 后端对于保存/输出的数据要进行过滤和转义，过滤的内容：比如 location、onclick、onerror、onload、onmouseover 、 script 、href 、 eval、setTimeout、setInterval 等，常见框架：[bluemonday](https://github.com/microcosm-cc/bluemonday)，[jsoup](https://jsoup.org/cookbook/cleaning-html/whitelist-sanitizer)等
 
@@ -95,23 +94,23 @@ XSS 触发的条件包括：
 
 转义规则可见【DOM 型 XSS-数据充分转义】
 
-####**避免拼接 HTML，采用纯前端渲染**
+#### **避免拼接 HTML，采用纯前端渲染**
 
 浏览器先加载一个静态 HTML，后续通过 Ajax 加载业务数据，调用 DOM API 更新到页面上。纯前端渲染还需注意避免 DOM 型 XSS 漏洞
 
-###针对 DOM 型 XSS
+### 针对 DOM 型 XSS
 
 DOM 型 XSS 攻击，实际上就是网站前端 JavaScript 代码本身不够严谨，把不可信的数据当作代码执行了。
 
-####谨慎对待展示数据
+#### 谨慎对待展示数据
 
 谨慎使用.innerHTML、.outerHTML、document.write() ，不要把不可信的数据作为 HTML 插到页面上。
 
 DOM 中的内联事件监听器，如 location、onclick、onerror、onload、onmouseover 等，<a> 标签的 href 属性，JavaScript 的 eval()、setTimeout()、setInterval() 等，都能把字符串作为代码运行，很容易产生安全隐患，谨慎处理传递给这些 API 的字符串。
 
-####**数据充分转义，过滤恶意代码**
+#### **数据充分转义，过滤恶意代码**
 
-需要根据具体场景使用不同的转义规则 [XSS 整体纵深解决方案](https://bytedance.feishu.cn/docs/31Q6A0zwTnIZ1FT6hgVKra#aVdvYh) ，前端插件 [xss.js](https://jsxss.com/zh/index.html)，[DOMPurify](https://github.com/cure53/DOMPurify)
+需要根据具体场景使用不同的转义规则，前端插件 [xss.js](https://jsxss.com/zh/index.html)，[DOMPurify](https://github.com/cure53/DOMPurify)
 
 | 放置位置        | 例子                                        | 采取的编码          | 编码格式                                                      |
 | --------------- | ------------------------------------------- | ------------------- | ------------------------------------------------------------- |
@@ -123,7 +122,7 @@ DOM 中的内联事件监听器，如 location、onclick、onerror、onload、on
 
 **编码规则：**除了阿拉伯数字和字母，对其他所有的字符进行编码，只要该字符的 ASCII 码小于 256。编码后输出的格式为以上编码格式 （以&#x、\x 、\、%开头，HH 则是指该字符对应的十六进制数字）
 
-####**使用插值表达式**
+#### **使用插值表达式**
 
 采用 vue/react/angular 等技术栈时，使用插值表达式，避免使用 v-html。因为 template 转成 render function 的过程中，会把插值表达式作为 Text 文本内容进行渲染。**在前端 render 阶段避免** **innerHTML\*\***、\***\*outerHTML** **的 XSS 隐患。**
 
@@ -137,15 +136,15 @@ DOM 中的内联事件监听器，如 location、onclick、onerror、onload、on
 
 \_c 是 createElement 简写，即 render 函数，\_v 是 createTextVNode 的简写，创建文本节点，\_s 是 toString 简写
 
-###其他措施
+### 其他措施
 
-####**设置 Cookie httpOnly**
+#### **设置 Cookie httpOnly**
 
 禁止 JavaScript 读取某些敏感 Cookie，攻击者完成 XSS 注入后也无法窃取此 Cookie
 
 ![image-20200823161809436](XSS的攻防.assets/image-20200823161809436.png)
 
-####**设置 CSP（Content Security Policy）**
+#### **设置 CSP（Content Security Policy）**
 
 CSP 的实质就是设置浏览器白名单，告诉浏览器哪些外部资源可以加载和执行，自动禁止外部注入恶意脚本。
 
@@ -154,15 +153,17 @@ CSP 可以通过两种方式来开启 ：
 1. 1. 设置 html 的 meta 标签的方式
 
 ```html
-<meta http-equiv="Content-Security-Policy" content="script-src 'self' *.bytedance.com ; style-src 'self' ;">
+<meta
+  http-equiv="Content-Security-Policy"
+  content="script-src 'self' *.example.com ; style-src 'self' ;"
+/>
 ```
-
 
 1. 1. 设置 HTTP Header 中的 Content-Security-Policy
 
 `Content-Security-Policy: script-src 'self' *.example.com ; style-src 'self' ;`
 
-上述代码描述的 CSP 规则是 js 脚本只能来自当前域名和example.com二级域名下，css 只能来自当前域名
+上述代码描述的 CSP 规则是 js 脚本只能来自当前域名和 example.com 二级域名下，css 只能来自当前域名
 
 CSP 可以限制**加载资源的类型**：
 
@@ -199,17 +200,17 @@ CSP 可以限制**加载资源的类型**：
 - 禁止内联脚本执行
 - 禁止未授权的脚本执行
 
-####输入内容长度、类型的控制
+#### 输入内容长度、类型的控制
 
 对于不受信任的输入，都应该限定一个合理的长度，并且对输入内容的合法性进行校验（例如输入 email 的文本框只允许输入格式正确的 email，输入手机号码的文本框只允许填入数字且格式需要正确）。虽然无法完全防止 XSS 发生，但可以增加 XSS 攻击的难度。
 
-####**验证码**，防止脚本冒充用户提交危险操作
+#### **验证码**，防止脚本冒充用户提交危险操作
 
-###如何检测
+### 如何检测
 
 目前主要 2 种方式检测项目的 XSS 漏洞：
 
-####使用通用 XSS 攻击字符串手动检测 XSS 漏洞
+#### 使用通用 XSS 攻击字符串手动检测 XSS 漏洞
 
 在[Unleashing an Ultimate XSS Polyglot](https://github.com/0xsobky/HackVault/wiki/Unleashing-an-Ultimate-XSS-Polyglot)一文中，有这么一个字符串：
 
@@ -223,11 +224,11 @@ jaVasCript:/*-/*`/*\`/*'/*"/**/(/* */oNcliCk=alert() )//%0D%0A%0d%0a//</stYle/</
 http://xxx/search?keyword=jaVasCript%3A%2F*-%2F*%60%2F*%60%2F*%27%2F*%22%2F**%2F(%2F*%20*%2FoNcliCk%3Dalert()%20)%2F%2F%250D%250A%250d%250a%2F%2F%3C%2FstYle%2F%3C%2FtitLe%2F%3C%2FteXtarEa%2F%3C%2FscRipt%2F--!%3E%3CsVg%2F%3CsVg%2FoNloAd%3Dalert()%2F%2F%3E%3E
 ```
 
-####使用扫描工具自动检测 XSS 漏洞（[BeEF](https://beefproject.com/)、[w3af](https://github.com/andresriancho/w3af) 、 [noXss](https://github.com/lwzSoviet/NoXss)等）
+#### 使用扫描工具自动检测 XSS 漏洞（[BeEF](https://beefproject.com/)、[w3af](https://github.com/andresriancho/w3af) 、 [noXss](https://github.com/lwzSoviet/NoXss)等）
 
 大部分扫描工具是利用动态检测思想：寻找目标应用程序中所有可能出现漏洞的地方，包括表单中的输入框、富文本、密码等，然后构造特殊攻击字符串作为输入，模拟触发事件向服务器提交请求，然后获取服务器的 HTTP 相应，并在其中寻找之前构造的字符串，如果可以找到，说明服务器网页没有对输入过滤，也就是存在 XSS 漏洞。
 
-##其他
+## 其他
 
 XSS 是一个比较大的话题，本篇文章主要介绍 XSS 的基本概念和常用防范手段。其他更多有意思的东西（比如 XSS 盲打、服务端标记 HTML 防 XSS 攻击、Ascii 编码绕过检测等），大家感兴趣的话可以再深入学习。
 
@@ -235,22 +236,20 @@ XSS 是一个比较大的话题，本篇文章主要介绍 XSS 的基本概念�
 
 1. 李冬萌. Web 前端安全问题的分析与防范研究[D]. 北京邮电大学, 2014.
 
-1. 万本钰. 基于浏览器的 XSS 检测系统的研究与设计[D]. 2019.
+2. 万本钰. 基于浏览器的 XSS 检测系统的研究与设计[D]. 2019.
 
-1. 刘海, 徐芳, 郭帆, et al. 防范 XSS 攻击的研究综述[J]. 计算机与现代化, 2011, 2011(8):174-178.
+3. 刘海, 徐芳, 郭帆, et al. 防范 XSS 攻击的研究综述[J]. 计算机与现代化, 2011, 2011(8):174-178.
 
-1. [如何防止 XSS 攻击](https://tech.meituan.com/2018/09/27/fe-security.html)
+4. [如何防止 XSS 攻击](https://tech.meituan.com/2018/09/27/fe-security.html)
 
-1. [XSS 整体纵深解决方案](https://bytedance.feishu.cn/docs/31Q6A0zwTnIZ1FT6hgVKra#VJ21IE)
+5. [防御 XSS 的七条原则](https://sking7.github.io/articles/430468050.html)
 
-1. [防御 XSS 的七条原则](https://sking7.github.io/articles/430468050.html)
+6. [HtmlEncode&JavaScriptEncode](https://www.cnblogs.com/lovesong/p/5211667.html)
 
-1. [HtmlEncode&JavaScriptEncode](https://www.cnblogs.com/lovesong/p/5211667.html)
+7. [DOMXSS 典型场景分析与修复指南](https://security.tencent.com/index.php/blog/msg/107)
 
-1. [DOMXSS 典型场景分析与修复指南](https://security.tencent.com/index.php/blog/msg/107)
+8. [Content Security Policy](http://www.ruanyifeng.com/blog/2016/09/csp.html)
 
-1. [Content Security Policy](http://www.ruanyifeng.com/blog/2016/09/csp.html)
+9. [XSS 过滤绕过速查表](https://www.freebuf.com/articles/web/153055.html)
 
-1. [XSS 过滤绕过速查表](https://www.freebuf.com/articles/web/153055.html)
-
-1. [XSS 绕过方式](https://cloud.tencent.com/developer/article/1180217)
+10. [XSS 绕过方式](https://cloud.tencent.com/developer/article/1180217)
