@@ -68,7 +68,13 @@ Function.prototype.myCall = function() {
   	var context = [].shift.call(arguments);// 保存需要绑定的this上下文
     var args = [].slice.call(arguments); //剩下参数转为数组
     context.fn = this  // 保存外部的函数fn
-    var result = context.fn(...args)  // 隐式绑定 调用的外部的fn
+    //var result = context.fn(...args)  // 隐式绑定 调用的外部的fn
+  	//代替...扩展符
+  	var argsVarStr = []
+    for(var i = 0; i < args.length; i++){
+      argsVarStr.push("args[" + i +"]")
+    }
+  	var result = eval("context.fn(" + argsVarStr.toString() +")")
     delete context.fn // 删除新增属性fn
   	return result
 }
