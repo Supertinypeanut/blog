@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>常见javascript设计模式 | Peanut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="模块设计模式JS 模块化是使用最普遍的设计模式，用于保持特殊的代码块与其它组件之间互相独立。为支持结构良好的代码提供了松耦合。 对于熟悉面向对象的开发者来说，模块就是 JS 的 “类”。封装是“类”的众多优点之一，可以确保它本身的状态和行为不被其它的类访问到。模块设计模式有公有和私有两种访问级别（除此之外，还有比较少为人知的保护级别、特权级别）。 考虑到私有的作用域，模块应该是一个立即调用函数（I">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常见javascript设计模式">
+<meta property="og:url" content="https://supertinypeanut.github.io/blog/2020/02/08/designModel/index.html">
+<meta property="og:site_name" content="Peanut">
+<meta property="og:description" content="模块设计模式JS 模块化是使用最普遍的设计模式，用于保持特殊的代码块与其它组件之间互相独立。为支持结构良好的代码提供了松耦合。 对于熟悉面向对象的开发者来说，模块就是 JS 的 “类”。封装是“类”的众多优点之一，可以确保它本身的状态和行为不被其它的类访问到。模块设计模式有公有和私有两种访问级别（除此之外，还有比较少为人知的保护级别、特权级别）。 考虑到私有的作用域，模块应该是一个立即调用函数（I">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//640.jpeg">
+<meta property="article:published_time" content="2020-02-08T15:53:00.000Z">
+<meta property="article:modified_time" content="2021-03-23T16:40:13.725Z">
+<meta property="article:author" content="Super Peanut">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://supertinypeanut.github.io/blog/.io//640.jpeg">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="Peanut" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/blog/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">Peanut</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/blog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://supertinypeanut.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-designModel" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2020/02/08/designModel/" class="article-date">
+  <time datetime="2020-02-08T15:53:00.000Z" itemprop="datePublished">2020-02-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      常见javascript设计模式
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="模块设计模式"><a href="#模块设计模式" class="headerlink" title="模块设计模式"></a>模块设计模式</h5><p>JS 模块化是使用最普遍的设计模式，用于保持特殊的代码块与其它组件之间互相独立。为支持结构良好的代码提供了松耦合。</p>
+<p>对于熟悉面向对象的开发者来说，模块就是 JS 的 “类”。封装是“类”的众多优点之一，可以确保它本身的状态和行为不被其它的类访问到。模块设计模式有公有和私有两种访问级别（除此之外，还有比较少为人知的保护级别、特权级别）。</p>
+<p>考虑到私有的作用域，模块应该是一个立即调用函数（IIFE) ，也就是说，它是一个保护其私有变量和方法的闭包。（然而，它返回的却不是一个函数，而是一个对象）。</p>
+<p>这种模式我们可以通过即行函数 IIFE（immediately-invoked function expression)、闭包和函数作用域来模拟，例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> myModule = (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> privateVariable = <span class="string">"Hello World"</span>;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">privateMethod</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(privateVariable);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    publicMethod: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      privateMethod();</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line">myModule.publicMethod();</span><br></pre></td></tr></table></figure>
+
+<p>代码是即行函数的方法，通过立即执行函数，并把返回结果指向了 myModule 变量。由于闭包、返回的对象仍然可以访问定义在即行函数内的函数和变量，当然这些操作是在执行完即行函数产生实例之后了。我们可以看到，变量和方法被定义在即行函数内部，对于模块外部的作用域来说即达到了 private 的效果。</p>
+<h5 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h5><p>工厂模式是一种使用工厂函数来创建对象的设计模式，该模式不用指定被创建对象准确的类或者构造函数。这种模式通常用来去创建一些不用暴露实例化逻辑的对象。例如我们可以根据依赖对象中传递的不同实例化条件来动态生成所需要的对象：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(options) &#123;</span><br><span class="line">    <span class="keyword">this</span>.doors = options.doors || <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">this</span>.state = options.state || <span class="string">"brand new"</span>;</span><br><span class="line">    <span class="keyword">this</span>.color = options.color || <span class="string">"white"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Truck</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(options) &#123;</span><br><span class="line">    <span class="keyword">this</span>.doors = options.doors || <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">this</span>.state = options.state || <span class="string">"used"</span>;</span><br><span class="line">    <span class="keyword">this</span>.color = options.color || <span class="string">"black"</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">VehicleFactory</span> </span>&#123;</span><br><span class="line">  createVehicle(options) &#123;</span><br><span class="line">    <span class="keyword">if</span> (options.vehicleType === <span class="string">"car"</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> Car(options);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (options.vehicleType === <span class="string">"truck"</span>) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> Truck(options);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里我分别定义了一个 Car 和一个 Truck 类，并给对象添加了默认值，这 2 个类分别用来创建各自的 car 和 truck 对象。然后我定义了一个 VehicleFactory 类，根据 options 对象中 vehicleType 属性来创建和返回新的对象。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> factory = <span class="keyword">new</span> VehicleFactory();</span><br><span class="line"><span class="keyword">const</span> car = factory.createVehicle(&#123;</span><br><span class="line">  vehicleType: <span class="string">"car"</span>,</span><br><span class="line">  doors: <span class="number">4</span>,</span><br><span class="line">  color: <span class="string">"silver"</span>,</span><br><span class="line">  state: <span class="string">"Brand New"</span>,</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">const</span> truck = factory.createVehicle(&#123;</span><br><span class="line">  vehicleType: <span class="string">"truck"</span>,</span><br><span class="line">  doors: <span class="number">2</span>,</span><br><span class="line">  color: <span class="string">"white"</span>,</span><br><span class="line">  state: <span class="string">"used"</span>,</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// Prints Car &#123;doors: 4, state: "Brand New", color: "silver"&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(car);</span><br><span class="line"><span class="comment">// Prints Truck &#123;doors: 2, state: "used", color: "white"&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(truck);</span><br></pre></td></tr></table></figure>
+
+<p>这里我用 VehicleFactory 类创建了一个工厂对象，然后分别指定两个 options 对象 vehicleType 属性的值为 car 和 truck，通过 factory.createVehicle 方法分别创建了 Car 和 Truck 对象。</p>
+<h5 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h5><p>很多时候，当应用的一部分改变了，另一部分也需要相应更新。在 AngularJs 里面，如果 $scope 被更新，就会触发一个事件去通知其他组件。结合观察这模式就是：如果一个对象改变了，它只要派发 broadcasts 事件通知依赖的对象它已经改变了则可。</p>
+<p>观察者模式主要应用于对象之间一对多的依赖关系，当一个对象发生改变时，多个对该对象有依赖的其他对象也会跟着做出相应改变，这就非常适合用观察者模式来实现。使用观察者模式可以根据需要增加或删除对象，解决一对多对象间的耦合关系，使程序更易于扩展和维护。</p>
+<p>又一个典型的例子就是 model-view-controller (MVC) 架构了；当 model 改变时， 更新相应的 view。这样做有一个好处，就是从 model 上解耦出 view 来减少依赖。</p>
+<p>实现一个观察者模式至少要包含 2 个角色如下图 UML 图中所示：Subject 和 Observer 对象 。</p>
+<p><img src="/blog/.io//640.jpeg" alt="img"></p>
+<p>下面我们使用 JavaScript 来实现上图的观察者模式。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Subject = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> observers = [];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    subscribeObserver: <span class="function"><span class="keyword">function</span> (<span class="params">observer</span>) </span>&#123;</span><br><span class="line">      observers.push(observer);</span><br><span class="line">    &#125;,</span><br><span class="line">    unsubscribeObserver: <span class="function"><span class="keyword">function</span> (<span class="params">observer</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> index = observers.indexOf(observer);</span><br><span class="line">      <span class="keyword">if</span> (index &gt; <span class="number">-1</span>) &#123;</span><br><span class="line">        observers.splice(index, <span class="number">1</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    notifyObserver: <span class="function"><span class="keyword">function</span> (<span class="params">observer</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> index = observers.indexOf(observer);</span><br><span class="line">      <span class="keyword">if</span> (index &gt; <span class="number">-1</span>) &#123;</span><br><span class="line">        observers[index].notify(index);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    notifyAllObservers: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; observers.length; i++) &#123;</span><br><span class="line">        observers[i].notify(i);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Observer = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    notify: <span class="function"><span class="keyword">function</span> (<span class="params">index</span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">"Observer "</span> + index + <span class="string">" is notified!"</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>上面的代码我们实现了 Subject 对象，在其内部声明了一个 observers 数组用来存储注册的 observer 对象。下面让我们来使用这两个对象</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> subject = <span class="keyword">new</span> Subject();</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> observer1 = <span class="keyword">new</span> Observer();</span><br><span class="line"><span class="keyword">var</span> observer2 = <span class="keyword">new</span> Observer();</span><br><span class="line"><span class="keyword">var</span> observer3 = <span class="keyword">new</span> Observer();</span><br><span class="line"><span class="keyword">var</span> observer4 = <span class="keyword">new</span> Observer();</span><br><span class="line"></span><br><span class="line">subject.subscribeObserver(observer1);</span><br><span class="line">subject.subscribeObserver(observer2);</span><br><span class="line">subject.subscribeObserver(observer3);</span><br><span class="line">subject.subscribeObserver(observer4);</span><br><span class="line"></span><br><span class="line">subject.notifyObserver(observer2); <span class="comment">// Observer 2 is notified!</span></span><br><span class="line"></span><br><span class="line">subject.notifyAllObservers();</span><br><span class="line"><span class="comment">// Observer 1 is notified!</span></span><br><span class="line"><span class="comment">// Observer 2 is notified!</span></span><br><span class="line"><span class="comment">// Observer 3 is notified!</span></span><br><span class="line"><span class="comment">// Observer 4 is notified!</span></span><br></pre></td></tr></table></figure>
+
+<p>以上实现了一个简单的设计者模式，先使用 subjectsubscribeObserver(observer)注册以后要通知的观察者对象，当我们想通知注册好的观察者对象时，只需要使用 subject.notifyObserver(observer)即可</p>
+<h5 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h5><p>单例模式只允许实例化一个对象，但是相同的对象，会用很多个实例。单例模式制约着客户端创建多个对象。第一个对象创建后，就返回实例本身。</p>
+<p>JavaScript 语言本身就是支持单例模式的，不过我们一般并不称它为单例模式，我们通常叫它字面量对象，例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> user = &#123;</span><br><span class="line">  name: <span class="string">"Peter"</span>,</span><br><span class="line">  age: <span class="number">25</span>,</span><br><span class="line">  job: <span class="string">"Teacher"</span>,</span><br><span class="line">  greet: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"Hello!"</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>JavaScript 中的每个对象在内存中都是唯一的，当我们调用 User 对象时，实质上也是返回的对象引用地址。</p>
+<p>假如我们想要拷贝某个对象到另外一个变量，并且修改变量，该如何办呢？如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> user1 = user;</span><br><span class="line">user1.name = <span class="string">"Mark"</span>;</span><br></pre></td></tr></table></figure>
+
+<p>我们会得到结果是两个对象的 name 都被修改了, 因为赋值的时候是引用赋值，而不是值赋值。所以内存中只有一份对象。请看：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// prints 'Mark'</span></span><br><span class="line"><span class="built_in">console</span>.log(user.name);</span><br><span class="line"><span class="comment">// prints 'Mark'</span></span><br><span class="line"><span class="built_in">console</span>.log(user1.name);</span><br><span class="line"><span class="comment">// prints true</span></span><br><span class="line"><span class="built_in">console</span>.log(user === user1);</span><br></pre></td></tr></table></figure>
+
+<p>单例模式可以通过构造函数来实现，看代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> printer = (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> printerInstance;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">create</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      turnOn: <span class="function"><span class="keyword">function</span> <span class="title">turnOn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"working"</span>);</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    getInstance: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (!printerInstance) &#123;</span><br><span class="line">        printerInstance = create();</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> printerInstance;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line">printer.getInstance().turnOn(); <span class="comment">// output: working</span></span><br></pre></td></tr></table></figure>
+
+<p>从上面代码我们可以看到 printer 模块提供了一个唯一外部可以访问的接口 getInstance，当第一次访问该接口时，我们先判断实例是否被创建，如果没有创建则使用 create()创建，如果已经创建则返回唯一的实例 printerInstance。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://supertinypeanut.github.io/blog/2020/02/08/designModel/" data-id="ckmm8va53000b85qsa8p9c66g" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/JavaScript/" rel="tag">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2020/02/09/arrayNotRepeat/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          数组去重
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2020/01/30/proceduralQuestions_1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Promise实现两秒打印和函数柯理化</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/ECMAScript-6/" rel="tag">ECMAScript 6</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Lint/" rel="tag">Lint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/TypeScript/" rel="tag">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Vue/" rel="tag">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Webpack/" rel="tag">Webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/npm/" rel="tag">npm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/web-%E5%AE%89%E5%85%A8/" rel="tag">web 安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/" rel="tag">前端工程化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" rel="tag">问题解决</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/blog/tags/ECMAScript-6/" style="font-size: 12.5px;">ECMAScript 6</a> <a href="/blog/tags/Git/" style="font-size: 15px;">Git</a> <a href="/blog/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/blog/tags/Lint/" style="font-size: 10px;">Lint</a> <a href="/blog/tags/React/" style="font-size: 12.5px;">React</a> <a href="/blog/tags/TypeScript/" style="font-size: 12.5px;">TypeScript</a> <a href="/blog/tags/Vue/" style="font-size: 17.5px;">Vue</a> <a href="/blog/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/blog/tags/npm/" style="font-size: 10px;">npm</a> <a href="/blog/tags/web-%E5%AE%89%E5%85%A8/" style="font-size: 15px;">web 安全</a> <a href="/blog/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/" style="font-size: 12.5px;">前端工程化</a> <a href="/blog/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" style="font-size: 15px;">问题解决</a> <a href="/blog/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 12.5px;">面试</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/09/">九月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/11/">十一月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2021/03/23/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2/">持续集成与持续部署</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2021/03/07/Promise%E5%AE%9E%E7%8E%B0/">Promise实现</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2021/03/03/ES6%E9%9D%A2%E8%AF%95%E9%A2%98/">ES6面试题</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2021/01/25/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/">自动化测试</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2020/12/27/async-validator%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">async-validator基本使用</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Super Peanut<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+
+  
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

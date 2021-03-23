@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>持续集成与持续部署 | Peanut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="为什么需要CI&#x2F;CD传统的开发过程中的坑：  BUG总是在最后才发现 越到项目后期，加班越严重 交付无法保障 变更频繁导致效率低下 无效的等待多，用户满足度低   持续集成解决了什么问题？  提高软件质量 效率迭代 便捷部署 快速交付、便于管理  持续集成核心概念集成，就是一些孤立的事物或元素通过某种方式集中在一起，产生联系，从而构成一个有机整体的过程。知识经济的社会，集成已经成了很重要的一个名词">
+<meta property="og:type" content="article">
+<meta property="og:title" content="持续集成与持续部署">
+<meta property="og:url" content="https://supertinypeanut.github.io/blog/2021/03/23/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="Peanut">
+<meta property="og:description" content="为什么需要CI&#x2F;CD传统的开发过程中的坑：  BUG总是在最后才发现 越到项目后期，加班越严重 交付无法保障 变更频繁导致效率低下 无效的等待多，用户满足度低   持续集成解决了什么问题？  提高软件质量 效率迭代 便捷部署 快速交付、便于管理  持续集成核心概念集成，就是一些孤立的事物或元素通过某种方式集中在一起，产生联系，从而构成一个有机整体的过程。知识经济的社会，集成已经成了很重要的一个名词">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//1460000014924499.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//c5c8e6f40c7c133e22402c00bb7e1a25_hd-6510245.jpg">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//db7198e3c39e4656e18efcb4bd1b20b1_hd-6510245.jpg">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//f96f19e4d567aad5006d841963a86e41_hd-6510245.jpg">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//DevOps.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//image-20190611100501785.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//image-20190611100534676.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//image-20190611103941326.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//image-20190611163108298.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//image-20190611163727975.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//image-20190611163855257.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//70.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//70-20190611152837311.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//20181225153134962.jpeg">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//3dee2f58ccdf7cf25fa86074c5485184a9f.jpg">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//abf7ec185c847b72cd61181562f940557a2.jpg">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//image-20190612205411602.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//image-20190612212459194.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//image-20190612212731186.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//image-20190612213022380.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//image-20190612214434173.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//image-20190612214519926.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//image-20190612225000955.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//image-20190613093550553.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//image-20190613093732415.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//image-20190613094115350.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//image-20190613093327981.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//devops-hero-1-87966cfbc9c5713ae047551c7b22985c.png">
+<meta property="article:published_time" content="2021-03-23T22:11:00.000Z">
+<meta property="article:modified_time" content="2021-03-23T16:40:13.805Z">
+<meta property="article:author" content="Super Peanut">
+<meta property="article:tag" content="前端工程化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://supertinypeanut.github.io/blog/.io//1460000014924499.png">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="Peanut" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/blog/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">Peanut</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/blog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://supertinypeanut.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-持续集成与持续部署" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2021/03/23/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2/" class="article-date">
+  <time datetime="2021-03-23T22:11:00.000Z" itemprop="datePublished">2021-03-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      持续集成与持续部署
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="为什么需要CI-CD"><a href="#为什么需要CI-CD" class="headerlink" title="为什么需要CI/CD"></a>为什么需要CI/CD</h2><p><strong>传统的开发过程中的坑：</strong></p>
+<ul>
+<li>BUG总是在最后才发现</li>
+<li>越到项目后期，加班越严重</li>
+<li>交付无法保障</li>
+<li>变更频繁导致效率低下</li>
+<li>无效的等待多，用户满足度低</li>
+</ul>
+<p><img src="/blog/.io//1460000014924499.png" alt="img"></p>
+<p><strong>持续集成解决了什么问题？</strong></p>
+<ul>
+<li>提高软件质量</li>
+<li>效率迭代</li>
+<li>便捷部署</li>
+<li>快速交付、便于管理</li>
+</ul>
+<h2 id="持续集成"><a href="#持续集成" class="headerlink" title="持续集成"></a>持续集成</h2><h3 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h3><p><strong>集成，就是一些孤立的事物或元素通过某种方式集中在一起，产生联系，从而构成一个有机整体的过程</strong>。知识经济的社会，集成已经成了很重要的一个名词。各行各业基本都会用到集成。比如汽车行业，那么复杂的一台跑车愣是通过一大堆零件组装起来。对于这些传统行业，它们在研发成功以后，可以通过流水线的方法批量生产进行集成。而在软件行业中，集成并不是一个简单的“搬箱子”的过程。因为软件工业是一个知识生产活动，其内在逻辑非常复杂，需求又很难一次性确定，完成的产品与最初的设计往往相差很远。敏捷宣言中就有一条是说响应变化重于遵循计划。而且由于软件行业的迅猛发展，软件变的越来越复杂，单靠个人是根本无法完成。大型软件为了重用及解耦，往往还需要分成好几个模块，这样集成就成了软件开发中不可或缺的一部分。</p>
+<p>持续，不言而喻，就是指<strong>长期的对项目代码进行集成。</strong></p>
+<h4 id="持续集成-1"><a href="#持续集成-1" class="headerlink" title="持续集成"></a>持续集成</h4><p>持续集成（英文：Continuous Integration，简称CI）</p>
+<p>在软件工程中，持续集成是指将所有开发者工作副本每天多次合并到主干的做法。 </p>
+<blockquote>
+<p>Grady Booch 在1991年的 Booch method 中首次命名并提出了 CI 的概念，尽管在当时他并不主张每天多次集成。而 XP（Extreme programming，极限编程）采用了 CI 的概念，并提倡每天不止一次集成。</p>
+<p>在《持续集成》一书中，对持续集成的定义如下：<code>持续集成</code>是一种软件开发实践。在持续集成中，团队成员频繁集成他们的工作成果，一般每人每天至少集成一次,也可以多次。每次集成会经过自动构建(包括自动测试)的检验，以尽快发现集成错误。自从在团队中引入这样的实践之后，<code>Martin Fowler</code>发现这种方法可以显著减少集成引起的问题，并可以加快团队合作软件开发的速度。</p>
+</blockquote>
+<p><img src="/blog/.io//c5c8e6f40c7c133e22402c00bb7e1a25_hd-6510245.jpg" alt="img"></p>
+<p>持续集成强调开发人员提交了新代码之后，立刻进行构建、（单元）测试。根据测试结果，我们可以确定新代码和原有代码能否正确地集成在一起。</p>
+<p>对于一天需要集成多少次数，并没有一个明确的定义。一般就是按照自己项目的实际需要来设置一定的频率，少则可能几次，多则可能达几十次。可以设置按照代码的变更来触发集成，或者设置一个固定时间周期来集成，也可以手工点击集成的按钮来“一键集成”。</p>
+<h4 id="持续交付"><a href="#持续交付" class="headerlink" title="持续交付"></a>持续交付</h4><p>持续交付（英文：Continuous Delivery，简称CD）</p>
+<p>完成 CI 中构建及单元测试和集成测试的自动化流程后，持续交付可自动将已验证的代码发布到存储库。为了实现高效的持续交付流程，务必要确保 CI 已内置于开发管道。持续交付的目标是拥有一个可随时部署到生产环境的代码库。</p>
+<p><img src="/blog/.io//db7198e3c39e4656e18efcb4bd1b20b1_hd-6510245.jpg" alt="img"></p>
+<p>在持续交付中，每个阶段（从代码更改的合并，到生产就绪型构建版本的交付）都涉及测试自动化和代码发布自动化。在流程结束时，运维团队可以快速、轻松地将应用部署到生产环境中。</p>
+<p>比如，我们完成单元测试后，可以把代码部署到连接数据库的 Staging 环境中更多的测试。如果代码没有问题，可以继续<code>手动</code>部署到生产环境中。</p>
+<h4 id="持续部署"><a href="#持续部署" class="headerlink" title="持续部署"></a>持续部署</h4><p>持续部署（英文：Continuous Deployment，简称CD）</p>
+<p>对于一个成熟的 CI/CD 管道来说，最后的阶段是持续部署。作为持续交付——自动将生产就绪型构建版本发布到代码存储库——的延伸，持续部署可以自动将应用发布到生产环境。由于在生产之前的管道阶段没有手动门控，因此持续部署在很大程度上都得依赖精心设计的测试自动化。</p>
+<p><img src="/blog/.io//f96f19e4d567aad5006d841963a86e41_hd-6510245.jpg" alt="img"></p>
+<p>实际上，持续部署意味着开发人员对应用的更改在编写后的几分钟内就能生效（假设它通过了自动化测试）。这更加便于持续接收和整合用户反馈。总而言之，所有这些 CI/CD 的关联步骤都有助于降低应用的部署风险，因此更便于以小件的方式（而非一次性）发布对应用的更改。不过，由于还需要编写自动化测试以适应 CI/CD 管道中的各种测试和发布阶段，因此前期投资还是会很大。</p>
+<p>持续部署则是在持续交付的基础上，把部署到生产环境的过程<code>自动化</code>。</p>
+<h3 id="持续集成组成要素"><a href="#持续集成组成要素" class="headerlink" title="持续集成组成要素"></a>持续集成组成要素</h3><p><strong>一个最小化的持续集成系统需要包含以下几个要素：</strong></p>
+<ol>
+<li><strong>版本管理系统：</strong>项目的源代码需要托管到适合的版本管理系统中，一般我们使用git作为版本控制库，版本管理软件可以使用github、<code>gitlab</code>、stash等。</li>
+<li><strong>构建脚本&amp;工具：</strong>每个项目都需要有构建脚本来实现对整个项目的自动化构建。比如Java的项目就可以使用gradle作为构建工具。通过构建工具实现对编译、静态扫描、运行测试、样式检查、打包、发布等活动串起来，可以通过命令行自动执行。</li>
+<li><strong>CI服务器：</strong>CI服务器可以检测项目中的代码变动，并及时的通过构建机器运行构建脚本，并将集成结果通过某种方式反馈给团队成员。</li>
+</ol>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><ul>
+<li><p>打包平台</p>
+<p>常见的打包，Java应用（Gradle/Maven）、Nodejs前端应用(npm/yarn)</p>
+<p>移动端打包：Android/iOS</p>
+</li>
+<li><p>测试平台</p>
+<p>接口测试</p>
+<p>自动化测试Robotium、Testlink</p>
+<p>单元测试junit</p>
+<p>性能测试Jmeter</p>
+</li>
+<li><p>自动部署</p>
+<p>FTP</p>
+<p>Shell</p>
+<p>Tomcat/Dokcer</p>
+<p>Kubernetes/Rancher/Cluster</p>
+</li>
+<li><p>持续集成</p>
+<p>Git: gitlab github gitee等</p>
+<p>Jenkins/TravisCi/CircleCI</p>
+<p>Docker</p>
+</li>
+</ul>
+<h3 id="工作流"><a href="#工作流" class="headerlink" title="工作流"></a>工作流</h3><h4 id="传统的工作流"><a href="#传统的工作流" class="headerlink" title="传统的工作流"></a>传统的工作流</h4><p>参与人员：开发、项目经理、测试</p>
+<p>主要流程：</p>
+<ul>
+<li>项目一开始是先划分好模块，<code>分配模块</code>给相应的开发人员；</li>
+<li>开发人员<code>开发好</code>一个模块就进行<code>单元测试</code>；</li>
+<li>等所有的模块都开发完成之后，由项目经理对<code>所有代码进行集成</code>；</li>
+<li>集成后的项目由项目经理<code>部署到测试服务器</code>上，被交由测试人员进行集成测试；</li>
+<li>测试过程中出现 Bug 就提把问题<code>记录</code>进行 <code>Bug</code> 列表中；</li>
+<li><code>项目经理分配 Bug</code> 给相应的责任人进行修改；</li>
+<li>修改完成后，项目经理<code>再次</code>对项目进行集成，并<code>部署</code>到测试服务器上；</li>
+<li>测试人员在下一次的集成测试中进行<code>回归测试</code>；</li>
+<li>通过通过之后就<code>部署到生产环境</code>中；</li>
+<li>如果测试不通过，则重复上述“分配 Bug -&gt; 修改 Bug -&gt; 集成代码 -&gt; 部署到测试服务器上 -&gt; 集成测试”工作。</li>
+</ul>
+<blockquote>
+<p>这也是传统的瀑布式开发模型，请参考：<a href="https://www.cnblogs.com/-OYK/archive/2012/10/08/2714669.html" target="_blank" rel="noopener">软件开发模式对比(瀑布、迭代、螺旋、敏捷)</a></p>
+</blockquote>
+<p>带来的问题：</p>
+<ol>
+<li><p><strong>重复性劳动，无效的等待变多</strong></p>
+<p>重复的进行发布部署。</p>
+<p>流程上：有可能开发在等集成其他人的模块；测试人员在等待开发人员修复 Bug；产品经理在等待新版本上线好给客户做演示；项目经理在等待其他人提交代码。不管怎么样，等待意味低效。</p>
+<p>自动化部署工作可以解放了集成、测试、部署等重复性劳动，而且机器集成的频率明显可以比手工的高很多。</p>
+</li>
+<li><p><strong>很晚才发现缺陷，并且难以修复</strong>。</p>
+<p>实践证明，缺陷发现的越晚，需要修复的时间和精力也就越大。从上一个可工作的软件到发现缺陷之间可能存在很多次提交，而要从这些提交中找出问题并修复的成本会很大，因为开发人员需要回忆每个提交的上下文来评估影响点。</p>
+</li>
+<li><p><strong>低品质的软件，软件交付时机无法保障</strong></p>
+<p>由于集成时每次包含的代码很多，所以大家的关注点主要都是如何保证编译通过、自动化测试通过，而往往很容易忽略代码是否遵守了编码规范、是否包含有重复代码、是否有重构的空间等问题。而这些问题又反过来会影响今后的开发和集成，久而久之集成变得越来越困难，软件的质量可想而知。</p>
+</li>
+<li><p><strong>项目缺少可见性</strong></p>
+<p>某些项目，程序会经常需要变更，特别是敏捷开发的实践者。由于产品经理在与客户交流过程中，往往实际的软件就是最好的原型，所以软件会被当作原型作为跟客户交流的工具。当然，客户最希望的当然是客户的想法能够马上反映到原型上，这会导致程序会经常被修改的。那么也就意味着“分配 Bug -&gt; 修改 Bug -&gt; 集成代码 -&gt; 部署到测试服务器上 -&gt; 集成测试”工作无形又爆增了。</p>
+</li>
+</ol>
+<h4 id="常见的工作流"><a href="#常见的工作流" class="headerlink" title="常见的工作流"></a>常见的工作流</h4><p><img src="/blog/.io//DevOps.png" alt="DevOps"></p>
+<p>该系统的各个组成部分是按如下顺序来发挥作用的：</p>
+<ol>
+<li><p>开发者检入代码到源代码仓库。</p>
+</li>
+<li><p>CI系统会为每一个项目创建了一个单独的工作区。当预设或请求一次新的构建时，它将把源代码仓库的源码存放到对应的工作区。</p>
+</li>
+<li><p>CI系统会在对应的工作区内执行构建过程。</p>
+</li>
+<li><p>配置如果存在）构建完成后，CI系统会在一个新的构件中执行定义的一套测试。完成后触发通知(Email,RSS等等)给相关的当事人。</p>
+</li>
+<li><p>配置如果存在）如果构建成功，这个构件会被打包并转移到一个部署目标(如应用服务器)或存储为软件仓库中的一个新版本。软件仓库可以是CI系统的一部分，也可以是一个外部的仓库，诸如一个文件服务器或者像Java.net、SourceForge之类的网站。</p>
+</li>
+<li><p>CI系统通常会根据请求发起相应的操作，诸如即时构建、生成报告，或者检索一些构建好的构件。</p>
+</li>
+</ol>
+<blockquote>
+<p>“You build it, you run it”，这是 Amazon 一年可以完成 5000 万次部署，平均每个工程师每天部署超过 50 次的核心秘籍。</p>
+</blockquote>
+<h4 id="解决的问题"><a href="#解决的问题" class="headerlink" title="解决的问题"></a>解决的问题</h4><ul>
+<li><p>高效率</p>
+<p>高效率的发布，避免了重复性的劳动；</p>
+<p>更快的修复BUG，更快的交付成果，减少了等待时间。</p>
+</li>
+<li><p>高质量</p>
+<p>只有在完成集成测试、系统测试后，才能得到可用的软件，整个过程中只有最后时刻才能拿到可运行软件。集成活动不一定在一个标准的构建机器上生成，而是在某个开发人员的机器上构建的，那么可能存在在其他机器上无法运行的问题。</p>
+<p>人与机器的一个最大的区别是，在重复性动作上，人容易犯错，而机器犯错的几率几乎为零。所以，当我们搭建完成集成服务器后，以后的事就交给集成服务器来打理吧。</p>
+</li>
+<li><p>高产出</p>
+<p>快速开发和上市一个新产品，并快速取得预期的投资回报是每个企业孜孜以求的目标。</p>
+<p>便捷的部署+项目的可预期，使得团队的开发变成了一种开心的事情。</p>
+<p>持续集成可以让你在任何时间发布可以部署的软件。在外界看来，这是持续集成最明显的好处，对客户来说，可以部署的软件产品是最实际的资产。利用持续集成，你可以经常对源代码进行一些小改动，并将这些改动和其他代码进行集成。</p>
+</li>
+</ul>
+<h4 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h4><ol>
+<li><p>思维转变后，新技术抵触</p>
+<ul>
+<li>无法接受新事物：不管怎么样，求稳心态的人还是多。总是有人认为老的技术代表稳定，新的事物往往会带来问题。</li>
+<li>认为手工集成也没有多少工作量：不是所有的人都参与到了整个持续集成的环节，所以没有办法认识到问题全貌。</li>
+</ul>
+<p><strong>针对这个问题，可以通过设置一定的持续集成技术培训、宣讲得到改观</strong></p>
+</li>
+<li><p>管理层的抵触</p>
+<ul>
+<li>培训持续集成需要投入资金啊，没钱。</li>
+<li>持续集成服务器要增加软硬件成本啊，没钱。</li>
+<li>开发人员领了那么高的工资，多干活多加班应该啊。</li>
+</ul>
+<p><strong>针对这一点，可以从开发人员的成本和持续集成的投入（软硬件）的成本上两者做下估算。</strong></p>
+<blockquote>
+<p>硬件参考：</p>
+<p>Jenkins主服务器一般2C4G，slave服务器根据生产需要进行选购。</p>
+<p>git服务器一般2C4G(10人团队)</p>
+<p>Docker服务器8C32G(Rancher + harbor)</p>
+</blockquote>
+</li>
+<li><p>生产环境的复杂</p>
+<ul>
+<li>比如部署的生成环境是在政务外网，无法从互联网直接访问等。</li>
+<li>构建效率低下，任务多 </li>
+</ul>
+<p>目前，这个是最麻烦的，还在研究中。初步设想是让政务外网开辟一个白名单，给持续集成服务器设置一个单独的通道。只是思路，未验证。</p>
+</li>
+</ol>
+<h4 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h4><p>实施持续集成的开发人员可以尽早并经常提交。这允许他们尽早发现冲突。并且，如果存在任何问题，则使用较小的提交可以更轻松地对代码进行故障排除。每天或甚至更频繁地提交软件对于持续集成是必要的，但还不够。</p>
+<p>要成功使用持续集成，团队必须：</p>
+<ul>
+<li><p>使测试成为开发过程中不可或缺的一部分。应该在创建代码时编写测试。</p>
+<p>公司成功持续整合所需的最重要因素是严格的测试文化。为了将新代码自信地集成到主线中，团队需要确信代码是健全的。这是通过测试来实现的，这应该定期进行。工程师应该在开发每个功能时编写测试。</p>
+</li>
+<li><p>确保测试环境反映生产一致。</p>
+<p>为了支持您严格的测试文化，测试环境必须反映生产环境。否则，您无法保证您正在测试的内容将在生产中起作用。这意味着测试环境应使用相同版本的数据库，Web服务器配置，工件等。</p>
+</li>
+<li><p>使用编码最佳实践，例如结对编程。</p>
+<p>软件开发的另一个最佳实践是在编码期间进行配对。对于更复杂的功能，团队在编写单行代码之前讨论体系结构方法。在将任何代码合并到生产环境之前，其他开发人员始终会检查代码。这有助于确保使用编码最佳实践，代码不会与其他开发人员正在处理的现有代码或代码冲突，并且新功能是可扩展的。</p>
+<blockquote>
+<p><strong>Pair programming</strong> is an <a href="https://en.wikipedia.org/wiki/Agile_software_development" target="_blank" rel="noopener">agile software development</a> technique in which two <a href="https://en.wikipedia.org/wiki/Computer_programmer" target="_blank" rel="noopener">programmers</a> work together at one workstation. One, the <em>driver</em>, writes <a href="https://en.wikipedia.org/wiki/Source_code" target="_blank" rel="noopener">code</a> while the other, the <em>observer</em> or <em>navigator</em>,<a href="https://en.wikipedia.org/wiki/Pair_programming#cite_note-1" target="_blank" rel="noopener">[1]</a> <a href="https://en.wikipedia.org/wiki/Code_review" target="_blank" rel="noopener">reviews</a> each line of code as it is typed in. The two programmers switch roles frequently.</p>
+<p>While reviewing, the observer also considers the “strategic” direction of the work, coming up with ideas for improvements and likely future problems to address. This is intended to free the driver to focus all of their attention on the “tactical” aspects of completing the current task, using the observer as a safety net and guide.</p>
+</blockquote>
+</li>
+<li><p>自动化部署工作流程。</p>
+<p>最后，为确保整个软件开发流程快速高效，构建需要快速，部署工作流程应自动化。代码构建的每一分钟都浪费了一分钟。通过自动化部署工作流程，团队可以更快地将完成的代码生成。因为，毕竟，如果没有接触到客户，那么快速开发软件有什么意义呢？</p>
+</li>
+</ul>
+<h3 id="效率工具对比"><a href="#效率工具对比" class="headerlink" title="效率工具对比"></a>效率工具对比</h3><p><a href="#复杂的DevOps相关工具">点击查看</a>效率工具</p>
+<p><strong>1. Jenkins</strong></p>
+<blockquote>
+<p>Jenkins，原名Hudson，2011年改为现在的名字，它 是一个开源的实现持续集成的软件工具。官方网站：<a href="http://jenkins-ci.org/" target="_blank" rel="noopener">http://jenkins-ci.org/</a>。</p>
+<p>Jenkins 能实时<strong>监控集成中存在的错误</strong>，提供<strong>详细的日志文件和提醒</strong>功能，还能用图表的形式形象地展示<strong>项目构建的趋势和稳定性</strong>。</p>
+</blockquote>
+<p><strong>Jenkins特点:</strong></p>
+<ul>
+<li><strong>易安装</strong>：Jenkins是一个独立的基于Java的程序，随时可以运行，包含Windows，Mac OS X和其他类Unix操作系统的软件包。仅仅一个 java -jar jenkins.war，从官网下载该文件后，直接运行，无需额外的安装，更无需安装数据库；</li>
+<li><strong>易配置</strong>：提供友好的GUI配置界面；</li>
+<li><strong>变更支持</strong>：Jenkins能从代码仓库（Subversion/CVS）中获取并产生代码更新列表并输出到编译输出信息中；</li>
+<li><strong>支持永久链接</strong>：用户是通过web来访问Jenkins的，而这些web页面的链接地址都是永久链接地址，因此，你可以在各种文档中直接使用该链接；</li>
+<li><strong>集成E-Mail/RSS/IM：</strong>当完成一次集成时，可通过这些工具实时告诉你集成结果（据我所知，构建一次集成需要花费一定时间，有了这个功能，你就可以在等待结果过程中，干别的事情）；</li>
+<li><strong>JUnit/TestNG测试报告</strong>：也就是用以图表等形式提供详细的测试报表功能；</li>
+<li><strong>支持分布式构建</strong>：Jenkins可以把<strong>集成构建等工作分发到多台计算机中完成</strong>；</li>
+<li><strong>文件指纹信息</strong>：Jenkins会保存哪次集成构建产生了哪些jars文件，哪一次集成构建使用了哪个版本的jars文件等构建记录；</li>
+<li><strong>支持第三方插件</strong>：使得 Jenkins 变得越来越强大；凭借更新中心中的数百个插件，Jenkins几乎集成了持续集成和持续交付工具链中的所有工具。</li>
+<li><strong>Rest API</strong> - 可以访问控制您获取的数据量，获取/更新config.xml，删除作业，检索所有构建，获取/更新作业说明，执行构建，禁用/启用作业</li>
+</ul>
+<p><strong>Jenkins优点：</strong></p>
+<ul>
+<li>价格（免费）</li>
+<li>定制</li>
+<li>插件系统</li>
+<li>完全控制系统</li>
+</ul>
+<p><strong>Jenkins缺点：</strong></p>
+<ul>
+<li>需要专用服务器（或多个服务器）。这导致额外的费用。对于服务器本身，DevOps等…</li>
+<li>配置/定制所需的时间</li>
+</ul>
+<p><strong>2. Travis CI</strong></p>
+<p><strong>Travis CI</strong>是一个托管的持续集成服务，用于构建和测试在GitHub上托管的软件项目。</p>
+<blockquote>
+<p><strong>Travis CI</strong> is a hosted continuous integration service used to build and test software projects hosted at GitHub</p>
+</blockquote>
+<p><strong>Travis CI的特点：</strong></p>
+<ul>
+<li><p>基于云：TravisCI是一个<strong>基于云</strong>的系统 - 不需要专用服务器，您无需管理它。</p>
+</li>
+<li><p>支持Docker运行测试</p>
+</li>
+<li><p>使用YAML文件进行配置</p>
+</li>
+<li><p>可选择Linux和Mac OSX上同时运行测试</p>
+</li>
+<li><p>开箱即用的支持的语言</p>
+<p>Android，C，C＃，C ++，Clojure，Crystal，D，Dart，Erlang，Elixir，F＃，Go，Groovy，Haskell，Haxe，Java，JavaScript（使用Node.js），Julia，Objective-C，Perl，Perl6， PHP，Python，R，Ruby，Rust，Scala，Smalltalk，Visual Basic</p>
+</li>
+<li><p><strong>支持多环境构建矩阵</strong>：如Python 2.7 , 3.4, 3.5 +  Django 1.8, 1.9, 1.10</p>
+<p>构建矩阵是一种工具，可以使用不同版本的语言和包运行测试。您可以以不同的方式自定义它。例如，某些环境的失败可以触发通知但不会使所有构建失败（这对包的开发版本有帮助）</p>
+</li>
+</ul>
+<p><strong>Travis CI优点：</strong></p>
+<ul>
+<li>开箱即用构建矩阵</li>
+<li>快速启动</li>
+<li>轻量级YAML配置</li>
+<li>开源项目的免费计划</li>
+<li>无需专用服务器</li>
+</ul>
+<p><strong>Travis CI缺点：</strong></p>
+<ul>
+<li>与CircleCI相比，价格更高，没有免费的企业计划</li>
+<li>定制（对于某些你需要第三方的东西）</li>
+</ul>
+<p><strong>3. Circle CI</strong></p>
+<p>在GitHub或Bitbucket上的软件存储库被授权并作为项目添加到<a href="https://circleci.com/" target="_blank" rel="noopener">circleci.com之后</a>，每个代码更改都会在干净的容器或VM中触发自动化测试。</p>
+<p>CircleCI在2017年被Forrester评为持续集成领导者，并被命名为多个最佳DevOps工具列表。CircleCI成立于2011年，总部位于旧金山，拥有全球性的远程员工队伍，由Scale Venture Partners，DFJ，Baseline Ventures，Top Tier Capital，Industry Ventures，Heavybit和Harrison Metal Capital提供风险投资。</p>
+<p><strong>Circle CI的特点：</strong></p>
+<ul>
+<li><strong>云&amp;本地化</strong>：CircleCI是一个<strong>基于云</strong>的系统 - 不需要专用服务器，您无需管理它。 但是，它还<strong>提供了一个本地解决方案</strong>，允许您在私有云或数据中心中运行它。</li>
+<li><strong>商业&amp;免费</strong>：即使是商业帐户，它也<strong>有免费计划</strong></li>
+<li><strong>Rest API</strong> - 您可以访问项目，构建和工件（artifacts）。构建的结果将是工件或工件组。 工件可以是已编译的应用程序或可执行文件（例如，android APK）或元数据（例如，关于测试`成功的信息）</li>
+<li><strong>按需安装</strong>：CircleCI 缓存<strong>必要的安装</strong>（requirements installation）。 它会检查第三方依赖项，而不是持续安装所需的环境</li>
+<li><strong>SSH模式</strong>：您可以触发<strong>SSH模式</strong>访问容器并进行自己的调查（如果出现任何问题）</li>
+<li><strong>最小化配置</strong>：这是一个完整的开箱即用解决方案，需要<strong>最少的配置\调整</strong></li>
+</ul>
+<p><strong>CircleCI优点：</strong></p>
+<ul>
+<li>快速启动</li>
+<li>CircleCI有一个免费的企业项目计划</li>
+<li>这很容易，也很快开始</li>
+<li>轻量级，易读的YAML配置</li>
+<li>您不需要任何专用服务器来运行CircleCI</li>
+</ul>
+<p><strong>CircleCI缺点：</strong></p>
+<ul>
+<li><p>CircleCI仅支持2个版本的Ubuntu免费（12.04和14.04）和MacOS作为付费部分</p>
+</li>
+<li><p>尽管CircleCI可以使用并运行所有语言，但tt仅支持“开箱即用”的以下编程语言：Go（Golang），Haskell，Java，PHP，Python，Ruby / Rails，Scala</p>
+</li>
+<li><p>如果您想进行自定义，可能会出现一些问题：您可能需要一些第三方软件来进行这些调整</p>
+</li>
+<li><p>此外，虽然作为基于云的系统是一方的优势，它也可以停止支持任何软件，你将无法阻止</p>
+</li>
+</ul>
+<p>总结一下：</p>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>Jenkins</th>
+<th>Travis CI</th>
+<th>Circle CI</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>本地部署</td>
+<td>支持</td>
+<td>不支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>REST API</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>配置</td>
+<td>复杂，高度可配置</td>
+<td>YAML文件</td>
+<td>YAML文件</td>
+</tr>
+<tr>
+<td>按需安装</td>
+<td>是</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>跨平台支持</td>
+<td>是</td>
+<td>Linux + MacOS</td>
+<td>Linux + MacOS(付费)</td>
+</tr>
+<tr>
+<td>多服务器</td>
+<td>是</td>
+<td>按需</td>
+<td>否</td>
+</tr>
+<tr>
+<td>快速构建</td>
+<td>手动配置复杂</td>
+<td>快(需要写配置文件)</td>
+<td>最快</td>
+</tr>
+<tr>
+<td>基本环境</td>
+<td>Java</td>
+<td>云环境</td>
+<td>云环境</td>
+</tr>
+<tr>
+<td>费用</td>
+<td>免费</td>
+<td>特定免费(69$/c)</td>
+<td>特定免费(50$/c)</td>
+</tr>
+</tbody></table>
+<p>Travis CI的价格（非常感人）：</p>
+<p><img src="/blog/.io//image-20190611100501785.png" alt="image-20190611100501785"></p>
+<p>CirCle CI的价格：</p>
+<p><img src="/blog/.io//image-20190611100534676.png" alt="image-20190611100534676"></p>
+<p>其他的一些持续集成的工具：CruiseControl，TeamCity，Continuum等</p>
+<ul>
+<li>AnthillPro：商业的构建管理服务器，提供C功能</li>
+<li>Bamboo：商业的CI服务器，对于开源项目免费</li>
+<li>Build Forge：多功能商业构建管理工具，特点：高性能、分布式构建</li>
+<li>Cruise Control：基于java实现的持续集成构建工具</li>
+<li>CruiseControl.NET：基于C#实现的持续集成构建工具</li>
+<li>Lunt build：开源的自动化构建工具</li>
+<li>Para Build：商业的自动化软件构建管理服务器</li>
+</ul>
+<h2 id="Jenkins"><a href="#Jenkins" class="headerlink" title="Jenkins"></a>Jenkins</h2><h3 id="使用简介"><a href="#使用简介" class="headerlink" title="使用简介"></a>使用简介</h3><p>Jenkins是开源CI&amp;CD软件领导者， 提供超过1000个插件来支持构建、部署、自动化， 满足任何项目的需要。</p>
+<p><img src="/blog/.io//image-20190611103941326.png" alt="image-20190611103941326"></p>
+<p>相关概念：</p>
+<ul>
+<li><p>流水线：<strong>Jenkins Pipeline</strong>（或简称为 “Pipeline”）是一套插件，将持续交付的实现和实施集成到 Jenkins 中。</p>
+<p>Jenkins Pipeline 提供了一套可扩展的工具，用于将“简单到复杂”的交付流程实现为“持续交付即代码”。Jenkins Pipeline 的定义通常被写入到一个文本文件（称为 <code>Jenkinsfile</code> ）中，该文件可以被放入项目的源代码控制库中。</p>
+</li>
+<li><p>节点：节点是一个机器，主要用于执行jenkins任务</p>
+</li>
+<li><p>阶段：定义不同的执行任务，比如：构建、测试、发布(部署)</p>
+</li>
+<li><p>步骤：相当于告诉Jenkins现在要做些什么，比如shell命令。</p>
+</li>
+</ul>
+<p><img src="/blog/.io//image-20190611163108298.png" alt="image-20190611163108298"></p>
+<p>Jenkins的界面</p>
+<p><img src="/blog/.io//image-20190611163727975.png" alt="image-20190611163727975"></p>
+<p>任务详情页面</p>
+<p><img src="/blog/.io//image-20190611163855257.png" alt="image-20190611163855257"></p>
+<p>Jenkins任务日志</p>
+<h3 id="安装方式"><a href="#安装方式" class="headerlink" title="安装方式"></a>安装方式</h3><ol>
+<li><p>环境要求</p>
+<ul>
+<li>机器要求：<ul>
+<li>256 MB 内存，建议大于 512 MB</li>
+<li>10 GB 的硬盘空间（用于 Jenkins 和 Docker 镜像）</li>
+</ul>
+</li>
+<li>需要安装以下软件：<ul>
+<li>Java 8 ( JRE 或者 JDK 都可以)</li>
+<li><a href="https://www.docker.com/" target="_blank" rel="noopener">Docker</a> （导航到网站顶部的Get Docker链接以访问适合您平台的Docker下载）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>常规安装</p>
+<ul>
+<li><p>安装JDK</p>
+<p><a href="https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="noopener">官方地址</a></p>
+<p>下载对应的操作系统的JDK，然后解压进行安装。以Linux为例：</p>
+<p>下载最新版本，上传到Linux服务器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 上传到 /opt/jdk8目录下</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># tar解压JDK安装包</span></span><br><span class="line">mkdir -p /opt/jdk8</span><br><span class="line">tar zxvf jdk-8u211-linux-x64.tar.gz -C /opt/jdk8 --strip-components 1</span><br><span class="line"></span><br><span class="line"><span class="comment"># vi /etc/profile</span></span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/opt/jdk8</span><br><span class="line"><span class="built_in">export</span> JRE_HOME=<span class="variable">$&#123;JAVA_HOME&#125;</span>/jre</span><br><span class="line"><span class="built_in">export</span> CLASSPATH=.:<span class="variable">$&#123;JAVA_HOME&#125;</span>/lib:<span class="variable">$&#123;JRE_HOME&#125;</span>/lib</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装Jenkins</p>
+<p>下载Jenkins最新的war包：<a href="http://mirrors.jenkins.io/war-stable/latest/jenkins.war" target="_blank" rel="noopener">Latest</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /opt/jenkins &amp;&amp; <span class="built_in">cd</span> /opt/jenkins</span><br><span class="line"></span><br><span class="line">wget -O /opt/jenkins/jenkins.war http://mirrors.jenkins.io/war-stable/latest/jenkins.war</span><br><span class="line"></span><br><span class="line">java -jar jenkins.war --httpPort=8080</span><br></pre></td></tr></table></figure>
+
+<p>就嗯可以打开，<a href="http://localhost:8080了">http://localhost:8080了</a></p>
+<p>注意一段这样的话：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">*************************************************************</span><br><span class="line">*************************************************************</span><br><span class="line">*************************************************************</span><br><span class="line"></span><br><span class="line">Jenkins initial setup is required. An admin user has been created and a password generated.</span><br><span class="line">Please use the following password to proceed to installation:</span><br><span class="line"></span><br><span class="line">63196690ae7d47c49506480ee0e1af4a</span><br><span class="line"></span><br><span class="line">This may also be found at: /root/.jenkins/secrets/initialAdminPassword</span><br><span class="line"></span><br><span class="line">*************************************************************</span><br><span class="line">*************************************************************</span><br><span class="line">*************************************************************</span><br></pre></td></tr></table></figure>
+
+<p>这里的<code>63196690ae7d47c49506480ee0e1af4a</code>就是初始的安装的管理员密码。</p>
+</li>
+</ul>
+</li>
+<li><p>使用Docker安装</p>
+<ul>
+<li><p>安装Docker</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># From https://get.docker.com:</span></span><br><span class="line">curl -fsSL https://get.docker.com -o get-docker.sh</span><br><span class="line">sh get-docker.sh</span><br><span class="line"></span><br><span class="line"><span class="comment">#From https://test.docker.com:</span></span><br><span class="line">curl -fsSL https://test.docker.com -o <span class="built_in">test</span>-docker.sh</span><br><span class="line">sh <span class="built_in">test</span>-docker.sh</span><br><span class="line"></span><br><span class="line"><span class="comment"># From the source repo (This will install latest from the test channel):</span></span><br><span class="line">sh install.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置Docker镜像加速，使用阿里云<a href="https://cr.console.aliyun.com/?spm=a2c4e.11153940.blogcont29941.9.52027e29w2jv9P" target="_blank" rel="noopener">容器加速服务</a></p>
+<p>左侧的加速器帮助页面就会显示为你独立分配的加速地址</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">例如：</span><br><span class="line">公网Mirror：[系统分配前缀].mirror.aliyuncs.com</span><br></pre></td></tr></table></figure>
+
+<p>使用配置文件 <code>/etc/docker/daemon.json</code>（没有时新建该文件）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"registry-mirrors"</span>: [<span class="string">"&lt;your accelerate address&gt;"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>重启Docker Daemon就可以了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<p><code>docker ps</code> 查看容器运行状态</p>
+<p><code>docker logs 容器ID/容器名称</code> 查看管理员初始密码</p>
+</li>
+<li><p>安装Docker-compose.yml文件(可选)</p>
+<p><strong>安装方法：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#下载</span></span><br><span class="line">sudo curl -L https://github.com/docker/compose/releases/download/1.20.0/docker-compose-`uname -s`-`uname -m` -o /usr/<span class="built_in">local</span>/bin/docker-compose</span><br><span class="line"><span class="comment">#安装</span></span><br><span class="line">chmod +x /usr/<span class="built_in">local</span>/bin/docker-compose</span><br><span class="line"><span class="comment">#查看版本</span></span><br><span class="line">docker-compose --version</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><p>安装Jenkins</p>
+<p><strong>版本选择：</strong></p>
+<p>Jenkins: <a href="https://hub.docker.com/r/jenkins/jenkins/" target="_blank" rel="noopener">https://hub.docker.com/r/jenkins/jenkins/</a></p>
+<p>Jenkins with Blue Ocean: <a href="https://hub.docker.com/r/jenkinsci/blueocean" target="_blank" rel="noopener">https://hub.docker.com/r/jenkinsci/blueocean</a></p>
+<blockquote>
+<p>Blue Ocean 重新思考Jenkins的用户体验，从头开始设计<a href="https://jenkins.io/zh/doc/book/pipeline/" target="_blank" rel="noopener">Jenkins Pipeline</a>, 但仍然与自由式作业兼容，Blue Ocean减少了混乱而且进一步明确了团队中每个成员 Blue Ocean 的主要特性包括：</p>
+<ul>
+<li>持续交付(CD)Pipeline的 <strong>复杂可视化</strong> ，可以让您快速直观地理解管道状态。</li>
+<li><strong>Pipeline 编辑器</strong> - 引导用户通过直观的、可视化的过程来创建Pipeline，从而使Pipeline的创建变得平易近人。</li>
+<li><strong>个性化</strong> 以适应团队中每个成员不同角色的需求。</li>
+<li>在需要干预和/或出现问题时 <strong>精确定位</strong> 。 Blue Ocean 展示 Pipeline中需要关注的地方， 简化异常处理，提高生产力</li>
+<li><strong>本地集成分支和合并请求</strong>, 在与GitHub 和 Bitbucket中的其他人协作编码时实现最大程度的开发人员生产力。****</li>
+</ul>
+</blockquote>
+<p><strong>安装命令：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Jenkins</span></span><br><span class="line">docker run \</span><br><span class="line">  -itd \</span><br><span class="line">  -u root \</span><br><span class="line">  -p 8080:8080 \</span><br><span class="line">  -v jenkins-data:/var/jenkins_home \</span><br><span class="line">  -v /var/run/docker.sock:/var/run/docker.sock \</span><br><span class="line">  -v /usr/bin/docker:/usr/bin/docker \</span><br><span class="line">  --name jenkins-master \</span><br><span class="line">  jenkins/jenkins</span><br><span class="line">  </span><br><span class="line"><span class="comment"># Jenkins blueocean</span></span><br><span class="line">docker run \</span><br><span class="line">  -itd \</span><br><span class="line">  -u root \</span><br><span class="line">  -p 8080:8080 \</span><br><span class="line">  -v jenkins-data:/var/jenkins_home \ </span><br><span class="line">  -v /var/run/docker.sock:/var/run/docker.sock \</span><br><span class="line">  -v /usr/bin/docker:/usr/bin/docker \</span><br><span class="line">  --name jenkins-master \</span><br><span class="line">  jenkinsci/blueocean</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<ol start="4">
+<li><p>配置Jenkins插件加速</p>
+<p>进入jenkins系统管理-&gt;插件管理中-&gt;高级选项卡-&gt;升级站点，使用清华源：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/current/update-center.json</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/.io//70.png" alt="ç³»ç»ç®¡ç"></p>
+<p><img src="/blog/.io//70-20190611152837311.png" alt="æä»¶ç®¡ç"></p>
+<p>关于官方所有的镜像列表：</p>
+<p><a href="http://mirrors.jenkins-ci.org/status.html" target="_blank" rel="noopener">http://mirrors.jenkins-ci.org/status.html</a></p>
+</li>
+<li><p>环境配置</p>
+<ul>
+<li>Jenkins 的URL路径</li>
+<li>全局工具的配置：Docker, JDK(JAVA)…</li>
+</ul>
+</li>
+<li><p>用户权限配置</p>
+<ul>
+<li>矩阵权限的配置</li>
+<li>添加管理员用户所有的权限</li>
+<li>添加<a href="https://wiki.jenkins-ci.org/display/JENKINS/Authorize+Project+plugin" target="_blank" rel="noopener">Authorize Project</a>插件，并且在系统管理中进行配置。配置逻辑，就给用户当前项目的矩阵权限！</li>
+</ul>
+</li>
+<li><p>与gitlab进行联接</p>
+<ul>
+<li>设置一个SSH Key，方便Jenkins去拉取Gitlab中的项目</li>
+<li>GItlab项目中去配置SSH Key的Deploy权限。<code>Settings -&gt; Repository -&gt; Deploy keys -&gt; Public Deploy Keys</code></li>
+<li>Jenkins添加SSH的私钥</li>
+</ul>
+<p>这样就完成了Jenkins可以访问gitlab的联接的过程。</p>
+<p>Jenkins层面，需要去安装Gitlab相关插件。</p>
+</li>
+</ol>
+<h3 id="插件介绍"><a href="#插件介绍" class="headerlink" title="插件介绍"></a>插件介绍</h3><ul>
+<li><p>Publish over SSH</p>
+<p>这个是一个远程Shell工具，可以远程去执行一些shell命令</p>
+</li>
+<li><p>HTTP Request Plugin</p>
+<p>跨平台调用，在构建前后可以通过该插件以http形式调用各种api接口实现和内部系统的联动</p>
+</li>
+<li><p>Publish Over FTP</p>
+<p>用于远程使用FTP发布，比较合适于静态资源的发布。</p>
+<p><img src="/blog/.io//20181225153134962.jpeg" alt="img"></p>
+</li>
+<li><p>Performance Plugin</p>
+</li>
+</ul>
+<p>​        该插件可以读取和解析测试框架输出的报告，并且在 Jenkins 上绘制性能和稳定性相关的图表。Performance Plugin 支持的测试框架有 JUnit、JMeter, Twitter 的 Lago 和 Taurus。下图是该插件输出的示例图：</p>
+<p><img src="/blog/.io//3dee2f58ccdf7cf25fa86074c5485184a9f.jpg" alt="img"></p>
+<p>​        <a href="https://plugins.jenkins.io/performance" target="_blank" rel="noopener">https://plugins.jenkins.io/performance</a></p>
+<ul>
+<li>Gitlab Merge Request Builder Plugin</li>
+</ul>
+<p>​        Gitlab Merge Request Builder Plugin 可以方便的自动发起代码审查，它在创建 pull request 的时候，会自动带上关联任务的运行结果，以方便代码审查着确认改动的正确性。</p>
+<p>​        同时，这款插件还支持自动合并，既在代码审查通过后自动合并该 pull request 内容。</p>
+<p>​        <a href="https://github.com/timols/jenkins-gitlab-merge-request-builder-plugin" target="_blank" rel="noopener">https://github.com/timols/jenkins-gitlab-merge-request-builder-plugin</a></p>
+<ul>
+<li>JIRA Plugin</li>
+</ul>
+<p>​        JIRA Plugin 可以让 Jenkins 任务和 JIRA 集成起来，这样项目管理者可以通过 JIRA 了解项目进度，开发者也可以通过该插件直接更改 JIRA 上的 issue 状态。</p>
+<p>​        <a href="https://plugins.jenkins.io/jira" target="_blank" rel="noopener">https://plugins.jenkins.io/jira</a></p>
+<ul>
+<li>Kubernetes Plugin</li>
+</ul>
+<p>​        和最近大热的容器编排框架 Kubernetes 集成当然不能落下了。另外，Jenkins 对执行机的管理一直比较弱，无法做到快速的扩容和缩容。Kubernetes Plugin 通过引入 Kubernetes 的容器编排能力，让 Jenkins 执行机运行在 Kubernetes 环境中。</p>
+<p>​        <a href="https://github.com/jenkinsci/kubernetes-plugin" target="_blank" rel="noopener">https://github.com/jenkinsci/kubernetes-plugin</a></p>
+<ul>
+<li>Build Pipeline plugin</li>
+</ul>
+<p>​        对一个系统的持续集成会包含很多个方面，如果将它们都杂糅在一个 Jenkins 任务中，会提高排查成本，也不利于整个持续集成的运作。Build Pipeline plugin 可以让项目管理员针对系统持续集成步骤设置一系列关联的任务，任务之间可以设置不同的触发条件，以确认何时需要人工介入。该插件可以让整个持续集成流程变得非常直观：</p>
+<p><img src="/blog/.io//abf7ec185c847b72cd61181562f940557a2.jpg" alt="img"></p>
+<p>​        <a href="https://github.com/jenkinsci/build-pipeline-plugin" target="_blank" rel="noopener">https://github.com/jenkinsci/build-pipeline-plugin</a></p>
+<h3 id="配置自动化任务"><a href="#配置自动化任务" class="headerlink" title="配置自动化任务"></a>配置自动化任务</h3><p>两种执行方法：</p>
+<ol>
+<li>配置自由风格的项目</li>
+<li>配置Pipeline使用Jenkinsfile</li>
+</ol>
+<p>需要注意的地方</p>
+<ul>
+<li><p>SSH插件：</p>
+<p>SSH</p>
+<p>SSH Agent</p>
+<p>SSH Pipeline Steps</p>
+<p>Publish Over SSH</p>
+</li>
+<li><p>git相关插件：</p>
+<p>Gitlab</p>
+<p>Github</p>
+</li>
+<li><p>管理员界面配置：</p>
+<p><code>Settings -&gt; network -&gt; Outbound requests</code></p>
+<p>Allow requests to the local network from hooks and services 进行勾选</p>
+</li>
+</ul>
+<p>其他的一些用法：</p>
+<ul>
+<li>使用Jenkins配合Docker Hub，把前端代码打包成镜像，再远程部署</li>
+<li>Jenkins配合自建Docker容器服务，把前端代码打包，使用Kubernetes进行发布。</li>
+<li>使用Docker进行远程发布(远程服务器上有Docker服务，并且设置了远程连接)</li>
+</ul>
+<blockquote>
+<p>把构建、打包的工作放在Docker容器里面，用于应对不同的开发环境需求(node8，node10等)</p>
+</blockquote>
+<h3 id="前端项目中的应用"><a href="#前端项目中的应用" class="headerlink" title="前端项目中的应用"></a>前端项目中的应用</h3><p>插件推荐：</p>
+<ul>
+<li><p>nodejs插件</p>
+<p>主要是用于不同版本的Node打包</p>
+<p>特别需要注意的是，使用<code>jenkinsci/blueocean</code>镜像的同学，需要重新运行新的容器，以便nodejs插件生效。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker run \</span><br><span class="line">  -itd \</span><br><span class="line">  -u root \</span><br><span class="line">  -p 8080:8080 \</span><br><span class="line">  -v /var/jenkins_home:/var/jenkins_home \</span><br><span class="line">  -v /var/run/docker.sock:/var/run/docker.sock \</span><br><span class="line">  -v /usr/bin/docker:/usr/bin/docker \</span><br><span class="line">  --name jenkins-master \</span><br><span class="line">  jenkins/jenkins</span><br></pre></td></tr></table></figure>
+
+<p>注意：<code>docker stop 容器名称</code> 去停止之前的容器！</p>
+</li>
+<li><p>Publish Over SSH</p>
+<p>用于构建完成之后，推送到远程的web服务器</p>
+</li>
+</ul>
+<p>Jenkins发布到Nginx Docker容器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># !bin/bash</span></span><br><span class="line">node -v</span><br><span class="line">cnpm install</span><br><span class="line">npm run build</span><br><span class="line">ls -la</span><br><span class="line"><span class="keyword">if</span> [ <span class="string">"<span class="variable">$(docker inspect -f '&#123;&#123;.State.Running&#125;&#125;' nginx)</span>"</span> = <span class="string">"true"</span> ]; <span class="keyword">then</span></span><br><span class="line">	docker stop nginx &amp;&amp; docker rm nginx;</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">docker run -itd --name nginx -v `<span class="built_in">pwd</span>`/dist:/usr/share/nginx/html -p 20000:80 nginx</span><br></pre></td></tr></table></figure>
+
+
+
+<p>Pipleline演示：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">pipeline</span> <span class="string">&#123;</span></span><br><span class="line">  <span class="string">agent</span> <span class="string">&#123;</span></span><br><span class="line">    <span class="string">docker</span> <span class="string">&#123;</span></span><br><span class="line">      <span class="string">image</span> <span class="string">'node:10'</span></span><br><span class="line">      <span class="string">args</span> <span class="string">'-p 20000:8080'</span></span><br><span class="line">    <span class="string">&#125;</span></span><br><span class="line"></span><br><span class="line">  <span class="string">&#125;</span></span><br><span class="line">  <span class="string">stages</span> <span class="string">&#123;</span></span><br><span class="line">    <span class="string">stage('Build')</span> <span class="string">&#123;</span></span><br><span class="line">      <span class="string">steps</span> <span class="string">&#123;</span></span><br><span class="line">        <span class="string">sh</span> <span class="string">'yarn install'</span></span><br><span class="line">      <span class="string">&#125;</span></span><br><span class="line">    <span class="string">&#125;</span></span><br><span class="line">    <span class="string">stage('Deploy')</span> <span class="string">&#123;</span></span><br><span class="line">      <span class="string">steps</span> <span class="string">&#123;</span></span><br><span class="line">        <span class="string">sh</span> <span class="string">'./scripts/deploy.sh'</span></span><br><span class="line">        <span class="string">input</span> <span class="string">'Finished using the web site? (Click "Proceed" to continue)'</span></span><br><span class="line">        <span class="string">sh</span> <span class="string">'./scripts/kill.sh'</span></span><br><span class="line">      <span class="string">&#125;</span></span><br><span class="line">    <span class="string">&#125;</span></span><br><span class="line">  <span class="string">&#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>deploy.sh</code>文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env sh</span></span><br><span class="line"><span class="built_in">set</span> -x</span><br><span class="line">npm run serve &amp;</span><br><span class="line">sleep 1</span><br><span class="line"><span class="built_in">echo</span> $! &gt; .pidfile</span><br><span class="line"><span class="built_in">set</span> +x</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'Now...'</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'Visit http://localhost:8080 to see your Node.js/Vue application in action.'</span></span><br></pre></td></tr></table></figure>
+
+<p>set命令用法：</p>
+<p>set指令能设置所使用shell的执行方式，可依照不同的需求来做设置<br>　<code>-a</code> 　标示已修改的变量，以供输出至环境变量。<br>　<code>-b</code> 　使被中止的后台程序立刻回报执行状态。<br>　<code>-C</code> 　转向所产生的文件无法覆盖已存在的文件。<br>　<code>-d</code> 　Shell预设会用杂凑表记忆使用过的指令，以加速指令的执行。使用-d参数可取消。<br>　<code>-e</code> 　若指令传回值不等于0，则立即退出shell。　　<br>　<code>-f</code>　 　取消使用通配符。<br>　<code>-h</code> 　自动记录函数的所在位置。<br>　<code>-H</code> Shell 　可利用”!”加&lt;指令编号&gt;的方式来执行history中记录的指令。<br>　<code>-k</code> 　指令所给的参数都会被视为此指令的环境变量。<br>　<code>-l</code> 　记录for循环的变量名称。<br>　<code>-m</code> 　使用监视模式。<br>　<code>-n</code> 　只读取指令，而不实际执行。<br>　<code>-p</code> 　启动优先顺序模式。<br>　<code>-P</code> 　启动-P参数后，执行指令时，会以实际的文件或目录来取代符号连接。<br>　<code>-t</code> 　执行完随后的指令，即退出shell。<br>　<code>-u</code> 　当执行时使用到未定义过的变量，则显示错误信息。<br>　<code>-v</code> 　显示shell所读取的输入值。<br>　<code>-x</code> 　执行指令后，会先显示该指令及所下的参数。</p>
+<blockquote>
+<p><code>+&lt;参数&gt;</code> 　取消某个set曾启动的参数。</p>
+</blockquote>
+<p><code>kill.sh</code>文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env sh</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'The following command terminates the "npm run serve" process using its PID'</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'(written to ".pidfile"), all of which were conducted when "deloy.sh"'</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'was executed.'</span></span><br><span class="line"><span class="built_in">set</span> -x</span><br><span class="line"><span class="built_in">kill</span> $(cat .pidfile)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>思路：</p>
+<ol>
+<li>使用一台单独的Nginx服务器发布，使用Publish Over SSH插件上传</li>
+<li>使用Docker在本地发布或者远程发布</li>
+<li>使用Dockerfile进行镜像内的构建，使用docker镜像进行发布</li>
+</ol>
+<h2 id="TravisCI"><a href="#TravisCI" class="headerlink" title="TravisCI"></a>TravisCI</h2><h3 id="使用简介-1"><a href="#使用简介-1" class="headerlink" title="使用简介"></a>使用简介</h3><p>Travis CI 只支持 Github，不支持其他代码托管服务。这意味着，你必须满足以下条件，才能使用 Travis CI。</p>
+<blockquote>
+<ul>
+<li>拥有 GitHub 帐号</li>
+<li>该帐号下面有一个项目</li>
+<li>该项目里面有可运行的代码</li>
+<li>该项目还包含构建或测试脚本</li>
+</ul>
+</blockquote>
+<p>Travis简单的使用步骤:</p>
+<ul>
+<li>github授权及面板</li>
+<li>获取github的Tokens</li>
+<li>配置项目.travis.yml<ul>
+<li>Node项目</li>
+<li>Script脚本</li>
+<li>部署到github pages</li>
+<li>钩子用法</li>
+</ul>
+</li>
+<li>其他</li>
+</ul>
+<p><strong>github授权及面板</strong></p>
+<p>首先，访问官方网站 <a href="https://travis-ci.org/" target="_blank" rel="noopener">travis-ci.org</a>，点击右上角的个人头像，使用 Github 账户登入 Travis CI。</p>
+<p>会进入到授权页面，这里跟微博、QQ是一回事，主要是读取你的用户信息。</p>
+<p><img src="/blog/.io//image-20190612205411602.png" alt="image-20190612205411602"></p>
+<p>这里第二步在，<code>Dashboard</code>这个选项卡中，点击<code>Activate</code>这个按钮</p>
+<p><img src="/blog/.io//image-20190612212459194.png" alt="image-20190612212459194"></p>
+<p>完了之后，Dashboard会列出所有Github中有<code>.travis.yml</code>配置文件的仓库：</p>
+<p><img src="/blog/.io//image-20190612212731186.png" alt="image-20190612212731186"></p>
+<p>Travis 会列出 Github 上面你的所有仓库，以及你所属于的组织。此时，选择你需要 Travis 帮你构建的仓库，打开仓库旁边的开关。一旦激活了一个仓库，Travis 会监听这个仓库的所有变化。</p>
+<p><img src="/blog/.io//image-20190612213022380.png" alt="image-20190612213022380"></p>
+<ul>
+<li><p><code>Settings</code>中用于配置项目的构建条件</p>
+<p><img src="/blog/.io//image-20190612214434173.png" alt="image-20190612214434173"></p>
+</li>
+<li><p><code>Requests</code>可以查看构建记录</p>
+<p><img src="/blog/.io//image-20190612214519926.png" alt="image-20190612214519926"></p>
+</li>
+<li><p><code>Caches</code>主要是缓存文件</p>
+</li>
+<li><p><code>Trigger build</code>手动触发构建</p>
+</li>
+</ul>
+<p><strong>获取github的token</strong></p>
+<p>在settings-&gt;Developer settings-&gt;Personal access tokens-&gt;Generate new token</p>
+<p><img src="/blog/.io//image-20190612225000955.png" alt="image-20190612225000955"></p>
+<p><strong>配置项目的.travis.yml文件</strong></p>
+<ul>
+<li><p>设置项目语言</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">language:</span> <span class="string">node_js</span></span><br><span class="line"><span class="attr">node_js:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">"10"</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Script脚本</p>
+<p>Travis 的运行流程很简单，任何项目都会经过两个阶段。</p>
+<blockquote>
+<ul>
+<li>install 阶段：安装依赖</li>
+<li>script 阶段：运行脚本</li>
+</ul>
+</blockquote>
+<p>配置文件：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># S: Build Lifecycle</span></span><br><span class="line"><span class="attr">install:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">yarn</span> <span class="string">install</span></span><br><span class="line"></span><br><span class="line"><span class="string">//</span> <span class="string">钩子方法</span></span><br><span class="line"><span class="attr">before_script:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 无其他依赖项所以执行npm run build 构建就行了</span></span><br><span class="line"><span class="attr">script:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">npm</span> <span class="string">run</span> <span class="string">build</span></span><br></pre></td></tr></table></figure>
+
+<p>如果不需要安装，即跳过安装阶段，就直接设为<code>true</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">install: <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p><code>script</code>字段用来指定构建或测试脚本。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">script: bundle exec thor build</span><br></pre></td></tr></table></figure>
+
+<p>如果有多个脚本，可以写成下面的形式。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">script:</span><br><span class="line">  - command1</span><br><span class="line">  - command2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>部署到github pages</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">	<span class="comment"># 其他的一些配置项，可以参考：https://docs.travis-ci.com/user/deployment/pages/</span></span><br><span class="line">  <span class="attr">provider:</span> <span class="string">pages</span></span><br><span class="line">  <span class="attr">skip_cleanup:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">local_dir:</span> <span class="string">dist/</span></span><br><span class="line">  <span class="attr">github_token:</span> <span class="string">$GITHUB_TOKEN</span> <span class="comment"># Set in the settings page of your repository, as a secure variable</span></span><br><span class="line">  <span class="attr">keep_history:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">on:</span></span><br><span class="line">    <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>钩子用法</p>
+<p>Travis 为上面这些阶段提供了7个钩子。</p>
+<ul>
+<li>before_install：install 阶段之前执行</li>
+<li>before_script：script 阶段之前执行</li>
+<li>after_failure：script 阶段失败时执行</li>
+<li>after_success：script 阶段成功时执行</li>
+<li>before_deploy：deploy 步骤之前执行</li>
+<li>after_deploy：deploy 步骤之后执行</li>
+<li>after_script：script 阶段之后执行</li>
+</ul>
+</li>
+</ul>
+<p>  完整的生命周期，从开始到结束是下面的流程。</p>
+<ol>
+<li>before_install</li>
+<li>install</li>
+<li>before_script</li>
+<li>script</li>
+<li>after<em>success or after</em>failure</li>
+<li>[OPTIONAL] before_deploy</li>
+<li>[OPTIONAL] deploy</li>
+<li>[OPTIONAL] after_deploy</li>
+<li>after_script</li>
+</ol>
+<p>参考资料：</p>
+<ul>
+<li><a href="https://gist.github.com/domenic/ec8b0fc8ab45f39403dd" target="_blank" rel="noopener">Auto-deploying built products to gh-pages with Travis</a></li>
+<li><a href="https://oncletom.io/2016/travis-ssh-deploy/" target="_blank" rel="noopener">SSH deploys with Travis CI</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2017/12/travis_ci_tutorial.html" target="_blank" rel="noopener">持续集成服务 Travis CI 教程</a></li>
+</ul>
+<h3 id="配置Node-js应用"><a href="#配置Node-js应用" class="headerlink" title="配置Node.js应用"></a>配置Node.js应用</h3><p>配置一个Vue实例并发布到github pages</p>
+<p>.travis.yml文件：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">language:</span> <span class="string">node_js</span></span><br><span class="line"><span class="attr">node_js:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">"10"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Travis-CI Caching</span></span><br><span class="line"><span class="attr">cache:</span></span><br><span class="line">  <span class="attr">directories:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">node_modules</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># S: Build Lifecycle</span></span><br><span class="line"><span class="attr">install:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">yarn</span> <span class="string">install</span></span><br><span class="line"></span><br><span class="line"><span class="attr">before_script:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 无其他依赖项所以执行npm run build 构建就行了</span></span><br><span class="line"><span class="attr">script:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">npm</span> <span class="string">run</span> <span class="string">build</span></span><br><span class="line"></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line">	<span class="comment"># 其他的一些配置项，可以参考：https://docs.travis-ci.com/user/deployment/pages/</span></span><br><span class="line">  <span class="attr">provider:</span> <span class="string">pages</span></span><br><span class="line">  <span class="attr">skip_cleanup:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">local_dir:</span> <span class="string">dist/</span></span><br><span class="line">  <span class="attr">github_token:</span> <span class="string">$GITHUB_TOKEN</span> <span class="comment"># Set in the settings page of your repository, as a secure variable</span></span><br><span class="line">  <span class="attr">keep_history:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">on:</span></span><br><span class="line">    <span class="attr">branch:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="CircleCI"><a href="#CircleCI" class="headerlink" title="CircleCI"></a>CircleCI</h2><h3 id="使用简介-2"><a href="#使用简介-2" class="headerlink" title="使用简介"></a>使用简介</h3><ol>
+<li><p>注册 CircleCI</p>
+<p>打开 <a href="https://circleci.com/" target="_blank" rel="noopener">CircleCI</a> 官方网站，使用您的GitHub帐户登录。</p>
+<p><img src="/blog/.io//image-20190613093550553.png" alt="image-20190613093550553"></p>
+<p>进行授权：</p>
+<p><img src="/blog/.io//image-20190613093732415.png" alt="image-20190613093732415"></p>
+</li>
+<li><p>启动存储库</p>
+</li>
+</ol>
+<p>检查要在 CircleCI 上管理的存储库的开关按钮。</p>
+<p><img src="/blog/.io//image-20190613094115350.png" alt="image-20190613094115350"></p>
+<ol start="3">
+<li><p>编写 config.yml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="number">2</span></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build:</span></span><br><span class="line">    <span class="attr">docker:</span></span><br><span class="line">      <span class="string">...</span></span><br><span class="line">    <span class="attr">branches:</span></span><br><span class="line">      <span class="string">...</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="string">...</span></span><br><span class="line">		<span class="attr">environment:</span></span><br><span class="line">			<span class="string">...</span></span><br></pre></td></tr></table></figure>
+
+<p>官方参考文档：<a href="https://circleci.com/docs/2.0/configuration-reference/#version" target="_blank" rel="noopener">https://circleci.com/docs/2.0/configuration-reference/#version</a></p>
+</li>
+</ol>
+<p>   来看一个完事版的配置</p>
+   <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="number">2</span></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build:</span></span><br><span class="line">    <span class="attr">docker:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">ubuntu:14.04</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">mongo:2.6.8</span></span><br><span class="line">        <span class="attr">command:</span> <span class="string">[mongod,</span> <span class="string">--smallfiles]</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">postgres:9.4.1</span></span><br><span class="line">        <span class="comment"># some containers require setting environment variables</span></span><br><span class="line">        <span class="attr">environment:</span></span><br><span class="line">          <span class="attr">POSTGRES_USER:</span> <span class="string">root</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">redis@sha256:54057dd7e125ca41afe526a877e8bd35ec2cdd33b9217e022ed37bdcf7d09673</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">rabbitmq:3.5.4</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">TEST_REPORTS:</span> <span class="string">/tmp/test-reports</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">working_directory:</span> <span class="string">~/my-project</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">checkout</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">run:</span></span><br><span class="line">          <span class="attr">command:</span> <span class="string">echo</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> <span class="string">devhost</span> <span class="string">|</span> <span class="string">sudo</span> <span class="string">tee</span> <span class="string">-a</span> <span class="string">/etc/hosts</span></span><br><span class="line"></span><br><span class="line">      <span class="comment"># Create Postgres users and database</span></span><br><span class="line">      <span class="comment"># Note the YAML heredoc '|' for nicer formatting</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">          <span class="string">sudo</span> <span class="string">-u</span> <span class="string">root</span> <span class="string">createuser</span> <span class="string">-h</span> <span class="string">localhost</span> <span class="string">--superuser</span> <span class="string">ubuntu</span> <span class="string">&amp;&amp;</span></span><br><span class="line">          <span class="string">sudo</span> <span class="string">createdb</span> <span class="string">-h</span> <span class="string">localhost</span> <span class="string">test_db</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">restore_cache:</span></span><br><span class="line">          <span class="attr">keys:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">v1-my-project-&#123;&#123;</span> <span class="string">checksum</span> <span class="string">"project.clj"</span> <span class="string">&#125;&#125;</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">v1-my-project-</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">run:</span></span><br><span class="line">          <span class="attr">environment:</span></span><br><span class="line">            <span class="attr">SSH_TARGET:</span> <span class="string">"localhost"</span></span><br><span class="line">            <span class="attr">TEST_ENV:</span> <span class="string">"linux"</span></span><br><span class="line">          <span class="attr">command:</span> <span class="string">|</span></span><br><span class="line">            <span class="string">set</span> <span class="string">-xu</span></span><br><span class="line">            <span class="string">mkdir</span> <span class="string">-p</span> <span class="string">$&#123;TEST_REPORTS&#125;</span></span><br><span class="line">            <span class="string">run-tests.sh</span></span><br><span class="line">            <span class="string">cp</span> <span class="string">out/tests/*.xml</span> <span class="string">$&#123;TEST_REPORTS&#125;</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">          <span class="string">set</span> <span class="string">-xu</span></span><br><span class="line">          <span class="string">mkdir</span> <span class="string">-p</span> <span class="string">/tmp/artifacts</span></span><br><span class="line">          <span class="string">create_jars.sh</span> <span class="string">$&#123;CIRCLE_BUILD_NUM&#125;</span></span><br><span class="line">          <span class="string">cp</span> <span class="string">*.jar</span> <span class="string">/tmp/artifacts</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">save_cache:</span></span><br><span class="line">          <span class="attr">key:</span> <span class="string">v1-my-project-&#123;&#123;</span> <span class="string">checksum</span> <span class="string">"project.clj"</span> <span class="string">&#125;&#125;</span></span><br><span class="line">          <span class="attr">paths:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">~/.m2</span></span><br><span class="line"></span><br><span class="line">      <span class="comment"># Save artifacts</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">store_artifacts:</span></span><br><span class="line">          <span class="attr">path:</span> <span class="string">/tmp/artifacts</span></span><br><span class="line">          <span class="attr">destination:</span> <span class="string">build</span></span><br><span class="line"></span><br><span class="line">      <span class="comment"># Upload test results</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">store_test_results:</span></span><br><span class="line">          <span class="attr">path:</span> <span class="string">/tmp/test-reports</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">deploy-stage:</span></span><br><span class="line">    <span class="attr">docker:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">ubuntu:14.04</span></span><br><span class="line">    <span class="attr">working_directory:</span> <span class="string">/tmp/my-project</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">run:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">Deploy</span> <span class="string">if</span> <span class="string">tests</span> <span class="string">pass</span> <span class="string">and</span> <span class="string">branch</span> <span class="string">is</span> <span class="string">Staging</span></span><br><span class="line">          <span class="attr">command:</span> <span class="string">ansible-playbook</span> <span class="string">site.yml</span> <span class="string">-i</span> <span class="string">staging</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">deploy-prod:</span></span><br><span class="line">    <span class="attr">docker:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">ubuntu:14.04</span></span><br><span class="line">    <span class="attr">working_directory:</span> <span class="string">/tmp/my-project</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">run:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">Deploy</span> <span class="string">if</span> <span class="string">tests</span> <span class="string">pass</span> <span class="string">and</span> <span class="string">branch</span> <span class="string">is</span> <span class="string">Master</span></span><br><span class="line">          <span class="attr">command:</span> <span class="string">ansible-playbook</span> <span class="string">site.yml</span> <span class="string">-i</span> <span class="string">production</span></span><br><span class="line"></span><br><span class="line"><span class="attr">workflows:</span></span><br><span class="line">  <span class="attr">version:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">build-deploy:</span></span><br><span class="line">    <span class="attr">jobs:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">build:</span></span><br><span class="line">          <span class="attr">filters:</span></span><br><span class="line">            <span class="attr">branches:</span></span><br><span class="line">              <span class="attr">ignore:</span></span><br><span class="line">                <span class="bullet">-</span> <span class="string">develop</span></span><br><span class="line">                <span class="bullet">-</span> <span class="string">/feature-.*/</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">deploy-stage:</span></span><br><span class="line">          <span class="attr">requires:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">build</span></span><br><span class="line">          <span class="attr">filters:</span></span><br><span class="line">            <span class="attr">branches:</span></span><br><span class="line">              <span class="attr">only:</span> <span class="string">staging</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">deploy-prod:</span></span><br><span class="line">          <span class="attr">requires:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">build</span></span><br><span class="line">          <span class="attr">filters:</span></span><br><span class="line">            <span class="attr">branches:</span></span><br><span class="line">              <span class="attr">only:</span> <span class="string">master</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="4">
+<li><p>设置/查看任务</p>
+<p><img src="/blog/.io//image-20190613093327981.png" alt="image-20190613093327981"></p>
+</li>
+</ol>
+<h3 id="配置Node-js应用-1"><a href="#配置Node-js应用-1" class="headerlink" title="配置Node.js应用"></a>配置Node.js应用</h3><p><code>.circleci/config.yml</code>配置文件</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="number">2</span></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build:</span></span><br><span class="line">    <span class="attr">docker:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">circleci/node:10</span></span><br><span class="line">    <span class="attr">branches:</span></span><br><span class="line">      <span class="attr">only:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="string">master</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">add_ssh_keys:</span></span><br><span class="line">          <span class="attr">fingerprints:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">"c5:20:8e:79:81:19:fd:c1:6c:c4:fb:41:58:92:9d:4f"</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">checkout</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">restore_cache:</span></span><br><span class="line">          <span class="attr">keys:</span></span><br><span class="line">            <span class="comment"># fallback to using the latest cache if no exact match is found</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">dependencies-</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">run:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">Install</span></span><br><span class="line">          <span class="attr">command:</span> <span class="string">yarn</span> <span class="string">install</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">save_cache:</span></span><br><span class="line">          <span class="attr">paths:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">node_modules</span></span><br><span class="line">          <span class="attr">key:</span> <span class="string">dependencies-</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">run:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">build</span> <span class="string">github</span> <span class="string">pages</span></span><br><span class="line">          <span class="attr">command:</span> <span class="string">yarn</span> <span class="string">build</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">run:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">Prepare</span> <span class="string">shell</span> <span class="string">commands</span></span><br><span class="line">          <span class="attr">command:</span> <span class="string">chmod</span> <span class="string">+x</span> <span class="string">scripts/deploy.sh</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">run:</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">Run</span> <span class="string">deploy</span> <span class="string">scripts</span></span><br><span class="line">          <span class="attr">command:</span> <span class="string">./scripts/deploy.sh</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>这里以发布到github page为示例：</p>
+<p>deploy.sh文件的内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/sh</span></span><br><span class="line"><span class="comment"># ideas used from https://gist.github.com/motemen/8595451</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Based on https://github.com/eldarlabs/ghpages-deploy-script/blob/master/scripts/deploy-ghpages.sh</span></span><br><span class="line"><span class="comment"># Used with their MIT license https://github.com/eldarlabs/ghpages-deploy-script/blob/master/LICENSE</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># abort the script if there is a non-zero error</span></span><br><span class="line"><span class="built_in">set</span> -e</span><br><span class="line"></span><br><span class="line"><span class="comment"># show where we are on the machine</span></span><br><span class="line"><span class="built_in">pwd</span></span><br><span class="line">remote=$(git config remote.origin.url)</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'remote is: '</span><span class="variable">$remote</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># make a directory to put the gp-pages branch</span></span><br><span class="line">mkdir gh-pages-branch</span><br><span class="line"><span class="built_in">cd</span> gh-pages-branch</span><br><span class="line"><span class="comment"># now lets setup a new repo so we can update the gh-pages branch</span></span><br><span class="line">git config --global user.email <span class="string">"<span class="variable">$GH_EMAIL</span>"</span> &gt; /dev/null 2&gt;&amp;1</span><br><span class="line">git config --global user.name <span class="string">"<span class="variable">$GH_NAME</span>"</span> &gt; /dev/null 2&gt;&amp;1</span><br><span class="line">git init</span><br><span class="line">git remote add --fetch origin <span class="string">"<span class="variable">$remote</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'email is: '</span><span class="variable">$GH_EMAIL</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'name is: '</span><span class="variable">$GH_NAME</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'sitesource is: '</span><span class="variable">$siteSource</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># switch into the the gh-pages branch</span></span><br><span class="line"><span class="keyword">if</span> git rev-parse --verify origin/gh-pages &gt; /dev/null 2&gt;&amp;1</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    git checkout gh-pages</span><br><span class="line">    <span class="comment"># delete any old site as we are going to replace it</span></span><br><span class="line">    <span class="comment"># Note: this explodes if there aren't any, so moving it here for now</span></span><br><span class="line">    git rm -rf .</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    git checkout --orphan gh-pages</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># copy over or recompile the new site</span></span><br><span class="line">cp -a <span class="string">"../<span class="variable">$&#123;siteSource&#125;</span>/."</span> .</span><br><span class="line"></span><br><span class="line">ls -la</span><br><span class="line"></span><br><span class="line"><span class="comment"># stage any changes and new files</span></span><br><span class="line">git add -A</span><br><span class="line"><span class="comment"># now commit, ignoring branch gh-pages doesn't seem to work, so trying skip</span></span><br><span class="line">git commit --allow-empty -m <span class="string">"Deploy to GitHub pages [ci skip]"</span></span><br><span class="line"><span class="comment"># and push, but send any output to /dev/null to hide anything sensitive</span></span><br><span class="line">git push --force --quiet origin gh-pages</span><br><span class="line"><span class="comment"># go back to where we started and remove the gh-pages git repo we made and used</span></span><br><span class="line"><span class="comment"># for deployment</span></span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line">rm -rf gh-pages-branch</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Finished Deployment!"</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<p><strong>&gt;/dev/null 2&gt;&amp;1的含义</strong> </p>
+<p><strong>文件描述符</strong></p>
+<p>当执行shell命令时，会默认打开3个文件，每个文件有对应的文件描述符来方便我们使用：</p>
+<table>
+<thead>
+<tr>
+<th align="left">类型</th>
+<th align="left">文件描述符</th>
+<th align="left">默认情况</th>
+<th align="left">对应文件句柄位置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">标准输入（standard input）</td>
+<td align="left">0</td>
+<td align="left">从键盘获得输入</td>
+<td align="left">/proc/slef/fd/0</td>
+</tr>
+<tr>
+<td align="left">标准输出（standard output）</td>
+<td align="left">1</td>
+<td align="left">输出到屏幕（即控制台）</td>
+<td align="left">/proc/slef/fd/1</td>
+</tr>
+<tr>
+<td align="left">错误输出（error output）</td>
+<td align="left">2</td>
+<td align="left">输出到屏幕（即控制台）</td>
+<td align="left">/proc/slef/fd/2</td>
+</tr>
+</tbody></table>
+<p><code>&gt;</code> 代表重定向到哪里?</p>
+<p>例如：<code>echo &quot;123&quot; &gt; /home/123.txt</code><br><code>1</code> 表示<code>stdout</code>标准输出，系统默认值是<code>1</code>，所以<code>&gt;/dev/null</code>等同于<code>1&gt;/dev/null</code><br><code>2</code> 表示<code>stderr</code>标准错误<br><code>&amp;</code> 表示等同于的意思，<code>2&gt;&amp;1</code>，表示<code>2</code>的输出重定向等同于<code>1</code> </p>
+<p>参考资料：</p>
+<p><a href="https://www.cnblogs.com/tinywan/p/6025468.html" target="_blank" rel="noopener">Shell脚本———— /dev/null 2&gt;&amp;1详解</a></p>
+<p><a href="https://blog.csdn.net/jackyechina/article/details/54582146" target="_blank" rel="noopener">shell中&gt;/dev/null 2&gt;&amp;1</a></p>
+<p><a href="https://blog.csdn.net/ithomer/article/details/9288353" target="_blank" rel="noopener">Linux Shell 1&gt;/dev/null 2&gt;&amp;1 含义</a></p>
+<h2 id="扩展知识"><a href="#扩展知识" class="headerlink" title="扩展知识"></a>扩展知识</h2><h3 id="自动化流程的发展趋势"><a href="#自动化流程的发展趋势" class="headerlink" title="自动化流程的发展趋势"></a>自动化流程的发展趋势</h3><ol>
+<li><p>集中化</p>
+<p>以集群为基础，服务采用Saas方式进行交付。所有折构建、测试、发布全集中进行管理。</p>
+</li>
+<li><p>微服务+无服务的应用模式</p>
+<p>应用程序执行环境的管理被新的编程模型和平台取代后，团队的交付生产率得到了进一步的提升。一方面它免去了很多环境管理的工作，包括设备、网络、主机以及对应的软件和配置工作，使得软件运行时环境更加稳定。另一方面，它大大降低了团队采用DevOps的技术门槛。</p>
+<p><strong>无服务器风格的架构（Serverless architecture）</strong>把DevOps技术在微服务领域的应用推向极致。当应用程序执行环境的管理被新的编程模型和平台取代后，团队的交付生产率得到了进一步的提升。一方面它免去了很多环境管理的工作，包括设备、网络、主机以及对应的软件和配置工作，使得软件运行时环境更加稳定。另一方面，它大大降低了团队采用DevOps的技术门槛。</p>
+<p>在微服务端到端交付流程上，Netflix开源了自家的<a href="http://www.spinnaker.io/" target="_blank" rel="noopener">Spinnaker</a>，Netflix作为微服务实践的先锋，不断推出新的开源工具来弥补社区中微服务技术和最佳实践的缺失。而<a href="http://projects.spring.io/spring-cloud/" target="_blank" rel="noopener">Spring Cloud</a>则为开发者提供了一系列工具，以便他们在所熟悉的Spring技术栈下使用这些服务协调技术(coordination techniques)，如服务发现、负载均衡、熔断和健康检查。</p>
+</li>
+<li><p>人工智能领域的应用</p>
+<p>DevOps的最早实践来自于互联网企业的Web应用，相应的思想被引入企业级应用并促进了一系列工具的发展。在人工智能领域，<a href="https://www.tensorflow.org/" target="_blank" rel="noopener">TensorFlow</a>就是这样一个例子，它可以有多种DevOps友好的安装和部署方式 ，例如采用Docker进行部署。</p>
+<p>随着Python在大数据、人工智能、区块链、微服务以及Docker中的发展，可以预见Python在日后的领域仍然会发挥重要的作用。</p>
+</li>
+<li><p>安全推动DevOps的发展</p>
+<p>全是DevOps永远绕不开的话题，也往往是新技术在传统行业（例如金融和电信）应用中的最大阻碍。一方面，组织结构的转型迫使企业要打破原先的部门墙，这意味着很多原先的控制流程不再适用。另一方面，由于大量的DevOps技术来源于开源社区，缺乏强大技术实力的企业在应用相关技术时不免会有所担忧。</p>
+</li>
+<li><p>Windows平台下.net的技术潜力巨大</p>
+<p>长期以来，Windows和.NET平台下的DevOps一直都是一个被低估的领域。一方面，社区缺乏对 Windows Server平台的兴趣。另一方面，<a href="https://community.spiceworks.com/networking/articles/2462-server-virtualization-and-os-trends" target="_blank" rel="noopener">Windows Server却有接近90%的市场占用率</a>，在Web服务器领域则有<a href="https://w3techs.com/technologies/overview/operating_system/all" target="_blank" rel="noopener">33.5%的市场占有率</a>。</p>
+</li>
+<li><p>非功能性自动化测试工具逐渐完善</p>
+<p>自动化测试水平往往是衡量DevOps技术能力高低的重要指标，尤其是针对生产环境应用程序的非功能性自动化测试工具。一直以来，技术雷达都在尝试从不同的角度宣扬自动化测试的重要性，从软件的开发阶段延展到了整个应用生命周期甚至整体IT资产的管理上。</p>
+</li>
+</ol>
+<h3 id="复杂的DevOps相关工具"><a href="#复杂的DevOps相关工具" class="headerlink" title="复杂的DevOps相关工具"></a>复杂的DevOps相关工具</h3><p><img src="/blog/.io//devops-hero-1-87966cfbc9c5713ae047551c7b22985c.png" alt="DevOps"></p>
+<h3 id="Jenkins的一些应用场景"><a href="#Jenkins的一些应用场景" class="headerlink" title="Jenkins的一些应用场景"></a>Jenkins的一些应用场景</h3><p>打包平台：</p>
+<p>使用Jenkins搭建iOS/Android</p>
+<p>测试平台：</p>
+<p>jenkins + python + selenium</p>
+<p>Jmeter+maven+Jenkins构建云性能测试平台</p>
+<p>Jenkins+PMD构建自动化静态代码检测</p>
+<p>使用jenkins+Emma统计</p>
+<p>客户端单元测试覆盖率</p>
+<p>Jenkins+Ant+Java+Junit+SVN执行junit单元测试</p>
+<p>jenkins+ant+jmeter搭建持续集成的接口测试平台</p>
+<p>自动部署：</p>
+<p>Jenkins+GitLab+蒲公英+FTP</p>
+<p>jenkins结合ansible用shell实现自动化部署和回滚</p>
+<p>持续集成：</p>
+<p>Tomcat+Sonar搭建持续集成环境</p>
+<p>Maven+Nexus+Jenkins+git/SVN</p>
+<h3 id="Jenkins的Docker-compose-yml创建文件"><a href="#Jenkins的Docker-compose-yml创建文件" class="headerlink" title="Jenkins的Docker-compose.yml创建文件"></a>Jenkins的Docker-compose.yml创建文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">version: <span class="string">'3'</span></span><br><span class="line">services:</span><br><span class="line">  jenkins:</span><br><span class="line">    container_name: <span class="string">'jenkins'</span></span><br><span class="line">    image: jenkins/jenkins</span><br><span class="line">    restart: always</span><br><span class="line">    user: jenkins:&lt;这里填Docker用户组的ID，见下面&gt;</span><br><span class="line">    ports:</span><br><span class="line">    - <span class="string">"8080:8080"</span></span><br><span class="line">    - <span class="string">"50000:50000"</span></span><br><span class="line">    volumes:</span><br><span class="line">    - /home/jenkins/data:/var/jenkins_home</span><br><span class="line">    - /usr/bin/docker:/usr/bin/docker</span><br><span class="line">    - /var/run/docker.sock:/var/run/docker.sock</span><br></pre></td></tr></table></figure>
+
+<p>上面的脚本使用注意：</p>
+<ol>
+<li><p>创建本地jenkins数据目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /home/jenkins</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看docker用户组的ID</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/group |grep docker</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行<code>docker-compose up -d</code></p>
+</li>
+</ol>
+<h3 id="gitlab的docker启动配置文件"><a href="#gitlab的docker启动配置文件" class="headerlink" title="gitlab的docker启动配置文件"></a>gitlab的docker启动配置文件</h3><p>项目地址：<a href="https://github.com/sameersbn/docker-gitlab" target="_blank" rel="noopener">https://github.com/sameersbn/docker-gitlab</a></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'2'</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">sameersbn/redis:4.0.9-1</span></span><br><span class="line">    <span class="attr">command:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">--loglevel</span> <span class="string">warning</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">/srv/docker/gitlab/redis:/var/lib/redis:Z</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">postgresql:</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">sameersbn/postgresql:10</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">/srv/docker/gitlab/postgresql:/var/lib/postgresql:Z</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">DB_USER=gitlab</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">DB_PASS=password</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">DB_NAME=gitlabhq_production</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">DB_EXTENSION=pg_trgm</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">gitlab:</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">sameersbn/gitlab:11.11.2</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">redis</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">postgresql</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">"10080:80"</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">"10022:22"</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">/srv/docker/gitlab/gitlab:/home/git/data:Z</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">DEBUG=false</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="string">DB_ADAPTER=postgresql</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">DB_HOST=postgresql</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">DB_PORT=5432</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">DB_USER=gitlab</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">DB_PASS=password</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">DB_NAME=gitlabhq_production</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="string">REDIS_HOST=redis</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">REDIS_PORT=6379</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="string">TZ=Asia/Kolkata</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">GITLAB_TIMEZONE=Kolkata</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="string">GITLAB_HTTPS=false</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">SSL_SELF_SIGNED=false</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 这里修改成服务器的IP或者域名</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">GITLAB_HOST=localhost</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">GITLAB_PORT=10080</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">GITLAB_SSH_PORT=10022</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">GITLAB_RELATIVE_URL_ROOT=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">GITLAB_SECRETS_DB_KEY_BASE=long-and-random-alphanumeric-string</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">GITLAB_SECRETS_SECRET_KEY_BASE=long-and-random-alphanumeric-string</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">GITLAB_SECRETS_OTP_KEY_BASE=long-and-random-alphanumeric-string</span></span><br><span class="line"></span><br><span class="line">		<span class="comment"># 这里给一个长度大于8的密码</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">GITLAB_ROOT_PASSWORD=12345678</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">GITLAB_ROOT_EMAIL=itheima@itcast.cn</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="string">GITLAB_NOTIFY_ON_BROKEN_BUILDS=true</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">GITLAB_NOTIFY_PUSHER=false</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="string">GITLAB_EMAIL=notifications@example.com</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">GITLAB_EMAIL_REPLY_TO=noreply@example.com</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">GITLAB_INCOMING_EMAIL_ADDRESS=reply@example.com</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="string">GITLAB_BACKUP_SCHEDULE=daily</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">GITLAB_BACKUP_TIME=01:00</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="string">SMTP_ENABLED=false</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">SMTP_DOMAIN=www.example.com</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">SMTP_HOST=smtp.gmail.com</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">SMTP_PORT=587</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">SMTP_USER=mailer@example.com</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">SMTP_PASS=password</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">SMTP_STARTTLS=true</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">SMTP_AUTHENTICATION=login</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="string">IMAP_ENABLED=false</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">IMAP_HOST=imap.gmail.com</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">IMAP_PORT=993</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">IMAP_USER=mailer@example.com</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">IMAP_PASS=password</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">IMAP_SSL=true</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">IMAP_STARTTLS=false</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_ENABLED=false</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_AUTO_SIGN_IN_WITH_PROVIDER=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_ALLOW_SSO=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_BLOCK_AUTO_CREATED_USERS=true</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_AUTO_LINK_LDAP_USER=false</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_AUTO_LINK_SAML_USER=false</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_EXTERNAL_PROVIDERS=</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_CAS3_LABEL=cas3</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_CAS3_SERVER=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_CAS3_DISABLE_SSL_VERIFICATION=false</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_CAS3_LOGIN_URL=/cas/login</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_CAS3_VALIDATE_URL=/cas/p3/serviceValidate</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_CAS3_LOGOUT_URL=/cas/logout</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_GOOGLE_API_KEY=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_GOOGLE_APP_SECRET=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_GOOGLE_RESTRICT_DOMAIN=</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_FACEBOOK_API_KEY=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_FACEBOOK_APP_SECRET=</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_TWITTER_API_KEY=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_TWITTER_APP_SECRET=</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_GITHUB_API_KEY=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_GITHUB_APP_SECRET=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_GITHUB_URL=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_GITHUB_VERIFY_SSL=</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_GITLAB_API_KEY=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_GITLAB_APP_SECRET=</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_BITBUCKET_API_KEY=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_BITBUCKET_APP_SECRET=</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_SAML_ASSERTION_CONSUMER_SERVICE_URL=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_SAML_IDP_CERT_FINGERPRINT=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_SAML_IDP_SSO_TARGET_URL=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_SAML_ISSUER=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_SAML_LABEL="Our</span> <span class="string">SAML</span> <span class="string">Provider"</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_SAML_NAME_IDENTIFIER_FORMAT=urn:oasis:names:tc:SAML:2.0:nameid-format:transient</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_SAML_GROUPS_ATTRIBUTE=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_SAML_EXTERNAL_GROUPS=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_SAML_ATTRIBUTE_STATEMENTS_EMAIL=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_SAML_ATTRIBUTE_STATEMENTS_NAME=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_SAML_ATTRIBUTE_STATEMENTS_USERNAME=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_SAML_ATTRIBUTE_STATEMENTS_FIRST_NAME=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_SAML_ATTRIBUTE_STATEMENTS_LAST_NAME=</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_CROWD_SERVER_URL=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_CROWD_APP_NAME=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_CROWD_APP_PASSWORD=</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_AUTH0_CLIENT_ID=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_AUTH0_CLIENT_SECRET=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_AUTH0_DOMAIN=</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_AZURE_API_KEY=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_AZURE_API_SECRET=</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">OAUTH_AZURE_TENANT_ID=</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>通过这篇文章大家了解了什么是CI/CD以及它的流程。前端项目怎么结合CI/CD流程，实现快速迭代。Docker的使用，Jenkins+gitlab+nodejs自动化项目。了解了持续集成工具Jenkins、Travis CI、Circle CI。一起学习呀～</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://supertinypeanut.github.io/blog/2021/03/23/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2/" data-id="ckmm8vac1002l85qs31uahiu8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/" rel="tag">前端工程化</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/blog/2021/03/07/Promise%E5%AE%9E%E7%8E%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Promise实现</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/ECMAScript-6/" rel="tag">ECMAScript 6</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Lint/" rel="tag">Lint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/TypeScript/" rel="tag">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Vue/" rel="tag">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Webpack/" rel="tag">Webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/npm/" rel="tag">npm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/web-%E5%AE%89%E5%85%A8/" rel="tag">web 安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/" rel="tag">前端工程化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" rel="tag">问题解决</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/blog/tags/ECMAScript-6/" style="font-size: 12.5px;">ECMAScript 6</a> <a href="/blog/tags/Git/" style="font-size: 15px;">Git</a> <a href="/blog/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/blog/tags/Lint/" style="font-size: 10px;">Lint</a> <a href="/blog/tags/React/" style="font-size: 12.5px;">React</a> <a href="/blog/tags/TypeScript/" style="font-size: 12.5px;">TypeScript</a> <a href="/blog/tags/Vue/" style="font-size: 17.5px;">Vue</a> <a href="/blog/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/blog/tags/npm/" style="font-size: 10px;">npm</a> <a href="/blog/tags/web-%E5%AE%89%E5%85%A8/" style="font-size: 15px;">web 安全</a> <a href="/blog/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/" style="font-size: 12.5px;">前端工程化</a> <a href="/blog/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" style="font-size: 15px;">问题解决</a> <a href="/blog/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 12.5px;">面试</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/09/">九月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/11/">十一月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2021/03/23/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2/">持续集成与持续部署</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2021/03/07/Promise%E5%AE%9E%E7%8E%B0/">Promise实现</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2021/03/03/ES6%E9%9D%A2%E8%AF%95%E9%A2%98/">ES6面试题</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2021/01/25/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/">自动化测试</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2020/12/27/async-validator%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">async-validator基本使用</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Super Peanut<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+
+  
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

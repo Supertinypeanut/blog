@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>模仿jQuery分装Ajax方法 | Peanut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="原生封装1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495969798991001011">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模仿jQuery分装Ajax方法">
+<meta property="og:url" content="https://supertinypeanut.github.io/blog/2019/11/20/Ajax/index.html">
+<meta property="og:site_name" content="Peanut">
+<meta property="og:description" content="原生封装1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495969798991001011">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-11-20T10:10:10.000Z">
+<meta property="article:modified_time" content="2021-03-23T16:40:13.705Z">
+<meta property="article:author" content="Super Peanut">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="Peanut" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/blog/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">Peanut</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/blog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://supertinypeanut.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Ajax" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2019/11/20/Ajax/" class="article-date">
+  <time datetime="2019-11-20T10:10:10.000Z" itemprop="datePublished">2019-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      模仿jQuery分装Ajax方法
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="原生封装"><a href="#原生封装" class="headerlink" title="原生封装"></a>原生封装</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ajax</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  defaults = &#123;</span><br><span class="line">    type: <span class="string">"get"</span>,</span><br><span class="line">    url: <span class="keyword">void</span> <span class="number">0</span>,</span><br><span class="line">    <span class="keyword">async</span>: <span class="literal">true</span>,</span><br><span class="line">    dataType: <span class="string">"json"</span>,</span><br><span class="line">    data: &#123;&#125;,</span><br><span class="line">    jsonp: <span class="string">"callback"</span>,</span><br><span class="line">    jsonpCallBack:</span><br><span class="line">      <span class="string">"jQuery"</span> + (<span class="string">"1.12.2"</span> + <span class="built_in">Math</span>.random()).replace(<span class="regexp">/\D/g</span>, <span class="string">""</span>) + <span class="built_in">Date</span>.now(), <span class="comment">//随机生成回调函数名，避免get请求的缓存问题</span></span><br><span class="line">    success(data) &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(data);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="comment">// 处理传过来的参数对象，更新默认值</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> obj) &#123;</span><br><span class="line">    defaults[key] = obj[key];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 由于发送给后台数据，是有 键=值&amp;....,所以遍历数据对象defaults.data</span></span><br><span class="line">  <span class="keyword">var</span> str = <span class="string">""</span>;</span><br><span class="line">  <span class="keyword">if</span> (defaults.data) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> defaults.data) &#123;</span><br><span class="line">      str += key + <span class="string">"="</span> + defaults.data[key] + <span class="string">"&amp;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 剔出最后一个&amp;</span></span><br><span class="line">  str = str.substring(<span class="number">0</span>, str.length - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//--------------------------------判断是否是jsonp数据类型，因为jsonp请求方式和普通的请求处理逻辑不同</span></span><br><span class="line">  <span class="keyword">if</span> (!defaults.dataType == <span class="string">"jsonp"</span>) &#123;</span><br><span class="line">    ajaxFa();</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">//--------------------------jsonp请求主要是通过script的src属性·</span></span><br><span class="line"></span><br><span class="line">    ajaxJsonp(str);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//**********************普通同源请求****************</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ajaxFa</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">//创建XMLHttpRequest</span></span><br><span class="line">  <span class="keyword">const</span> xhr = <span class="built_in">window</span>.XMLHttpRequest</span><br><span class="line">    ? <span class="keyword">new</span> XMLHttpRequest()</span><br><span class="line">    : <span class="keyword">new</span> ActiveXObject(<span class="string">"Microsoft.XMLHTTP"</span>);</span><br><span class="line">  <span class="comment">// 创建成功 xhr.readyState == 0    数据初始化成功</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 为了以防背后xhr.send（）请求过快而为监听到事件，所以先注册  可以监听xhr.readyState状态变化 与当响应数据xhr.response（xhr.readyState==3）过大会分段传回，也会不断触发该函数，该阶段触发的情况 与单独的onpregress（）事件等价，</span></span><br><span class="line">  xhr.onreadystatechange = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 等于4时，响应数据接收解析完毕   --》可以等同与onload（）事件</span></span><br><span class="line">    <span class="keyword">if</span> (xhr.readyState == <span class="number">4</span>) &#123;</span><br><span class="line">      <span class="comment">// 等于200数据请求成功</span></span><br><span class="line">      <span class="keyword">if</span> (xhr.status == <span class="number">200</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> data = xhr.responseText;</span><br><span class="line">        <span class="comment">// 判断是否是json数据类型</span></span><br><span class="line">        <span class="keyword">if</span> (defaults.dataType == <span class="string">"json"</span>) &#123;</span><br><span class="line">          data = <span class="built_in">JSON</span>.parse(data);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 执行回调函数</span></span><br><span class="line">        defaults.success(data);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (defaults.type == <span class="string">"get"</span>) &#123;</span><br><span class="line">    <span class="comment">// 获取可能请求参数有中文，所以需要进行转码</span></span><br><span class="line">    defaults.url += <span class="built_in">encodeURI</span>(<span class="string">"?"</span> + str);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 与服务器建立链接</span></span><br><span class="line">  xhr.open(defaults.type, defaults.url, defaults.async);</span><br><span class="line">  <span class="comment">// 此时 xhr.readtSate == 1</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 判断请求类型是否为post</span></span><br><span class="line">  <span class="keyword">let</span> parme = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">if</span> (defaults.type == <span class="string">"post"</span>) &#123;</span><br><span class="line">    <span class="comment">// 由于post请求，将参数是放到请求体中所以，转码方式与get有所不同，是设置请求头</span></span><br><span class="line">    xhr.setRequestHeader(<span class="string">"Content-Type"</span>, <span class="string">"applocation/x-www-form-urlencoded"</span>);</span><br><span class="line">    parme = str;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//   发送请求</span></span><br><span class="line">  xhr.send(parme);</span><br><span class="line">  <span class="comment">//   当转变为2时直接触发onreadystatechange</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//**********************跨域请求jsonp****************</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ajaxJsonp</span>(<span class="params">str</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 将回调函数挂载到window上</span></span><br><span class="line">  <span class="built_in">window</span>[defaults.jsonCallBack] = <span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">    defaults.success(data);</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="comment">// console.log(defaults.jsonCallBack);</span></span><br><span class="line">  <span class="keyword">if</span> (str) &#123;</span><br><span class="line">    str = <span class="string">"&amp;"</span> + str;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 将回调函数与请求参数添加到请求路径背后</span></span><br><span class="line">  defaults.url += <span class="string">"?"</span> + defaults.jsonp + <span class="string">"="</span> + defaults.jsonCallBack + str;</span><br><span class="line">  <span class="comment">// 应为服务器传回的数据是文本格式，但只要传回的文本格式是js解析的文本便会执行</span></span><br><span class="line">  <span class="comment">// 创建script标签</span></span><br><span class="line">  <span class="keyword">const</span> script = <span class="built_in">document</span>.createElement(<span class="string">"script"</span>);</span><br><span class="line">  <span class="comment">//  为script标签添加src属性</span></span><br><span class="line">  script[<span class="string">"src"</span>] = defaults.url;</span><br><span class="line">  <span class="comment">// 获取hend标签</span></span><br><span class="line">  <span class="keyword">const</span> head = <span class="built_in">document</span>.querySelector(<span class="string">"head"</span>)[<span class="number">0</span>];</span><br><span class="line">  <span class="comment">// 将script标签添加到head中</span></span><br><span class="line">  head.appendChild(script);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="优化代码结构"><a href="#优化代码结构" class="headerlink" title="优化代码结构"></a>优化代码结构</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ajax</span>(<span class="params">&#123;</span></span></span><br><span class="line"><span class="function"><span class="params">  type = <span class="string">"get"</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">  url = void <span class="number">0</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">  data = &#123;&#125;,</span></span></span><br><span class="line"><span class="function"><span class="params">  async = true,</span></span></span><br><span class="line"><span class="function"><span class="params">  dataType = <span class="string">"json"</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">  jsonp = <span class="string">"callback"</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">  jsonpCallBack = <span class="string">`JQuery_111_<span class="subst">$&#123;<span class="built_in">Date</span>.now()&#125;</span><span class="subst">$&#123;<span class="built_in">Math</span>.random()</span></span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string"><span class="subst">    .toString()</span></span></span></span></span><br><span class="line"><span class="function"><span class="params"><span class="string"><span class="subst">    .replace(<span class="string">"."</span>, <span class="string">""</span>)&#125;</span>`</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">  success = (data</span>) =&gt; </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;) &#123;</span><br><span class="line">  <span class="comment">// 处理请求参数对象</span></span><br><span class="line">  <span class="keyword">let</span> requestParams = <span class="string">""</span>;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> data) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">Object</span>.hasOwnProperty.call(data, key)) &#123;</span><br><span class="line">      requestParams += <span class="string">`<span class="subst">$&#123;key&#125;</span>=<span class="subst">$&#123;data[key]&#125;</span>&amp;`</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  requestParams = requestParams.slice(<span class="number">0</span>, <span class="number">-1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 判断是否是jsonp跨域</span></span><br><span class="line">  <span class="keyword">if</span> (type === <span class="string">"jsonp"</span>) &#123;</span><br><span class="line">    <span class="comment">// 挂载调用函数</span></span><br><span class="line">    <span class="built_in">window</span>[jsonpCallBack] = <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">      success(data);</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">const</span> headNode = <span class="built_in">document</span>.querySelector(<span class="string">"head"</span>)[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">const</span> scriptNode = <span class="built_in">document</span>.createElement(<span class="string">"script"</span>);</span><br><span class="line">    scriptNode.src = <span class="string">`<span class="subst">$&#123;url&#125;</span>?<span class="subst">$&#123;jsonp&#125;</span>=<span class="subst">$&#123;jsonpCallBack&#125;</span>&amp;<span class="subst">$&#123;requestParams&#125;</span>`</span>;</span><br><span class="line">    headNode.appendChild(scriptNode);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 使用XMLHttpRequest对象</span></span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 创建</span></span><br><span class="line">    <span class="keyword">const</span> xhr = <span class="built_in">window</span>.XMLHttpRequest</span><br><span class="line">      ? <span class="keyword">new</span> XMLHttpRequest()</span><br><span class="line">      : <span class="keyword">new</span> ActiveXObject(<span class="string">"Microsoft.XMLHTTP"</span>);</span><br><span class="line">    <span class="comment">//  xhr.readyState ===0</span></span><br><span class="line"></span><br><span class="line">    xhr.onreadystatechange = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (xhr.readyState === <span class="number">4</span> &amp;&amp; xhr.status === <span class="number">200</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> res = xhr.responseText;</span><br><span class="line">        dataType === <span class="string">"json"</span> ? success(<span class="built_in">JSON</span>.parse(res)) : success(res);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (type === <span class="string">"get"</span>) &#123;</span><br><span class="line">      url += <span class="string">"?"</span> + requestParams;</span><br><span class="line">    &#125;</span><br><span class="line">    xhr.open(type, <span class="built_in">encodeURI</span>(url), <span class="keyword">async</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> temp = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (type === <span class="string">"post"</span>) &#123;</span><br><span class="line">      temp = requestParams;</span><br><span class="line">      xhr.setRequestHeader(<span class="string">"Content-Type"</span>, <span class="string">"application/x-www-form-urlencode"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    xhr.send(temp);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="TypeScript-编写"><a href="#TypeScript-编写" class="headerlink" title="TypeScript 编写"></a>TypeScript 编写</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> AjaxConfig &#123;</span><br><span class="line">  url: <span class="built_in">string</span>; <span class="comment">// 请求地址</span></span><br><span class="line">  <span class="keyword">type</span>?: <span class="string">"get"</span> | <span class="string">"head"</span> | <span class="string">"delete"</span> | <span class="string">"option"</span> | <span class="string">"post"</span> | <span class="string">"patch"</span> | <span class="string">"put"</span>; <span class="comment">// 请求方式</span></span><br><span class="line">  dataType?: <span class="string">"json"</span> | <span class="string">"jsonp"</span> | <span class="string">"text"</span> | <span class="string">"xml"</span>; <span class="comment">// 返回数据格式</span></span><br><span class="line">  data?: object; <span class="comment">// 请求参数</span></span><br><span class="line">  jsonp?: <span class="built_in">string</span>; <span class="comment">// 后端获取回调函数名的键</span></span><br><span class="line">  jsonpCallBack?: <span class="built_in">string</span>; <span class="comment">// 回调函数名</span></span><br><span class="line">  <span class="keyword">async</span>?: <span class="built_in">boolean</span>; <span class="comment">// 是否异步请求</span></span><br><span class="line">  success?: <span class="built_in">Function</span>; <span class="comment">// 请求成功回调</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> Ajax &#123;</span><br><span class="line">  <span class="keyword">private</span> requestParams: <span class="built_in">string</span> = <span class="string">""</span>;</span><br><span class="line">  <span class="keyword">private</span> requestSetting: AjaxConfig = &#123;</span><br><span class="line">    url: <span class="string">""</span>,</span><br><span class="line">    <span class="keyword">type</span>: <span class="string">"get"</span>,</span><br><span class="line">    data: &#123;&#125;,</span><br><span class="line">    dataType: <span class="string">"json"</span>,</span><br><span class="line">    jsonp: <span class="string">"callBack"</span>,</span><br><span class="line">    jsonpCallBack: <span class="string">`Peanut_Ajax_<span class="subst">$&#123;<span class="built_in">Date</span>.now()&#125;</span>_<span class="subst">$&#123;<span class="built_in">Math</span>.random()</span></span></span><br><span class="line"><span class="string"><span class="subst">      .toString()</span></span></span><br><span class="line"><span class="string"><span class="subst">      .replace(<span class="string">"."</span>, <span class="string">""</span>)&#125;</span>`</span>,</span><br><span class="line">    <span class="keyword">async</span>: <span class="literal">true</span>,</span><br><span class="line">    success(data: <span class="built_in">any</span>) &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">"请求成功:"</span>, data);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="comment">// 初始化数据</span></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params">agrObj?: AjaxConfig</span>) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> agrObj) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">Object</span>.prototype.hasOwnProperty.call(agrObj, key)) &#123;</span><br><span class="line">        <span class="keyword">this</span>.requestSetting[key] = agrObj[key];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 请求方法</span></span><br><span class="line">  <span class="keyword">private</span> request(agrObj?: AjaxConfig) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> agrObj) &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="built_in">Object</span>.prototype.hasOwnProperty.call(agrObj, key)) &#123;</span><br><span class="line">        <span class="keyword">this</span>.requestSetting[key] = agrObj[key];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!<span class="keyword">this</span>.requestSetting.url) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"没有URL"</span>);</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 是否是jsonp请求</span></span><br><span class="line">    <span class="keyword">this</span>.requestSetting.dataType === <span class="string">"jsonp"</span></span><br><span class="line">      ? <span class="keyword">this</span>.jsonpRequest()</span><br><span class="line">      : <span class="keyword">this</span>.defaultRequest();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 请求参数处理</span></span><br><span class="line">  <span class="keyword">private</span> requestParamsTransform(obj: object): <span class="built_in">string</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> result: <span class="built_in">string</span> = <span class="string">""</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">in</span> obj) &#123;</span><br><span class="line">      result += <span class="string">`<span class="subst">$&#123;key&#125;</span>=<span class="subst">$&#123;obj[key]&#125;</span>&amp;`</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result.slice(<span class="number">0</span>, <span class="number">-1</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 普通请求</span></span><br><span class="line">  <span class="keyword">private</span> defaultRequest() &#123;</span><br><span class="line">    <span class="keyword">let</span> &#123; url, <span class="keyword">type</span>, dataType, success, data, <span class="keyword">async</span> &#125; = <span class="keyword">this</span>.requestSetting;</span><br><span class="line">    <span class="keyword">let</span> sendParams = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> xhr: XMLHttpRequest = XMLHttpRequest</span><br><span class="line">      ? <span class="keyword">new</span> XMLHttpRequest()</span><br><span class="line">      : <span class="keyword">new</span> ActiveXObject(<span class="string">"Microsoft.XMLHTTP"</span>);</span><br><span class="line"></span><br><span class="line">    xhr.onreadystatechange = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(xhr.readyState, <span class="string">"onreadystatechange"</span>);</span><br><span class="line">      <span class="keyword">if</span> (xhr.readyState === <span class="number">4</span> &amp;&amp; xhr.status === <span class="number">200</span>) &#123;</span><br><span class="line">        <span class="keyword">const</span> res =</span><br><span class="line">          dataType === <span class="string">"json"</span> ? <span class="built_in">JSON</span>.parse(xhr.responseText) : xhr.responseText;</span><br><span class="line"></span><br><span class="line">        success(res);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">type</span> === <span class="string">"get"</span>) &#123;</span><br><span class="line">      <span class="keyword">const</span> urlParams = <span class="built_in">encodeURI</span>(<span class="keyword">this</span>.requestParamsTransform(data));</span><br><span class="line">      url += <span class="string">"?"</span> + urlParams;</span><br><span class="line">    &#125;</span><br><span class="line">    xhr.open(<span class="keyword">type</span>, url, <span class="keyword">async</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">type</span> === <span class="string">"post"</span>) &#123;</span><br><span class="line">      sendParams = <span class="keyword">this</span>.requestParamsTransform(data);</span><br><span class="line">      xhr.setRequestHeader(<span class="string">"Content-Type"</span>, <span class="string">"application/x-www-form-urlencode"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    xhr.send(sendParams);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// jsonp请求</span></span><br><span class="line">  <span class="keyword">private</span> jsonpRequest() &#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; jsonp, jsonpCallBack, url, success, data &#125; = <span class="keyword">this</span>.requestSetting;</span><br><span class="line">    <span class="comment">// 挂载成功回调</span></span><br><span class="line">    <span class="built_in">window</span>[jsonpCallBack] = success;</span><br><span class="line">    <span class="keyword">const</span> request: <span class="built_in">string</span> = <span class="keyword">this</span>.requestParamsTransform(data);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> scriptNode: HTMLScriptElement = <span class="built_in">document</span>.createElement(<span class="string">"script"</span>);</span><br><span class="line">    scriptNode.src = <span class="string">`<span class="subst">$&#123;url&#125;</span>?<span class="subst">$&#123;jsonp&#125;</span>=<span class="subst">$&#123;jsonpCallBack&#125;</span>&amp;<span class="subst">$&#123;request&#125;</span>`</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将script标签添加到头部</span></span><br><span class="line">    <span class="keyword">const</span> head: HTMLHeadElement = <span class="built_in">document</span>.getElementsByTagName(<span class="string">"head"</span>)[<span class="number">0</span>];</span><br><span class="line">    head.appendChild(scriptNode);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://supertinypeanut.github.io/blog/2019/11/20/Ajax/" data-id="ckmm8va6u001h85qs3nrs1h3p" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/JavaScript/" rel="tag">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2019/11/22/mockNew/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          封装函数模拟关键字new实现
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/ECMAScript-6/" rel="tag">ECMAScript 6</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Lint/" rel="tag">Lint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/TypeScript/" rel="tag">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Vue/" rel="tag">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Webpack/" rel="tag">Webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/npm/" rel="tag">npm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/web-%E5%AE%89%E5%85%A8/" rel="tag">web 安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/" rel="tag">前端工程化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" rel="tag">问题解决</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/blog/tags/ECMAScript-6/" style="font-size: 12.5px;">ECMAScript 6</a> <a href="/blog/tags/Git/" style="font-size: 15px;">Git</a> <a href="/blog/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/blog/tags/Lint/" style="font-size: 10px;">Lint</a> <a href="/blog/tags/React/" style="font-size: 12.5px;">React</a> <a href="/blog/tags/TypeScript/" style="font-size: 12.5px;">TypeScript</a> <a href="/blog/tags/Vue/" style="font-size: 17.5px;">Vue</a> <a href="/blog/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/blog/tags/npm/" style="font-size: 10px;">npm</a> <a href="/blog/tags/web-%E5%AE%89%E5%85%A8/" style="font-size: 15px;">web 安全</a> <a href="/blog/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/" style="font-size: 12.5px;">前端工程化</a> <a href="/blog/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" style="font-size: 15px;">问题解决</a> <a href="/blog/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 12.5px;">面试</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/09/">九月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/11/">十一月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2021/03/23/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2/">持续集成与持续部署</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2021/03/07/Promise%E5%AE%9E%E7%8E%B0/">Promise实现</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2021/03/03/ES6%E9%9D%A2%E8%AF%95%E9%A2%98/">ES6面试题</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2021/01/25/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/">自动化测试</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2020/12/27/async-validator%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">async-validator基本使用</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Super Peanut<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+
+  
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

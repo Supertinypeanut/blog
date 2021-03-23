@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>常用的JS开发技巧(I) | Peanut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="目录 「String Skill」：字符串技巧 「Number Skill」：数值技巧 「Boolean Skill」：布尔技巧 「Array Skill」：数组技巧 「Object Skill」：对象技巧 「Function Skill」：函数技巧 「DOM Skill」：DOM技巧  备注  代码只作演示用途，不会详细说明ES6语法 如有不明白的语法问题可以参考阮一峰老师的《ES6标准入门》">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用的JS开发技巧(I)">
+<meta property="og:url" content="https://supertinypeanut.github.io/blog/2020/02/17/%E5%B8%B8%E7%94%A8%E7%9A%84JS%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7(I)/index.html">
+<meta property="og:site_name" content="Peanut">
+<meta property="og:description" content="目录 「String Skill」：字符串技巧 「Number Skill」：数值技巧 「Boolean Skill」：布尔技巧 「Array Skill」：数组技巧 「Object Skill」：对象技巧 「Function Skill」：函数技巧 「DOM Skill」：DOM技巧  备注  代码只作演示用途，不会详细说明ES6语法 如有不明白的语法问题可以参考阮一峰老师的《ES6标准入门》">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-17T10:10:10.000Z">
+<meta property="article:modified_time" content="2021-03-23T16:40:13.777Z">
+<meta property="article:author" content="Super Peanut">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="Peanut" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/blog/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">Peanut</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/blog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://supertinypeanut.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-常用的JS开发技巧(I)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2020/02/17/%E5%B8%B8%E7%94%A8%E7%9A%84JS%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7(I)/" class="article-date">
+  <time datetime="2020-02-17T10:10:10.000Z" itemprop="datePublished">2020-02-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      常用的JS开发技巧(I)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h3><ul>
+<li>「String Skill」：字符串技巧</li>
+<li>「Number Skill」：数值技巧</li>
+<li>「Boolean Skill」：布尔技巧</li>
+<li>「Array Skill」：数组技巧</li>
+<li>「Object Skill」：对象技巧</li>
+<li>「Function Skill」：函数技巧</li>
+<li>「DOM Skill」：DOM技巧</li>
+</ul>
+<p>备注</p>
+<ul>
+<li>代码只作演示用途，不会详细说明ES6语法</li>
+<li>如有不明白的语法问题可以参考阮一峰老师的《ES6标准入门》</li>
+<li>《ES6标准入门》一直保持更新，建议收藏，平时查看</li>
+</ul>
+<h3 id="String-Skill"><a href="#String-Skill" class="headerlink" title="String Skill"></a>String Skill</h3><h5 id="对比时间"><a href="#对比时间" class="headerlink" title="对比时间"></a>对比时间</h5><blockquote>
+<p>时间个位数形式需补0</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> time1 = <span class="string">"2019-02-14 21:00:00"</span>;</span><br><span class="line"><span class="keyword">const</span> time2 = <span class="string">"2019-05-01 09:00:00"</span>;</span><br><span class="line"><span class="keyword">const</span> overtime = time1 &gt; time2;</span><br><span class="line"><span class="comment">// overtime =&gt; false</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="格式化金钱"><a href="#格式化金钱" class="headerlink" title="格式化金钱"></a>格式化金钱</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ThousandNum = <span class="function"><span class="params">num</span> =&gt;</span> num.toString().replace(<span class="regexp">/\B(?=(\d&#123;3&#125;)+(?!\d))/g</span>, <span class="string">","</span>);</span><br><span class="line"><span class="keyword">const</span> money = ThousandNum(<span class="number">20190214</span>);</span><br><span class="line"><span class="comment">// money =&gt; "20,190,214"</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="生成随机ID"><a href="#生成随机ID" class="headerlink" title="生成随机ID"></a>生成随机ID</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> RandomId = <span class="function"><span class="params">len</span> =&gt;</span> <span class="built_in">Math</span>.random().toString(<span class="number">36</span>).substr(<span class="number">3</span>, len);</span><br><span class="line"><span class="keyword">const</span> id = RandomId(<span class="number">10</span>);</span><br><span class="line"><span class="comment">// id =&gt; "jg7zpgiqva"</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="生成随机HEX色值"><a href="#生成随机HEX色值" class="headerlink" title="生成随机HEX色值"></a>生成随机HEX色值</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> RandomColor = <span class="function"><span class="params">()</span> =&gt;</span> <span class="string">"#"</span> + <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">0xffffff</span>).toString(<span class="number">16</span>).padEnd(<span class="number">6</span>, <span class="string">"0"</span>);</span><br><span class="line"><span class="keyword">const</span> color = RandomColor();</span><br><span class="line"><span class="comment">// color =&gt; "#f03665"</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="生成星级评分"><a href="#生成星级评分" class="headerlink" title="生成星级评分"></a>生成星级评分</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> StartScore = <span class="function"><span class="params">rate</span> =&gt;</span> <span class="string">"★★★★★☆☆☆☆☆"</span>.slice(<span class="number">5</span> - rate, <span class="number">10</span> - rate);</span><br><span class="line"><span class="keyword">const</span> start = StartScore(<span class="number">3</span>);</span><br><span class="line"><span class="comment">// start =&gt; "★★★"</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="操作URL查询参数"><a href="#操作URL查询参数" class="headerlink" title="操作URL查询参数"></a>操作URL查询参数</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> params = <span class="keyword">new</span> URLSearchParams(location.search.replace(<span class="regexp">/\?/ig</span>, <span class="string">""</span>)); <span class="comment">// location.search = "?name=young&amp;sex=male"</span></span><br><span class="line">params.has(<span class="string">"young"</span>); <span class="comment">// true</span></span><br><span class="line">params.get(<span class="string">"sex"</span>); <span class="comment">// "male"</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Number-Skill"><a href="#Number-Skill" class="headerlink" title="Number Skill"></a>Number Skill</h3><h5 id="取整"><a href="#取整" class="headerlink" title="取整"></a>取整</h5><blockquote>
+<p>代替正数的<code>Math.floor()</code>，代替负数的<code>Math.ceil()</code></p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> num1 = ~~ <span class="number">1.69</span>;</span><br><span class="line"><span class="keyword">const</span> num2 = <span class="number">1.69</span> | <span class="number">0</span>;</span><br><span class="line"><span class="keyword">const</span> num3 = <span class="number">1.69</span> &gt;&gt; <span class="number">0</span>;</span><br><span class="line"><span class="comment">// num1 num2 num3 =&gt; 1 1 1</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="补零"><a href="#补零" class="headerlink" title="补零"></a>补零</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> FillZero = <span class="function">(<span class="params">num, len</span>) =&gt;</span> num.toString().padStart(len, <span class="string">"0"</span>);</span><br><span class="line"><span class="keyword">const</span> num = FillZero(<span class="number">169</span>, <span class="number">5</span>);</span><br><span class="line"><span class="comment">// num =&gt; "00169"</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="转数值"><a href="#转数值" class="headerlink" title="转数值"></a>转数值</h5><blockquote>
+<p>只对<code>null、&quot;&quot;、false、数值字符串</code>有效</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> num1 = +<span class="literal">null</span>;</span><br><span class="line"><span class="keyword">const</span> num2 = +<span class="string">""</span>;</span><br><span class="line"><span class="keyword">const</span> num3 = +<span class="literal">false</span>;</span><br><span class="line"><span class="keyword">const</span> num4 = +<span class="string">"169"</span>;</span><br><span class="line"><span class="comment">// num1 num2 num3 num4 =&gt; 0 0 0 169</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="时间戳"><a href="#时间戳" class="headerlink" title="时间戳"></a>时间戳</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> timestamp = +<span class="keyword">new</span> <span class="built_in">Date</span>(<span class="string">"2019-02-14"</span>);</span><br><span class="line"><span class="comment">// timestamp =&gt; 1550102400000</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="精确小数"><a href="#精确小数" class="headerlink" title="精确小数"></a>精确小数</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> RoundNum = <span class="function">(<span class="params">num, decimal</span>) =&gt;</span> <span class="built_in">Math</span>.round(num * <span class="number">10</span> ** decimal) / <span class="number">10</span> ** decimal;</span><br><span class="line"><span class="keyword">const</span> num = RoundNum(<span class="number">1.69</span>, <span class="number">1</span>);</span><br><span class="line"><span class="comment">// num =&gt; 1.7</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="判断奇偶"><a href="#判断奇偶" class="headerlink" title="判断奇偶"></a>判断奇偶</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> OddEven = <span class="function"><span class="params">num</span> =&gt;</span> !!(num &amp; <span class="number">1</span>) ? <span class="string">"odd"</span> : <span class="string">"even"</span>;</span><br><span class="line"><span class="keyword">const</span> num = OddEven(<span class="number">2</span>);</span><br><span class="line"><span class="comment">// num =&gt; "even"</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="取最小最大值"><a href="#取最小最大值" class="headerlink" title="取最小最大值"></a>取最小最大值</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line"><span class="keyword">const</span> min = <span class="built_in">Math</span>.min(...arr);</span><br><span class="line"><span class="keyword">const</span> max = <span class="built_in">Math</span>.max(...arr);</span><br><span class="line"><span class="comment">// min max =&gt; 0 2</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="生成范围随机数"><a href="#生成范围随机数" class="headerlink" title="生成范围随机数"></a>生成范围随机数</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> RandomNum = <span class="function">(<span class="params">min, max</span>) =&gt;</span> <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * (max - min + <span class="number">1</span>)) + min;</span><br><span class="line"><span class="keyword">const</span> num = RandomNum(<span class="number">1</span>, <span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Boolean-Skill"><a href="#Boolean-Skill" class="headerlink" title="Boolean Skill"></a>Boolean Skill</h3><h5 id="短路运算符"><a href="#短路运算符" class="headerlink" title="短路运算符"></a>短路运算符</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = d &amp;&amp; <span class="number">1</span>; <span class="comment">// 满足条件赋值：取假运算，从左到右依次判断，遇到假值返回假值，后面不再执行，否则返回最后一个真值</span></span><br><span class="line"><span class="keyword">const</span> b = d || <span class="number">1</span>; <span class="comment">// 默认赋值：取真运算，从左到右依次判断，遇到真值返回真值，后面不再执行，否则返回最后一个假值</span></span><br><span class="line"><span class="keyword">const</span> c = !d; <span class="comment">// 取假赋值：单个表达式转换为true则返回false，否则返回true</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="判断数据类型"><a href="#判断数据类型" class="headerlink" title="判断数据类型"></a>判断数据类型</h5><blockquote>
+<p>可判断类型：undefined、null、string、number、boolean、array、object、symbol、date、regexp、function、asyncfunction、arguments、set、map、weakset、weakmap</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">DataType</span>(<span class="params">tgt, type</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> dataType = <span class="built_in">Object</span>.prototype.toString.call(tgt).replace(<span class="regexp">/\[object (\w+)\]/</span>, <span class="string">"$1"</span>).toLowerCase();</span><br><span class="line">    <span class="keyword">return</span> type ? dataType === type : dataType;</span><br><span class="line">&#125;</span><br><span class="line">DataType(<span class="string">"young"</span>); <span class="comment">// "string"</span></span><br><span class="line">DataType(<span class="number">20190214</span>); <span class="comment">// "number"</span></span><br><span class="line">DataType(<span class="literal">true</span>); <span class="comment">// "boolean"</span></span><br><span class="line">DataType([], <span class="string">"array"</span>); <span class="comment">// true</span></span><br><span class="line">DataType(&#123;&#125;, <span class="string">"array"</span>); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="是否为空数组"><a href="#是否为空数组" class="headerlink" title="是否为空数组"></a>是否为空数组</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [];</span><br><span class="line"><span class="keyword">const</span> flag = <span class="built_in">Array</span>.isArray(arr) &amp;&amp; !arr.length;</span><br><span class="line"><span class="comment">// flag =&gt; true</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="是否为空对象"><a href="#是否为空对象" class="headerlink" title="是否为空对象"></a>是否为空对象</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;&#125;;</span><br><span class="line"><span class="keyword">const</span> flag = DataType(obj, <span class="string">"object"</span>) &amp;&amp; !<span class="built_in">Object</span>.keys(obj).length;</span><br><span class="line"><span class="comment">// flag =&gt; true</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="满足条件时执行"><a href="#满足条件时执行" class="headerlink" title="满足条件时执行"></a>满足条件时执行</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> flagA = <span class="literal">true</span>; <span class="comment">// 条件A</span></span><br><span class="line"><span class="keyword">const</span> flagB = <span class="literal">false</span>; <span class="comment">// 条件B</span></span><br><span class="line">(flagA || flagB) &amp;&amp; Func(); <span class="comment">// 满足A或B时执行</span></span><br><span class="line">(flagA || !flagB) &amp;&amp; Func(); <span class="comment">// 满足A或不满足B时执行</span></span><br><span class="line">flagA &amp;&amp; flagB &amp;&amp; Func(); <span class="comment">// 同时满足A和B时执行</span></span><br><span class="line">flagA &amp;&amp; !flagB &amp;&amp; Func(); <span class="comment">// 满足A且不满足B时执行</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="为非假值时执行"><a href="#为非假值时执行" class="headerlink" title="为非假值时执行"></a>为非假值时执行</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> flag = <span class="literal">false</span>; <span class="comment">// undefined、null、""、0、false、NaN</span></span><br><span class="line">!flag &amp;&amp; Func();</span><br></pre></td></tr></table></figure>
+
+<h5 id="数组不为空时执行"><a href="#数组不为空时执行" class="headerlink" title="数组不为空时执行"></a>数组不为空时执行</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line">arr.length &amp;&amp; Func();</span><br></pre></td></tr></table></figure>
+
+<h5 id="对象不为空时执行"><a href="#对象不为空时执行" class="headerlink" title="对象不为空时执行"></a>对象不为空时执行</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123; <span class="attr">a</span>: <span class="number">0</span>, <span class="attr">b</span>: <span class="number">1</span>, <span class="attr">c</span>: <span class="number">2</span> &#125;;</span><br><span class="line"><span class="built_in">Object</span>.keys(obj).length &amp;&amp; Func();</span><br></pre></td></tr></table></figure>
+
+<h5 id="函数退出代替条件分支退出"><a href="#函数退出代替条件分支退出" class="headerlink" title="函数退出代替条件分支退出"></a>函数退出代替条件分支退出</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (flag) &#123;</span><br><span class="line">    Func();</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 换成</span></span><br><span class="line"><span class="keyword">if</span> (flag) &#123;</span><br><span class="line">    <span class="keyword">return</span> Func();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="switch-case使用区间"><a href="#switch-case使用区间" class="headerlink" title="switch/case使用区间"></a>switch/case使用区间</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> age = <span class="number">26</span>;</span><br><span class="line"><span class="keyword">switch</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="built_in">isNaN</span>(age):</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"not a number"</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> (age &lt; <span class="number">18</span>):</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"under age"</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> (age &gt;= <span class="number">18</span>):</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"adult"</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"please set your age"</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Array-Skill"><a href="#Array-Skill" class="headerlink" title="Array Skill"></a>Array Skill</h3><h5 id="克隆数组"><a href="#克隆数组" class="headerlink" title="克隆数组"></a>克隆数组</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> _arr = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line"><span class="keyword">const</span> arr = [..._arr];</span><br><span class="line"><span class="comment">// arr =&gt; [0, 1, 2]</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="合并数组"><a href="#合并数组" class="headerlink" title="合并数组"></a>合并数组</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr1 = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line"><span class="keyword">const</span> arr2 = [<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line"><span class="keyword">const</span> arr = [...arr1, ...arr2];</span><br><span class="line"><span class="comment">// arr =&gt; [0, 1, 2, 3, 4, 5];</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="去重数组"><a href="#去重数组" class="headerlink" title="去重数组"></a>去重数组</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [...new <span class="built_in">Set</span>([<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="literal">null</span>, <span class="literal">null</span>])];</span><br><span class="line"><span class="comment">// arr =&gt; [0, 1, null]</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="混淆数组"><a href="#混淆数组" class="headerlink" title="混淆数组"></a>混淆数组</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>].slice().sort(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">Math</span>.random() - <span class="number">.5</span>);</span><br><span class="line"><span class="comment">// arr =&gt; [3, 4, 0, 5, 1, 2]</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="清空数组"><a href="#清空数组" class="headerlink" title="清空数组"></a>清空数组</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line">arr.length = <span class="number">0</span>;</span><br><span class="line"><span class="comment">// arr =&gt; []</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="截断数组"><a href="#截断数组" class="headerlink" title="截断数组"></a>截断数组</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line">arr.length = <span class="number">2</span>;</span><br><span class="line"><span class="comment">// arr =&gt; [0, 1]</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="交换赋值"><a href="#交换赋值" class="headerlink" title="交换赋值"></a>交换赋值</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">let</span> b = <span class="number">1</span>;</span><br><span class="line">[a, b] = [b, a];</span><br><span class="line"><span class="comment">// a b =&gt; 1 0</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="过滤空值"><a href="#过滤空值" class="headerlink" title="过滤空值"></a>过滤空值</h5><blockquote>
+<p>空值：undefined、null、””、0、false、NaN</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="literal">undefined</span>, <span class="literal">null</span>, <span class="string">""</span>, <span class="number">0</span>, <span class="literal">false</span>, <span class="literal">NaN</span>, <span class="number">1</span>, <span class="number">2</span>].filter(<span class="built_in">Boolean</span>);</span><br><span class="line"><span class="comment">// arr =&gt; [1, 2]</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="异步累计"><a href="#异步累计" class="headerlink" title="异步累计"></a>异步累计</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">Func</span>(<span class="params">deps</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> deps.reduce(<span class="keyword">async</span>(t, v) =&gt; &#123;</span><br><span class="line">        <span class="keyword">const</span> dep = <span class="keyword">await</span> t;</span><br><span class="line">        <span class="keyword">const</span> version = <span class="keyword">await</span> Todo(v);</span><br><span class="line">        dep[v] = version;</span><br><span class="line">        <span class="keyword">return</span> dep;</span><br><span class="line">    &#125;, <span class="built_in">Promise</span>.resolve(&#123;&#125;));</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> result = <span class="keyword">await</span> Func(); <span class="comment">// 需在async包围下使用</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="数组首部插入成员"><a href="#数组首部插入成员" class="headerlink" title="数组首部插入成员"></a>数组首部插入成员</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>, <span class="number">2</span>]; <span class="comment">// 以下方法任选一种</span></span><br><span class="line">arr.unshift(<span class="number">0</span>);</span><br><span class="line">arr = [<span class="number">0</span>].concat(arr);</span><br><span class="line">arr = [<span class="number">0</span>, ...arr];</span><br><span class="line"><span class="comment">// arr =&gt; [0, 1, 2]</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="数组尾部插入成员"><a href="#数组尾部插入成员" class="headerlink" title="数组尾部插入成员"></a>数组尾部插入成员</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arr = [<span class="number">0</span>, <span class="number">1</span>]; <span class="comment">// 以下方法任选一种</span></span><br><span class="line">arr.push(<span class="number">2</span>);</span><br><span class="line">arr.concat(<span class="number">2</span>);</span><br><span class="line">arr[arr.length] = <span class="number">2</span>;</span><br><span class="line">arr = [...arr, <span class="number">2</span>];</span><br><span class="line"><span class="comment">// arr =&gt; [0, 1, 2]</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="统计数组成员个数"><a href="#统计数组成员个数" class="headerlink" title="统计数组成员个数"></a>统计数组成员个数</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>];</span><br><span class="line"><span class="keyword">const</span> count = arr.reduce(<span class="function">(<span class="params">t, v</span>) =&gt;</span> &#123;</span><br><span class="line">	t[v] = t[v] ? ++t[v] : <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">return</span> t;</span><br><span class="line">&#125;, &#123;&#125;);</span><br><span class="line"><span class="comment">// count =&gt; &#123; 0: 1, 1: 2, 2: 3 &#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="解构数组成员嵌套"><a href="#解构数组成员嵌套" class="headerlink" title="解构数组成员嵌套"></a>解构数组成员嵌套</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">0</span>, <span class="number">1</span>, [<span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>]]];</span><br><span class="line"><span class="keyword">const</span> [a, b, [c, d, [e, f]]] = arr;</span><br><span class="line"><span class="comment">// a b c d e f =&gt; 0 1 2 3 4 5</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="解构数组成员别名"><a href="#解构数组成员别名" class="headerlink" title="解构数组成员别名"></a>解构数组成员别名</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line"><span class="keyword">const</span> &#123; <span class="number">0</span>: a, <span class="number">1</span>: b, <span class="number">2</span>: c &#125; = arr;</span><br><span class="line"><span class="comment">// a b c =&gt; 0 1 2</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="解构数组成员默认值"><a href="#解构数组成员默认值" class="headerlink" title="解构数组成员默认值"></a>解构数组成员默认值</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line"><span class="keyword">const</span> [a, b, c = <span class="number">3</span>, d = <span class="number">4</span>] = arr;</span><br><span class="line"><span class="comment">// a b c d =&gt; 0 1 2 4</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="获取随机数组成员"><a href="#获取随机数组成员" class="headerlink" title="获取随机数组成员"></a>获取随机数组成员</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line"><span class="keyword">const</span> randomItem = arr[<span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * arr.length)];</span><br><span class="line"><span class="comment">// randomItem =&gt; 1</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="创建指定长度数组"><a href="#创建指定长度数组" class="headerlink" title="创建指定长度数组"></a>创建指定长度数组</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = [...new <span class="built_in">Array</span>(<span class="number">3</span>).keys()];</span><br><span class="line"><span class="comment">// arr =&gt; [0, 1, 2]</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="创建指定长度且值相等的数组"><a href="#创建指定长度且值相等的数组" class="headerlink" title="创建指定长度且值相等的数组"></a>创建指定长度且值相等的数组</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arr = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">3</span>).fill(<span class="number">0</span>);</span><br><span class="line"><span class="comment">// arr =&gt; [0, 0, 0]</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="reduce代替map和filter"><a href="#reduce代替map和filter" class="headerlink" title="reduce代替map和filter"></a>reduce代替map和filter</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> _arr = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// map</span></span><br><span class="line"><span class="keyword">const</span> arr = _arr.map(<span class="function"><span class="params">v</span> =&gt;</span> v * <span class="number">2</span>);</span><br><span class="line"><span class="keyword">const</span> arr = _arr.reduce(<span class="function">(<span class="params">t, v</span>) =&gt;</span> &#123;</span><br><span class="line">    t.push(v * <span class="number">2</span>);</span><br><span class="line">    <span class="keyword">return</span> t;</span><br><span class="line">&#125;, []);</span><br><span class="line"><span class="comment">// arr =&gt; [0, 2, 4]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// filter</span></span><br><span class="line"><span class="keyword">const</span> arr = _arr.filter(<span class="function"><span class="params">v</span> =&gt;</span> v &gt; <span class="number">0</span>);</span><br><span class="line"><span class="keyword">const</span> arr = _arr.reduce(<span class="function">(<span class="params">t, v</span>) =&gt;</span> &#123;</span><br><span class="line">    v &gt; <span class="number">0</span> &amp;&amp; t.push(v);</span><br><span class="line">    <span class="keyword">return</span> t;</span><br><span class="line">&#125;, []);</span><br><span class="line"><span class="comment">// arr =&gt; [1, 2]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// map和filter</span></span><br><span class="line"><span class="keyword">const</span> arr = _arr.map(<span class="function"><span class="params">v</span> =&gt;</span> v * <span class="number">2</span>).filter(<span class="function"><span class="params">v</span> =&gt;</span> v &gt; <span class="number">2</span>);</span><br><span class="line"><span class="keyword">const</span> arr = _arr.reduce(<span class="function">(<span class="params">t, v</span>) =&gt;</span> &#123;</span><br><span class="line">    v = v * <span class="number">2</span>;</span><br><span class="line">    v &gt; <span class="number">2</span> &amp;&amp; t.push(v);</span><br><span class="line">    <span class="keyword">return</span> t;</span><br><span class="line">&#125;, []);</span><br><span class="line"><span class="comment">// arr =&gt; [4]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Object-Skill"><a href="#Object-Skill" class="headerlink" title="Object Skill"></a>Object Skill</h3><h5 id="克隆对象"><a href="#克隆对象" class="headerlink" title="克隆对象"></a>克隆对象</h5><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">const</span> <span class="string">_obj</span> <span class="string">=</span> <span class="string">&#123;</span> <span class="attr">a:</span> <span class="number">0</span><span class="string">,</span> <span class="attr">b:</span> <span class="number">1</span><span class="string">,</span> <span class="attr">c:</span> <span class="number">2</span> <span class="string">&#125;;</span> <span class="string">//</span> <span class="string">以下方法任选一种</span></span><br><span class="line"><span class="string">const</span> <span class="string">obj</span> <span class="string">=</span> <span class="string">&#123;</span> <span class="string">..._obj</span> <span class="string">&#125;;</span></span><br><span class="line"><span class="string">const</span> <span class="string">obj</span> <span class="string">=</span> <span class="string">JSON.parse(JSON.stringify(_obj));</span></span><br><span class="line"><span class="string">//</span> <span class="string">obj</span> <span class="string">=&gt;</span> <span class="string">&#123;</span> <span class="attr">a:</span> <span class="number">0</span><span class="string">,</span> <span class="attr">b:</span> <span class="number">1</span><span class="string">,</span> <span class="attr">c:</span> <span class="number">2</span> <span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="合并对象"><a href="#合并对象" class="headerlink" title="合并对象"></a>合并对象</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj1 = &#123; <span class="attr">a</span>: <span class="number">0</span>, <span class="attr">b</span>: <span class="number">1</span>, <span class="attr">c</span>: <span class="number">2</span> &#125;;</span><br><span class="line"><span class="keyword">const</span> obj2 = &#123; <span class="attr">c</span>: <span class="number">3</span>, <span class="attr">d</span>: <span class="number">4</span>, <span class="attr">e</span>: <span class="number">5</span> &#125;;</span><br><span class="line"><span class="keyword">const</span> obj = &#123; ...obj1, ...obj2 &#125;;</span><br><span class="line"><span class="comment">// obj =&gt; &#123; a: 0, b: 1, c: 3, d: 4, e: 5 &#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="对象字面量"><a href="#对象字面量" class="headerlink" title="对象字面量"></a>对象字面量</h5><blockquote>
+<p>获取环境变量时必用此方法，用它一直爽，一直用它一直爽</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> env = <span class="string">"prod"</span>;</span><br><span class="line"><span class="keyword">const</span> link = &#123;</span><br><span class="line">    dev: <span class="string">"Development Address"</span>,</span><br><span class="line">    test: <span class="string">"Testing Address"</span>,</span><br><span class="line">    prod: <span class="string">"Production Address"</span></span><br><span class="line">&#125;[env];</span><br><span class="line"><span class="comment">// link =&gt; "Production Address"</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="对象变量属性"><a href="#对象变量属性" class="headerlink" title="对象变量属性"></a>对象变量属性</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> flag = <span class="literal">false</span>;</span><br><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">    a: <span class="number">0</span>,</span><br><span class="line">    b: <span class="number">1</span>,</span><br><span class="line">    [flag ? <span class="string">"c"</span> : <span class="string">"d"</span>]: <span class="number">2</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// obj =&gt; &#123; a: 0, b: 1, d: 2 &#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="创建纯空对象"><a href="#创建纯空对象" class="headerlink" title="创建纯空对象"></a>创建纯空对象</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = <span class="built_in">Object</span>.create(<span class="literal">null</span>);</span><br><span class="line"><span class="built_in">Object</span>.prototype.a = <span class="number">0</span>;</span><br><span class="line"><span class="comment">// obj =&gt; &#123;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="删除对象无用属性"><a href="#删除对象无用属性" class="headerlink" title="删除对象无用属性"></a>删除对象无用属性</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123; <span class="attr">a</span>: <span class="number">0</span>, <span class="attr">b</span>: <span class="number">1</span>, <span class="attr">c</span>: <span class="number">2</span> &#125;; <span class="comment">// 只想拿b和c</span></span><br><span class="line"><span class="keyword">const</span> &#123; a, ...rest &#125; = obj;</span><br><span class="line"><span class="comment">// rest =&gt; &#123; b: 1, c: 2 &#125;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="解构对象属性嵌套"><a href="#解构对象属性嵌套" class="headerlink" title="解构对象属性嵌套"></a>解构对象属性嵌套</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123; <span class="attr">a</span>: <span class="number">0</span>, <span class="attr">b</span>: <span class="number">1</span>, <span class="attr">c</span>: &#123; <span class="attr">d</span>: <span class="number">2</span>, <span class="attr">e</span>: <span class="number">3</span> &#125; &#125;;</span><br><span class="line"><span class="keyword">const</span> &#123; <span class="attr">c</span>: &#123; d, e &#125; &#125; = obj;</span><br><span class="line"><span class="comment">// d e =&gt; 2 3</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="解构对象属性别名"><a href="#解构对象属性别名" class="headerlink" title="解构对象属性别名"></a>解构对象属性别名</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123; <span class="attr">a</span>: <span class="number">0</span>, <span class="attr">b</span>: <span class="number">1</span>, <span class="attr">c</span>: <span class="number">2</span> &#125;;</span><br><span class="line"><span class="keyword">const</span> &#123; a, <span class="attr">b</span>: d, <span class="attr">c</span>: e &#125; = obj;</span><br><span class="line"><span class="comment">// a d e =&gt; 0 1 2</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="解构对象属性默认值"><a href="#解构对象属性默认值" class="headerlink" title="解构对象属性默认值"></a>解构对象属性默认值</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123; <span class="attr">a</span>: <span class="number">0</span>, <span class="attr">b</span>: <span class="number">1</span>, <span class="attr">c</span>: <span class="number">2</span> &#125;;</span><br><span class="line"><span class="keyword">const</span> &#123; a, b = <span class="number">2</span>, d = <span class="number">3</span> &#125; = obj;</span><br><span class="line"><span class="comment">// a b d =&gt; 0 1 3</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Function-Skill"><a href="#Function-Skill" class="headerlink" title="Function Skill"></a>Function Skill</h3><h5 id="函数自执行"><a href="#函数自执行" class="headerlink" title="函数自执行"></a>函数自执行</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Func = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;(); <span class="comment">// 常用</span></span><br><span class="line"></span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;)(); <span class="comment">// 常用</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;()); <span class="comment">// 常用</span></span><br><span class="line">[<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;()];</span><br><span class="line"></span><br><span class="line">+ <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;();</span><br><span class="line">- <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;();</span><br><span class="line">~ <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;();</span><br><span class="line">! <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;();</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;;</span><br><span class="line"><span class="keyword">new</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;();</span><br><span class="line"><span class="keyword">void</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;();</span><br><span class="line"><span class="keyword">typeof</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;();</span><br><span class="line"><span class="keyword">delete</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;();</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;();</span><br><span class="line"><span class="number">1</span> ^ <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;();</span><br><span class="line"><span class="number">1</span> &gt; <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;();</span><br></pre></td></tr></table></figure>
+
+<h5 id="隐式返回值"><a href="#隐式返回值" class="headerlink" title="隐式返回值"></a>隐式返回值</h5><blockquote>
+<p>只能用于<code>单语句返回值箭头函数</code>，如果返回值是对象必须使用<code>()</code>包住</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Func = <span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"I Love "</span> + name;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 换成</span></span><br><span class="line"><span class="keyword">const</span> Func = <span class="function"><span class="params">name</span> =&gt;</span> <span class="string">"I Love "</span> + name;</span><br></pre></td></tr></table></figure>
+
+<h5 id="一次性函数"><a href="#一次性函数" class="headerlink" title="一次性函数"></a>一次性函数</h5><blockquote>
+<p>适用于运行一些只需执行一次的初始化代码</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Func</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"x"</span>);</span><br><span class="line">    Func = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"y"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="惰性载入函数"><a href="#惰性载入函数" class="headerlink" title="惰性载入函数"></a>惰性载入函数</h5><blockquote>
+<p>函数内判断分支较多较复杂时可大大节约资源开销</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Func</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (a === b) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"x"</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"y"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 换成</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Func</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (a === b) &#123;</span><br><span class="line">        Func = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">"x"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        Func = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">"y"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> Func();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="检测非空参数"><a href="#检测非空参数" class="headerlink" title="检测非空参数"></a>检测非空参数</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">IsRequired</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"param is required"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Func</span>(<span class="params">name = IsRequired(</span>)) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"I Love "</span> + name);</span><br><span class="line">&#125;</span><br><span class="line">Func(); <span class="comment">// "param is required"</span></span><br><span class="line">Func(<span class="string">"You"</span>); <span class="comment">// "I Love You"</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="字符串创建函数"><a href="#字符串创建函数" class="headerlink" title="字符串创建函数"></a>字符串创建函数</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Func = <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">"name"</span>, <span class="string">"console.log(\"I Love \" + name)"</span>);</span><br></pre></td></tr></table></figure>
+
+<h5 id="优雅处理错误信息"><a href="#优雅处理错误信息" class="headerlink" title="优雅处理错误信息"></a>优雅处理错误信息</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    Func();</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    location.href = <span class="string">"https://stackoverflow.com/search?q=[js]+"</span> + e.message;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="优雅处理Async-Await参数"><a href="#优雅处理Async-Await参数" class="headerlink" title="优雅处理Async/Await参数"></a>优雅处理Async/Await参数</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">AsyncTo</span>(<span class="params">promise</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> promise.then(<span class="function"><span class="params">data</span> =&gt;</span> [<span class="literal">null</span>, data]).catch(<span class="function"><span class="params">err</span> =&gt;</span> [err]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> [err, res] = <span class="keyword">await</span> AsyncTo(Func());</span><br></pre></td></tr></table></figure>
+
+<h5 id="优雅处理多个函数返回值"><a href="#优雅处理多个函数返回值" class="headerlink" title="优雅处理多个函数返回值"></a>优雅处理多个函数返回值</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Func</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Promise</span>.all([</span><br><span class="line">        fetch(<span class="string">"/user"</span>),</span><br><span class="line">        fetch(<span class="string">"/comment"</span>)</span><br><span class="line">    ]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> [user, comment] = <span class="keyword">await</span> Func(); <span class="comment">// 需在async包围下使用</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="DOM-Skill"><a href="#DOM-Skill" class="headerlink" title="DOM Skill"></a>DOM Skill</h3><h5 id="显示全部DOM边框"><a href="#显示全部DOM边框" class="headerlink" title="显示全部DOM边框"></a>显示全部DOM边框</h5><blockquote>
+<p>调试页面元素边界时使用</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[].forEach.call($$(<span class="string">"*"</span>), dom =&gt; &#123;</span><br><span class="line">    dom.style.outline = <span class="string">"1px solid #"</span> + (~~(<span class="built_in">Math</span>.random() * (<span class="number">1</span> &lt;&lt; <span class="number">24</span>))).toString(<span class="number">16</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h5 id="自适应页面"><a href="#自适应页面" class="headerlink" title="自适应页面"></a>自适应页面</h5><blockquote>
+<p>页面基于一张设计图但需做多款机型自适应，元素尺寸使用<code>rem</code>进行设置</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">AutoResponse</span>(<span class="params">width = <span class="number">750</span></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> target = <span class="built_in">document</span>.documentElement;</span><br><span class="line">    target.clientWidth &gt;= <span class="number">600</span></span><br><span class="line">        ? (target.style.fontSize = <span class="string">"80px"</span>)</span><br><span class="line">        : (target.style.fontSize = target.clientWidth / width * <span class="number">100</span> + <span class="string">"px"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="过滤XSS"><a href="#过滤XSS" class="headerlink" title="过滤XSS"></a>过滤XSS</h5><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">FilterXss</span>(<span class="params">content</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> elem = <span class="built_in">document</span>.createElement(<span class="string">"div"</span>);</span><br><span class="line">    elem.innerText = content;</span><br><span class="line">    <span class="keyword">const</span> result = elem.innerHTML;</span><br><span class="line">    elem = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="存取LocalStorage"><a href="#存取LocalStorage" class="headerlink" title="存取LocalStorage"></a>存取LocalStorage</h5><blockquote>
+<p>反序列化取，序列化存</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> love = <span class="built_in">JSON</span>.parse(localStorage.getItem(<span class="string">"love"</span>));</span><br><span class="line">localStorage.setItem(<span class="string">"love"</span>, <span class="built_in">JSON</span>.stringify(<span class="string">"I Love You"</span>));</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>最后送大家一个键盘！</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="params">_</span>=&gt;</span>[...<span class="string">"`1234567890-=~~QWERTYUIOP[]\\~ASDFGHJKL;'~~ZXCVBNM,./~"</span>].map(<span class="function"><span class="params">x</span>=&gt;</span>(o+=<span class="string">`/<span class="subst">$&#123;b=<span class="string">'_'</span>.repeat(w=x&lt;y?<span class="number">2</span>:<span class="string">' 667699'</span>[x=[<span class="string">"Bs"</span>,<span class="string">"Tab"</span>,<span class="string">"Caps"</span>,<span class="string">"Enter"</span>][p++]||<span class="string">'Shift'</span>,p])&#125;</span>\\|`</span>,m+=y+(x+<span class="string">'    '</span>).slice(<span class="number">0</span>,w)+y+y,n+=y+b+y+y,l+=<span class="string">' __'</span>+b)[<span class="number">73</span>]&amp;&amp;(k.push(l,m,n,o),l=<span class="string">''</span>,m=n=o=y),m=n=o=y=<span class="string">'|'</span>,p=l=k=[])&amp;&amp;k.join<span class="string">`</span></span><br><span class="line"><span class="string">`</span>)()</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://supertinypeanut.github.io/blog/2020/02/17/%E5%B8%B8%E7%94%A8%E7%9A%84JS%E5%BC%80%E5%8F%91%E6%8A%80%E5%B7%A7(I)/" data-id="ckmm8va76001z85qsaa7kba8n" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/JavaScript/" rel="tag">JavaScript</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2020/02/21/es6/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          ES6 特性
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2020/02/17/type-definition/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">类型定义文件(*.d.ts)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/ECMAScript-6/" rel="tag">ECMAScript 6</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Lint/" rel="tag">Lint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/TypeScript/" rel="tag">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Vue/" rel="tag">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Webpack/" rel="tag">Webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/npm/" rel="tag">npm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/web-%E5%AE%89%E5%85%A8/" rel="tag">web 安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/" rel="tag">前端工程化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" rel="tag">问题解决</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/blog/tags/ECMAScript-6/" style="font-size: 12.5px;">ECMAScript 6</a> <a href="/blog/tags/Git/" style="font-size: 15px;">Git</a> <a href="/blog/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/blog/tags/Lint/" style="font-size: 10px;">Lint</a> <a href="/blog/tags/React/" style="font-size: 12.5px;">React</a> <a href="/blog/tags/TypeScript/" style="font-size: 12.5px;">TypeScript</a> <a href="/blog/tags/Vue/" style="font-size: 17.5px;">Vue</a> <a href="/blog/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/blog/tags/npm/" style="font-size: 10px;">npm</a> <a href="/blog/tags/web-%E5%AE%89%E5%85%A8/" style="font-size: 15px;">web 安全</a> <a href="/blog/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/" style="font-size: 12.5px;">前端工程化</a> <a href="/blog/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" style="font-size: 15px;">问题解决</a> <a href="/blog/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 12.5px;">面试</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/09/">九月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/11/">十一月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2021/03/23/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2/">持续集成与持续部署</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2021/03/07/Promise%E5%AE%9E%E7%8E%B0/">Promise实现</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2021/03/03/ES6%E9%9D%A2%E8%AF%95%E9%A2%98/">ES6面试题</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2021/01/25/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/">自动化测试</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2020/12/27/async-validator%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">async-validator基本使用</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Super Peanut<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+
+  
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>XSS 的攻防 | Peanut</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="随着互联网的高速发展，web 应用在互联网中占据的位置也越来越重要，web 安全问题也自然成为了企业最关注的焦点之一。目前，针对 web 的攻击手段层出不穷（比如 SQL 注入、CSRF、XSS 等），虽然浏览器本身也在不断引入 CORS、CSP、Same-Site Cookies 等技术来增强安全性，但是仍存在很多潜在的威胁，需要技术人员不断进行“查漏补缺”。   在上述的威胁中，XSS（Cr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XSS 的攻防">
+<meta property="og:url" content="https://supertinypeanut.github.io/blog/2020/08/16/XSS%E7%9A%84%E6%94%BB%E9%98%B2/index.html">
+<meta property="og:site_name" content="Peanut">
+<meta property="og:description" content="随着互联网的高速发展，web 应用在互联网中占据的位置也越来越重要，web 安全问题也自然成为了企业最关注的焦点之一。目前，针对 web 的攻击手段层出不穷（比如 SQL 注入、CSRF、XSS 等），虽然浏览器本身也在不断引入 CORS、CSP、Same-Site Cookies 等技术来增强安全性，但是仍存在很多潜在的威胁，需要技术人员不断进行“查漏补缺”。   在上述的威胁中，XSS（Cr">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//image-20200823161141603.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//image-20200823161309934.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//image-20200823161344946.png">
+<meta property="og:image" content="https://supertinypeanut.github.io/blog/.io//image-20200823161809436.png">
+<meta property="article:published_time" content="2020-08-16T17:10:10.000Z">
+<meta property="article:modified_time" content="2021-03-23T16:40:13.725Z">
+<meta property="article:author" content="Super Peanut">
+<meta property="article:tag" content="web 安全">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://supertinypeanut.github.io/blog/.io//image-20200823161141603.png">
+  
+    <link rel="alternate" href="/blog/atom.xml" title="Peanut" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/blog/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/blog/" id="logo">Peanut</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/blog/">Home</a>
+        
+          <a class="main-nav-link" href="/blog/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/blog/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://supertinypeanut.github.io/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-XSS的攻防" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2020/08/16/XSS%E7%9A%84%E6%94%BB%E9%98%B2/" class="article-date">
+  <time datetime="2020-08-16T17:10:10.000Z" itemprop="datePublished">2020-08-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      XSS 的攻防
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>随着互联网的高速发展，web 应用在互联网中占据的位置也越来越重要，web 安全问题也自然成为了企业最关注的焦点之一。目前，针对 web 的攻击手段层出不穷（比如 SQL 注入、CSRF、XSS 等），虽然浏览器本身也在不断引入 CORS、CSP、Same-Site Cookies 等技术来增强安全性，但是仍存在很多潜在的威胁，需要技术人员不断进行“查漏补缺”。</p>
+</blockquote>
+<blockquote>
+<p>在上述的威胁中，XSS（Crossing-Site Scripting，跨站脚本攻击）是困扰 Web 安全多年的一种常见攻击方式。我们本次主要针对 XSS 的原理和防御方案进行介绍</p>
+</blockquote>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>XSS 是 Crossing-Site Scripting（跨站脚本）的英文首字母缩写，因为和 CSS（Cascading Style Sheets 层叠样式表）重名了，所以将 C 改成 X 以区分。</p>
+<p>XSS 是一种代码注入攻击，攻击者可以往 Web 页面里插入恶意代码，当其他用户浏览该网页的时候，嵌入 web 里面的代码会被执行，从而达到攻击者特殊目的，比如：</p>
+<ul>
+<li><p>破坏网站，导致页面不可用</p>
+</li>
+<li><p>攻击服务端，导致服务拒绝</p>
+</li>
+<li><p>窃取用户 cookie，发送恶意请求</p>
+</li>
+<li><p>安装键盘记录器，窃取用户数据</p>
+</li>
+<li><p>跳转钓鱼页面，窃取账号密码</p>
+</li>
+<li><p>….</p>
+</li>
+</ul>
+<p>XSS 触发的条件包括：</p>
+<ol>
+<li><p>攻击者可以<strong>提交恶意数据</strong></p>
+</li>
+<li><p><strong>数据没有被处理</strong>，直接展示到页面上（标签、标签属性、标签事件）</p>
+</li>
+<li><p><strong>其他用户可以访问</strong>该页面</p>
+</li>
+</ol>
+<p><img src="/blog/.io//image-20200823161141603.png" alt="image-20200823161141603"></p>
+<h3 id="由来"><a href="#由来" class="headerlink" title="由来"></a>由来</h3><p>介绍完 XSS 的基本概念后，我们来聊一聊 XSS 的历史。XSS 的由来已久，最早可以追溯到上个世纪 90 年代。</p>
+<p>1995 年，网景公司为其 Netscape Navigator（网景导航者）浏览器引入 JavaScript，这改变了之前 Web 内容是静态 HTML 的状况。JS 使得网页的交互越来越频繁，促使了 web 的蓬勃发展，但是也带来了新的问题：JS 可以执行服务器发送的代码片段，存在恶意代码注入的巨大安全风险，网页里的恶意代码可以向另外一个服务发送数据。使得攻击者可以利用这个方法窃取敏感信息。</p>
+<p>2000 年 2 月，CERT（卡内基梅隆大学计算机紧急回应小组协调中心） 公布了一份 XSS 最早的报告，记载了网页因为疏忽包含了恶意的 html 标签和脚本的案例，以及这些恶意代码会对用户造成什么影响。</p>
+<p><strong>因为 RD 在开发时不可能对所有的用户输入都进行检测和处理，所以 XSS 是广泛长期存在的</strong>。根据<a href="https://github.com/OWASP/www-project-top-ten/blob/master/index.md" target="_blank" rel="noopener">OWASP</a><a href="https://github.com/OWASP/www-project-top-ten/blob/master/index.md" target="_blank" rel="noopener"> Top 10</a>的统计，XSS 每次都能抢到前排小板凳，2010 年位列第三、2013 年位列第三、2017 年位列第七。</p>
+<p><img src="/blog/.io//image-20200823161309934.png" alt="image-20200823161309934"></p>
+<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><p>由于 XSS 漏洞很容易被开发忽略，互联网上已经爆发了多起恶劣攻击事件：</p>
+<p>2005 年，19 岁的精神小伙萨米为了增加个人主页的关注量、认识更多的辣妹，在 Myspace 网站上发布了萨米蠕虫病毒。它在每个被感染的用户页面显示一行字串“but most of all, samy is my hero”，并将自己复制在该用户页面。在短短 20 个小时内，超过一百万用户被感染和传播，MySpace 被迫将网站彻底关闭来清理病毒。<a href="https://blog.csdn.net/ssergsw/article/details/9259743" target="_blank" rel="noopener">源码</a></p>
+<p><img src="/blog/.io//image-20200823161344946.png" alt="image-20200823161344946"></p>
+<p>2006 年，Paypal 遭到 XSS 攻击，攻击者将 PayPal 的访问者重定向到仿制的新页面，在新页面警告用户需要重新设置账号密码，窃取用户信用卡、登陆信息等隐私数据。</p>
+<p>2011 年，新浪微博出现了一次比较大的 XSS 攻击事件。大量用户自动发送诸如：“郭美美事件的一些未注意到的细节”，“建党大业中穿帮的地方”，“让女人心动的 100 句诗歌”，“这是传说中的神仙眷侣啊”，“惊爆!范冰冰艳照真流出了”等等微博和私信，并自动关注一位名为 hellosamy 的用户。</p>
+<p>2014 年，百度贴吧爆出 XSS 蠕虫漏洞，页面 onmouseovers 时会下载 XSS 脚本，如果是吧务不小心被蠕虫感染了，会在「贴吧意见反馈」里，每 8 秒批量发 100 条「百度 SB」的帖子；任何用户被感染后也会发一个标题比较羞耻的帖子。<a href="https://www.cnblogs.com/milantgh/p/3655112.html" target="_blank" rel="noopener">源码</a></p>
+<p>分类</p>
+<p>介绍完 XSS 的黑历史后，你是否对 XSS 稍有兴趣（认识更多的辣妹）？我们接下来会揭开 XSS 的面纱。</p>
+<p>目前 XSS 的攻击形式主要分成三类：反射型、存储型、Dom Based 型</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>典型攻击步骤</th>
+<th>常见场景</th>
+<th>区别</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>反射型</strong></td>
+<td>攻击者构造出包含恶意代码的特殊的 URL 用户登陆后，访问带有恶意代码的 URL 服务端取出 URL 上的恶意代码，拼接在 HTML 中返回浏览器用户浏览器收到响应后解析执行混入其中的恶意代码窃取敏感信息/冒充用户行为，完成 XSS 攻击</td>
+<td>通过 URL 传递参数的功能，如网站搜索、跳转等</td>
+<td>非持久型 xss 攻击，依赖于服务器对恶意请求的反射，仅对当次的页面访问产生影响恶意代码存在 URL 上经过后端，不经过数据库</td>
+</tr>
+<tr>
+<td><strong>存储型</strong></td>
+<td>攻击者将恶意代码提交到目标网站的数据库中用户登陆后，访问相关页面 URL 服务端从数据库中取出恶意代码，拼接在 HTML 中返回浏览器用户浏览器收到响应后解析执行混入其中的恶意代码窃取敏感信息/冒充用户行为，完成 XSS 攻击</td>
+<td>带有用户保存数据的网站功能，比如论坛发帖、商品评价、用户私信等等。</td>
+<td>持久型 xss，攻击者的数据会存储在服务端，攻击行为将伴随着攻击数据一直存在。恶意代码存在数据库经过后端，经过数据库</td>
+</tr>
+<tr>
+<td><strong>DOM 型</strong></td>
+<td>前端 JavaScript 取出 URL 中的恶意代码并执行窃取敏感信息/冒充用户行为，完成 XSS 攻击</td>
+<td>页面 JS 获取数据后不做甄别，直接操作 DOM。一般见于从 URL、cookie、LocalStorage 中取内容的场景</td>
+<td>取出和执行恶意代码由浏览器端完成，属于前端 JavaScript 自身的安全漏洞</td>
+</tr>
+</tbody></table>
+<h2 id="如何防御"><a href="#如何防御" class="headerlink" title="如何防御"></a>如何防御</h2><h3 id="针对反射和存储型-XSS"><a href="#针对反射和存储型-XSS" class="headerlink" title="针对反射和存储型 XSS"></a>针对反射和存储型 XSS</h3><p>存储型和反射型 XSS 都是在后端取出恶意代码后，插入到响应 HTML 里的，预防这种漏洞主要是关注后端的处理。</p>
+<h4 id="后端设置白名单，净化数据"><a href="#后端设置白名单，净化数据" class="headerlink" title="后端设置白名单，净化数据"></a><strong>后端设置白名单，净化数据</strong></h4><p>后端对于保存/输出的数据要进行过滤和转义，过滤的内容：比如 location、onclick、onerror、onload、onmouseover 、 script 、href 、 eval、setTimeout、setInterval 等，常见框架：<a href="https://github.com/microcosm-cc/bluemonday" target="_blank" rel="noopener">bluemonday</a>，<a href="https://jsoup.org/cookbook/cleaning-html/whitelist-sanitizer" target="_blank" rel="noopener">jsoup</a>等</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">**String** unsafe =</span><br><span class="line"> "<span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">'http://example.com/'</span> <span class="attr">onclick</span>=<span class="string">'stealCookies()'</span>&gt;</span>Link<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span>";</span><br><span class="line">**String** safe = **Jsoup**.clean(unsafe, **Whitelist**.basic());</span><br><span class="line">// now: <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://example.com/"</span> &gt;</span>Link<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>转义规则可见【DOM 型 XSS-数据充分转义】</p>
+<h4 id="避免拼接-HTML，采用纯前端渲染"><a href="#避免拼接-HTML，采用纯前端渲染" class="headerlink" title="避免拼接 HTML，采用纯前端渲染"></a><strong>避免拼接 HTML，采用纯前端渲染</strong></h4><p>浏览器先加载一个静态 HTML，后续通过 Ajax 加载业务数据，调用 DOM API 更新到页面上。纯前端渲染还需注意避免 DOM 型 XSS 漏洞</p>
+<h3 id="针对-DOM-型-XSS"><a href="#针对-DOM-型-XSS" class="headerlink" title="针对 DOM 型 XSS"></a>针对 DOM 型 XSS</h3><p>DOM 型 XSS 攻击，实际上就是网站前端 JavaScript 代码本身不够严谨，把不可信的数据当作代码执行了。</p>
+<h4 id="谨慎对待展示数据"><a href="#谨慎对待展示数据" class="headerlink" title="谨慎对待展示数据"></a>谨慎对待展示数据</h4><p>谨慎使用.innerHTML、.outerHTML、document.write() ，不要把不可信的数据作为 HTML 插到页面上。</p>
+<p>DOM 中的内联事件监听器，如 location、onclick、onerror、onload、onmouseover 等，<a> 标签的 href 属性，JavaScript 的 eval()、setTimeout()、setInterval() 等，都能把字符串作为代码运行，很容易产生安全隐患，谨慎处理传递给这些 API 的字符串。</a></p>
+<h4 id="数据充分转义，过滤恶意代码"><a href="#数据充分转义，过滤恶意代码" class="headerlink" title="数据充分转义，过滤恶意代码"></a><strong>数据充分转义，过滤恶意代码</strong></h4><p>需要根据具体场景使用不同的转义规则，前端插件 <a href="https://jsxss.com/zh/index.html" target="_blank" rel="noopener">xss.js</a>，<a href="https://github.com/cure53/DOMPurify" target="_blank" rel="noopener">DOMPurify</a></p>
+<table>
+<thead>
+<tr>
+<th>放置位置</th>
+<th>例子</th>
+<th>采取的编码</th>
+<th>编码格式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HTML 标签之间</td>
+<td><div> 不可信数据 </div></td>
+<td>HTML Entity 编码</td>
+<td>&amp; –&gt; &amp;&lt; –&gt; &lt;&gt; –&gt; &gt;” –&gt; &quot;‘ –&gt; &#x27;/ –&gt; &#x2f;</td>
+</tr>
+<tr>
+<td>HTML 标签的属性</td>
+<td>&lt;input type=”text”value=” 不可信数据 ” /&gt;</td>
+<td>HTML Attribute 编码</td>
+<td>&amp;#xHH</td>
+</tr>
+<tr>
+<td>JavaScript</td>
+<td><script> var msg = ” 不可信数据 ” </script></td>
+<td>JavaScript 编码</td>
+<td>\xHH</td>
+</tr>
+<tr>
+<td>CSS</td>
+<td>&lt;div style=” width: 不可信数据 ” &gt; … </td>
+<td>CSS 编码</td>
+<td>\HH</td>
+</tr>
+<tr>
+<td>URL 参数中</td>
+<td>&lt;a href=”/page?p= 不可信数据 ” &gt;…</td>
+<td>URL 编码</td>
+<td>%HH</td>
+</tr>
+</tbody></table>
+<p><strong>编码规则：</strong>除了阿拉伯数字和字母，对其他所有的字符进行编码，只要该字符的 ASCII 码小于 256。编码后输出的格式为以上编码格式 （以&amp;#x、\x 、\、%开头，HH 则是指该字符对应的十六进制数字）</p>
+<h4 id="使用插值表达式"><a href="#使用插值表达式" class="headerlink" title="使用插值表达式"></a><strong>使用插值表达式</strong></h4><p>采用 vue/react/angular 等技术栈时，使用插值表达式，避免使用 v-html。因为 template 转成 render function 的过程中，会把插值表达式作为 Text 文本内容进行渲染。<strong>在前端 render 阶段避免</strong> <strong>innerHTML**</strong>、*<strong>*outerHTML</strong> <strong>的 XSS 隐患。</strong></p>
+<p>比如：</p>
+<div class="a"><span></span></div>
+
+<p>最终生成的代码如下</p>
+<p><code>&quot;with(this){return _c(&#39;div&#39;,{staticClass:&quot;a&quot;},[_c(&#39;span&#39;,[_v(_s(item))])])}&quot;</code></p>
+<p>_c 是 createElement 简写，即 render 函数，_v 是 createTextVNode 的简写，创建文本节点，_s 是 toString 简写</p>
+<h3 id="其他措施"><a href="#其他措施" class="headerlink" title="其他措施"></a>其他措施</h3><h4 id="设置-Cookie-httpOnly"><a href="#设置-Cookie-httpOnly" class="headerlink" title="设置 Cookie httpOnly"></a><strong>设置 Cookie httpOnly</strong></h4><p>禁止 JavaScript 读取某些敏感 Cookie，攻击者完成 XSS 注入后也无法窃取此 Cookie</p>
+<p><img src="/blog/.io//image-20200823161809436.png" alt="image-20200823161809436"></p>
+<h4 id="设置-CSP（Content-Security-Policy）"><a href="#设置-CSP（Content-Security-Policy）" class="headerlink" title="设置 CSP（Content Security Policy）"></a><strong>设置 CSP（Content Security Policy）</strong></h4><p>CSP 的实质就是设置浏览器白名单，告诉浏览器哪些外部资源可以加载和执行，自动禁止外部注入恶意脚本。</p>
+<p>CSP 可以通过两种方式来开启 ：</p>
+<ol>
+<li><ol>
+<li>设置 html 的 meta 标签的方式</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span></span></span><br><span class="line"><span class="tag">  <span class="attr">http-equiv</span>=<span class="string">"Content-Security-Policy"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">content</span>=<span class="string">"script-src 'self' *.example.com ; style-src 'self' ;"</span></span></span><br><span class="line"><span class="tag">/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><ol>
+<li>设置 HTTP Header 中的 Content-Security-Policy</li>
+</ol>
+</li>
+</ol>
+<p><code>Content-Security-Policy: script-src &#39;self&#39; *.example.com ; style-src &#39;self&#39; ;</code></p>
+<p>上述代码描述的 CSP 规则是 js 脚本只能来自当前域名和 example.com 二级域名下，css 只能来自当前域名</p>
+<p>CSP 可以限制<strong>加载资源的类型</strong>：</p>
+<table>
+<thead>
+<tr>
+<th><strong>script-src</strong></th>
+<th>外部脚本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>style-src</strong></td>
+<td>样式表</td>
+</tr>
+<tr>
+<td><strong>img-src</strong></td>
+<td>图像</td>
+</tr>
+<tr>
+<td><strong>media-src</strong></td>
+<td>媒体文件（音频和视频）</td>
+</tr>
+<tr>
+<td><strong>font-src</strong></td>
+<td>字体文件</td>
+</tr>
+<tr>
+<td><strong>object-src</strong></td>
+<td>插件（比如 Flash）</td>
+</tr>
+<tr>
+<td><strong>child-src</strong></td>
+<td>框架</td>
+</tr>
+<tr>
+<td><strong>frame-ancestors</strong></td>
+<td>嵌入的外部资源（比如<frame>、<iframe>、<embed>和<applet>）</applet></iframe></td>
+</tr>
+<tr>
+<td><strong>connect-src</strong></td>
+<td>HTTP 连接（通过 XHR、WebSockets、EventSource 等）</td>
+</tr>
+<tr>
+<td><strong>worker-src</strong></td>
+<td>worker 脚本</td>
+</tr>
+<tr>
+<td><strong>manifest-src</strong></td>
+<td>manifest 文件</td>
+</tr>
+<tr>
+<td><strong>default-src</strong></td>
+<td>用来设置上面各个选项的默认值</td>
+</tr>
+</tbody></table>
+<p>同时也可设置<strong>资源的限制规则</strong></p>
+<table>
+<thead>
+<tr>
+<th>主机名</th>
+<th><a href="http://example.org" target="_blank" rel="noopener">example.org</a>，<a href="https://example.com:443" target="_blank" rel="noopener">https://example.com:443</a></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>路径名</td>
+<td><a href="http://example.org/resources/js/" target="_blank" rel="noopener">example.org/resources/js/</a></td>
+</tr>
+<tr>
+<td>通配符</td>
+<td><em>.<a href="http://example.org" target="_blank" rel="noopener">example.org</a>，</em>://_.<a href="http://example.com" target="_blank" rel="noopener">example.com</a>:_（表示任意协议、任意子域名、任意端口）</td>
+</tr>
+<tr>
+<td>协议名</td>
+<td>https:、data:</td>
+</tr>
+<tr>
+<td><strong>‘self’</strong></td>
+<td>当前域名，需要加引号</td>
+</tr>
+<tr>
+<td><strong>‘none’</strong></td>
+<td>禁止加载任何外部资源，需要加引号</td>
+</tr>
+<tr>
+<td><strong>‘unsafe-inline’</strong></td>
+<td>允许执行页面内嵌的<script>标签和事件监听函数</td>
+</tr>
+<tr>
+<td><strong>'unsafe-eval'</strong></td>
+<td>允许将字符串当作代码执行，比如使用 eval、setTimeout、setInterval 和 Function 等函数</td>
+</tr>
+</tbody></table>
+<p>严格的 CSP 在 XSS 的防范中可以起到以下的作用：</p>
+<ul>
+<li>禁止加载外域代码，防止复杂的攻击逻辑</li>
+<li>禁止外域提交，网站被攻击后，用户的数据不会泄露到外域</li>
+<li>禁止内联脚本执行</li>
+<li>禁止未授权的脚本执行</li>
+</ul>
+<h4 id="输入内容长度、类型的控制"><a href="#输入内容长度、类型的控制" class="headerlink" title="输入内容长度、类型的控制"></a>输入内容长度、类型的控制</h4><p>对于不受信任的输入，都应该限定一个合理的长度，并且对输入内容的合法性进行校验（例如输入 email 的文本框只允许输入格式正确的 email，输入手机号码的文本框只允许填入数字且格式需要正确）。虽然无法完全防止 XSS 发生，但可以增加 XSS 攻击的难度。</p>
+<h4 id="验证码，防止脚本冒充用户提交危险操作"><a href="#验证码，防止脚本冒充用户提交危险操作" class="headerlink" title="验证码，防止脚本冒充用户提交危险操作"></a><strong>验证码</strong>，防止脚本冒充用户提交危险操作</h4><h3 id="如何检测"><a href="#如何检测" class="headerlink" title="如何检测"></a>如何检测</h3><p>目前主要 2 种方式检测项目的 XSS 漏洞：</p>
+<h4 id="使用通用-XSS-攻击字符串手动检测-XSS-漏洞"><a href="#使用通用-XSS-攻击字符串手动检测-XSS-漏洞" class="headerlink" title="使用通用 XSS 攻击字符串手动检测 XSS 漏洞"></a>使用通用 XSS 攻击字符串手动检测 XSS 漏洞</h4><p>在<a href="https://github.com/0xsobky/HackVault/wiki/Unleashing-an-Ultimate-XSS-Polyglot" target="_blank" rel="noopener">Unleashing an Ultimate XSS Polyglot</a>一文中，有这么一个字符串：</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jaVasCript:<span class="comment">/*-/*`/*\`/*'/*"/**/</span>(<span class="comment">/* */</span>oNcliCk=alert() )<span class="regexp">//%0D%0A%0d%0a//</span>&lt;<span class="regexp">/stYle/</span>&lt;<span class="regexp">/titLe/</span>&lt;<span class="regexp">/teXtarEa/</span>&lt;<span class="regexp">/scRipt/</span>--!&gt;<span class="string">\x3csVg/&lt;sVg/oNloAd=alert()//&gt;\x3e</span></span><br></pre></td></tr></table></figure>
+
+<p>它能够检测到存在于 HTML 属性、HTML 文字内容、跳转链接、内联 JavaScript 字符串等多种上下文中的 XSS 漏洞，也能检测 eval()、setTimeout()、setInterval()、Function()、innerHTML、document.write() 等 DOM 型 XSS 漏洞。只要在网站的各输入框中提交这个字符串，或者把它拼接到 URL 参数上，就可以进行检测了。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">http</span>://xxx/search?keyword=jaVasCript<span class="number">%3</span>A<span class="number">%2</span>F*-<span class="number">%2</span>F*<span class="number">%60</span><span class="number">%2</span>F*<span class="number">%60</span><span class="number">%2</span>F*<span class="number">%27</span><span class="number">%2</span>F*<span class="number">%22</span><span class="number">%2</span>F**<span class="number">%2</span>F(<span class="number">%2</span>F*<span class="number">%20</span>*<span class="number">%2</span>FoNcliCk<span class="number">%3</span>Dalert()<span class="number">%20</span>)<span class="number">%2</span>F<span class="number">%2</span>F<span class="number">%250</span>D<span class="number">%250</span>A<span class="number">%250</span>d<span class="number">%250</span>a<span class="number">%2</span>F<span class="number">%2</span>F<span class="number">%3</span>C<span class="number">%2</span>FstYle<span class="number">%2</span>F<span class="number">%3</span>C<span class="number">%2</span>FtitLe<span class="number">%2</span>F<span class="number">%3</span>C<span class="number">%2</span>FteXtarEa<span class="number">%2</span>F<span class="number">%3</span>C<span class="number">%2</span>FscRipt<span class="number">%2</span>F--!<span class="number">%3</span>E<span class="number">%3</span>CsVg<span class="number">%2</span>F<span class="number">%3</span>CsVg<span class="number">%2</span>FoNloAd<span class="number">%3</span>Dalert()<span class="number">%2</span>F<span class="number">%2</span>F<span class="number">%3</span>E<span class="number">%3</span>E</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用扫描工具自动检测-XSS-漏洞（BeEF、w3af-、-noXss等）"><a href="#使用扫描工具自动检测-XSS-漏洞（BeEF、w3af-、-noXss等）" class="headerlink" title="使用扫描工具自动检测 XSS 漏洞（BeEF、w3af 、 noXss等）"></a>使用扫描工具自动检测 XSS 漏洞（<a href="https://beefproject.com/" target="_blank" rel="noopener">BeEF</a>、<a href="https://github.com/andresriancho/w3af" target="_blank" rel="noopener">w3af</a> 、 <a href="https://github.com/lwzSoviet/NoXss" target="_blank" rel="noopener">noXss</a>等）</h4><p>大部分扫描工具是利用动态检测思想：寻找目标应用程序中所有可能出现漏洞的地方，包括表单中的输入框、富文本、密码等，然后构造特殊攻击字符串作为输入，模拟触发事件向服务器提交请求，然后获取服务器的 HTTP 相应，并在其中寻找之前构造的字符串，如果可以找到，说明服务器网页没有对输入过滤，也就是存在 XSS 漏洞。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>XSS 是一个比较大的话题，本篇文章主要介绍 XSS 的基本概念和常用防范手段。其他更多有意思的东西（比如 XSS 盲打、服务端标记 HTML 防 XSS 攻击、Ascii 编码绕过检测等），大家感兴趣的话可以再深入学习。</p>
+<p>更多参考资料</p>
+<ol>
+<li><p>李冬萌. Web 前端安全问题的分析与防范研究[D]. 北京邮电大学, 2014.</p>
+</li>
+<li><p>万本钰. 基于浏览器的 XSS 检测系统的研究与设计[D]. 2019.</p>
+</li>
+<li><p>刘海, 徐芳, 郭帆, et al. 防范 XSS 攻击的研究综述[J]. 计算机与现代化, 2011, 2011(8):174-178.</p>
+</li>
+<li><p><a href="https://tech.meituan.com/2018/09/27/fe-security.html" target="_blank" rel="noopener">如何防止 XSS 攻击</a></p>
+</li>
+<li><p><a href="https://sking7.github.io/articles/430468050.html" target="_blank" rel="noopener">防御 XSS 的七条原则</a></p>
+</li>
+<li><p><a href="https://www.cnblogs.com/lovesong/p/5211667.html" target="_blank" rel="noopener">HtmlEncode&JavaScriptEncode</a></p>
+</li>
+<li><p><a href="https://security.tencent.com/index.php/blog/msg/107" target="_blank" rel="noopener">DOMXSS 典型场景分析与修复指南</a></p>
+</li>
+<li><p><a href="http://www.ruanyifeng.com/blog/2016/09/csp.html" target="_blank" rel="noopener">Content Security Policy</a></p>
+</li>
+<li><p><a href="https://www.freebuf.com/articles/web/153055.html" target="_blank" rel="noopener">XSS 过滤绕过速查表</a></p>
+</li>
+<li><p><a href="https://cloud.tencent.com/developer/article/1180217" target="_blank" rel="noopener">XSS 绕过方式</a></p>
+</li>
+</ol>
+</script></td></tr></tbody></table>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://supertinypeanut.github.io/blog/2020/08/16/XSS%E7%9A%84%E6%94%BB%E9%98%B2/" data-id="ckmm8va92002585qs5z9zdpmb" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/web-%E5%AE%89%E5%85%A8/" rel="tag">web 安全</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/blog/2020/08/23/Element%E7%BB%84%E4%BB%B6Tree%E5%AE%9E%E7%8E%B0%E9%AB%98%E4%BA%AE%E5%AE%9A%E4%BD%8D/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Element组件Tree实现高亮定位
+        
+      </div>
+    </a>
+  
+  
+    <a href="/blog/2020/08/13/%E4%BB%A3%E7%A0%81Lint%E4%B8%8E%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%A7%84%E8%8C%83%E9%85%8D%E7%BD%AE%E6%89%8B%E5%86%8C/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">代码Lint与格式化规范配置手册</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/ECMAScript-6/" rel="tag">ECMAScript 6</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/JavaScript/" rel="tag">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Lint/" rel="tag">Lint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/TypeScript/" rel="tag">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Vue/" rel="tag">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/Webpack/" rel="tag">Webpack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/npm/" rel="tag">npm</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/web-%E5%AE%89%E5%85%A8/" rel="tag">web 安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/" rel="tag">前端工程化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" rel="tag">问题解决</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/%E9%9D%A2%E8%AF%95/" rel="tag">面试</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/blog/tags/ECMAScript-6/" style="font-size: 12.5px;">ECMAScript 6</a> <a href="/blog/tags/Git/" style="font-size: 15px;">Git</a> <a href="/blog/tags/JavaScript/" style="font-size: 20px;">JavaScript</a> <a href="/blog/tags/Lint/" style="font-size: 10px;">Lint</a> <a href="/blog/tags/React/" style="font-size: 12.5px;">React</a> <a href="/blog/tags/TypeScript/" style="font-size: 12.5px;">TypeScript</a> <a href="/blog/tags/Vue/" style="font-size: 17.5px;">Vue</a> <a href="/blog/tags/Webpack/" style="font-size: 10px;">Webpack</a> <a href="/blog/tags/npm/" style="font-size: 10px;">npm</a> <a href="/blog/tags/web-%E5%AE%89%E5%85%A8/" style="font-size: 15px;">web 安全</a> <a href="/blog/tags/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B%E5%8C%96/" style="font-size: 12.5px;">前端工程化</a> <a href="/blog/tags/%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" style="font-size: 15px;">问题解决</a> <a href="/blog/tags/%E9%9D%A2%E8%AF%95/" style="font-size: 12.5px;">面试</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2021/01/">一月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/09/">九月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/04/">四月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/02/">二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2020/01/">一月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/12/">十二月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/blog/archives/2019/11/">十一月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/blog/2021/03/23/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E4%B8%8E%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2/">持续集成与持续部署</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2021/03/07/Promise%E5%AE%9E%E7%8E%B0/">Promise实现</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2021/03/03/ES6%E9%9D%A2%E8%AF%95%E9%A2%98/">ES6面试题</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2021/01/25/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/">自动化测试</a>
+          </li>
+        
+          <li>
+            <a href="/blog/2020/12/27/async-validator%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">async-validator基本使用</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Super Peanut<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/blog/" class="mobile-nav-link">Home</a>
+  
+    <a href="/blog/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css">
+
+  
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/blog/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
